@@ -35,7 +35,7 @@ exports.postsList = function(req, res)
         ], function(tag){
 
           res.render('admin/posts_list', {
-            title: 'cocainum posts list',
+            title: 'simple node blog posts list',
             posts: qres,
             tag: tag
           });
@@ -52,7 +52,7 @@ exports.tagsList = function(req, res)
     ORDER BY tag_name",
     function(tags) {
       res.render('admin/tags_list', {
-        title: 'cocainum tags list',
+        title: 'simple node blog tags list',
         tags: tags
       });
     });
@@ -93,7 +93,7 @@ exports.editPost = function(req, res)
             post.blog_id
         ], function(tags){
         res.render('admin/edit_post', {
-          title: 'cocainum edit post',
+          title: 'simple node blog edit post',
           post: post,
           tags: tags
         });

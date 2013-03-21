@@ -99,7 +99,7 @@ exports.blog_list = function(req, res)
                         if(counters.tags == 0)
                         {
                             res.render('blog_list', {
-                                title: 'cocainum shoo shooo',
+                                title: 'simple node blog shoo shooo',
                                 posts: qres ,
                                 pager_cnt: cnt, // total posts quant
                                 pager_size: page_size, // page size, posts on page
@@ -273,11 +273,11 @@ exports.comment = function(req, res)
                 // send email
                 var Email = require('email').Email
                 new Email(
-                  { from: "noreply@cocainum.info"
-                    , to:   "ilya.rogojin@gmail.com"
+                  { from: "noreply@host.com"
+                    , to:   "test@test.com"
                     , subject: "Новый комментарий #" +comment_id
                     , body: "Пользователь " + req.userInfo.name +
-                      " оставил новый комментарий в блоге: http://cocainum.info/post/" +
+                      " оставил новый комментарий в блоге: http://host.com/post/" +
                     post.blog_id + "/"
                   }).send(function(err){
                     // gag for errors
@@ -309,7 +309,7 @@ exports.blog_posts_list = function(req, res)
         ORDER BY b.blog_id DESC",
         function(qres) {
             res.render('blog_posts_list', {
-                title: 'cocainum full list of notes',
+                title: 'simple node blog full list of notes',
                 posts: qres
             });
         });
