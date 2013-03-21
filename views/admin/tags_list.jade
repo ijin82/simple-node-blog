@@ -1,0 +1,55 @@
+extends ../layout
+
+block content
+
+  - var active_tab = {tags_list: 'active'}
+  include sub_navi.jade
+
+  table.table.table-striped.table-hover
+    thead
+      th ID
+      th Тег
+      th &nbsp;
+    tbody
+    - each tag in tags
+      tr
+        td #{tag.tag_id}
+        td
+          - if (tag.cnt > 0) {
+            span(class="label label-success m-r10") + #{tag.cnt}
+          - } else {
+            span(class="label m-r10") + #{tag.cnt}
+          - }
+          a(href="/adm/posts/#{tag.tag_id}/") #{tag.tag_name}
+        td
+          a(href="#myModal", rel="/adm/del-tag/#{tag.tag_id}/", class="btn btn-danger del-tag", data-toggle="modal")
+            i(class="icon-trash icon-white")
+            &nbsp;
+            Удалить тег
+
+  form(class="form-horizontal", method="post", action="/adm/add-tag/")
+    legend Добавление нового тега
+    div.control-group
+      label.control-label(for="inputTagName") Название тега
+      div.controls
+        input(type="text", class="input-medium", id="inputTagName", name="tagName")
+    div.control-group
+      div.controls
+        button(type="submit", class="btn btn-primary") Добавить
+
+  <!-- Modal -->
+  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
+      h3(id="myModalLabel") Требуется подтверждение
+    div(class="modal-body")
+      p Вы действительно хотите удалить этот тег?
+    div(class="modal-footer")
+      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
+      a(href="#", id="del-link", class="btn btn-danger") Удалить
+
+
+  script(type="text/javascript")
+    $(".del-tag").click(function(){
+      $("#del-link").prop('href', $(this).prop('rel'));
+    });

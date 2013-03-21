@@ -1,0 +1,75 @@
+extends layout
+
+block content
+
+  div.post
+
+   h2
+     !{post.header}
+
+    span.label.m-b10
+      = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+
+    div !{post.text}
+
+    div
+      - if (tags.length>0)
+        - mytags = []
+        - each tag, i in tags
+          - mytags.push('<a href="/tag/' + tag.tag_id + '/">' + tag.tag_name + '</a>')
+        - mytags = mytags.join(', ')
+        Теги: !{mytags}
+
+    div.social
+      <div class="fb-like" data-send="true" data-layout="button_count" data-width="450"
+      | data-show-faces="true" data-font="verdana"></div>
+      | <a href="https://twitter.com/share" class="twitter-share-button"
+      | data-via="twitterapi" data-lang="ru">Tweet</a>
+
+  div.post
+    h2 Комментарии
+    if (comments.length == 0)
+      p Пока комментариев совсем нет
+    else
+      for comment in comments
+        div.comment
+          div.comment-user
+            a(href="#"+comment.user_id) #{comment.name}
+            &nbsp; / &nbsp;
+            em
+              = dateformat(comment.pub_date,"yyyy.mm.dd HH:MM:ss")
+            &nbsp; / &nbsp;
+            b
+              ##{comment.comment_id}
+            if (comment.user_id == userInfo.user_id || userInfo.role == 'admin')
+              &nbsp;&nbsp;
+              span.label.label-important.site-a-label
+                a(href="/delcomment/" + comment.comment_id,
+                  class="no-dec",
+                  title="Удалить комментарий",
+                  onclick="return confirm('Удалить комментарий?');") удалить
+          div.comment-text
+            != f_comment(comment.text)
+    div.comment-new-header Написать комментарий
+    if (userInfo.auth == 1)
+      form(method="post", action="/comment")
+        input(type="hidden", name="post_id", value=post.blog_id)
+        textarea(name="text", rows="7", cols="80", class="input-xxlarge")
+        br
+        button(type="submit", class="btn") Комментировать
+    else
+      p
+        Чтобы оставить комментарий, нужно пройти авторизацию
+        ul.h-list
+          li(class="sp-med-facebook")
+            a(href="/auth/facebook", title="facebook")
+          li(class="sp-med-twitter")
+            a(href="/auth/twitter", title="twitter")
+          li(class="sp-med-github")
+            a(href="/auth/github", title="github")
+          //-
+            li(class="sp-med-google")
+            a(href="/auth/google", title="google")
+          div.clear
+
+  include includes/social.html

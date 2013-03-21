@@ -1,0 +1,38 @@
+extends layout
+
+block content
+
+  div
+    br
+    br
+
+    div(style="padding-left:25%")
+      ul.h-list
+        li(class="sp-big-facebook")
+          a(href="/auth/facebook", title="facebook")
+        li(class="sp-big-twitter")
+          a(href="/auth/twitter", title="twitter")
+        li(class="sp-big-github")
+          a(href="/auth/github", title="github")
+        //-
+          li(class="sp-big-google")
+          a(href="/auth/google", title="google")
+
+    div.clearfix
+
+    br
+    br
+
+    div(style="padding-left:15%")
+      form(method="post", action="/auth/local", class="form-horizontal")
+        div.control-group
+          div.controls
+            input(type="text", value="", name="username", placeholder="Ваш логин")
+        div.control-group
+          div.controls
+            input(type="password", value="", name="password", placeholder="Ваш пароль")
+        div.control-group
+          div.controls
+            button(type="submit", class="btn") Войти
+
+

@@ -1,0 +1,20 @@
+extends layout
+
+block content
+
+  table.table.table-striped.table-hover
+    thead
+      th Дата
+      th Название заметки
+      th &nbsp;
+    tbody
+    - each post in posts
+      tr
+        td
+          = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+        td
+          <a href="/post/#{post.blog_id}/" title="открыть потс">#{post.header}</a>
+        td
+          - if (post.comments_cnt > 0)
+            span.label.label-success.m-l10
+              + #{post.comments_cnt}

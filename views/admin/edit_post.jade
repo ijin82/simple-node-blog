@@ -1,0 +1,83 @@
+extends ../layout
+
+block content
+
+  - var active_tab = {edit_post: 'active'}
+  include sub_navi.jade
+
+  form(action="/adm/save-post/", method="post")
+    input(type="hidden", name="post_id", value=post.blog_id)
+    table.table.table-striped.table-hover
+      tbody
+        tr
+          td
+            Видимость
+          td
+            - if (post.visible == 1) {
+              i(class="icon-eye-open")
+              &nbsp;
+              a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini btn-danger") Сделать невидимым
+            - } else {
+              i(class="icon-eye-close")
+              &nbsp;
+              a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini") Сделать видимым
+            - }
+            a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10", target="_blank") Предпросмотр
+        tr
+          td Теги
+          td
+            - each tag in tags
+              - if (tag.ex) {
+                span.label.label-info.site-a-label
+                  a(href="#", title="Удалить тег", class="del-tag", rel=tag.tag_id) #{tag.tag_name}
+              - } else {
+                span.label.site-a-label
+                  a(href="#", title="Добавить тег", class="add-tag", rel=tag.tag_id) #{tag.tag_name}
+              - }
+        tr
+          td Заголовок поста
+          td
+            input(type="text", name="header", value=post.header, class="input-xxlarge")
+        tr
+          td(colspan="2")
+            textarea(rows="20", class="span12", name="text") #{post.text}
+        tr
+          td Дата создания
+          td
+            = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+        tr
+          td &nbsp;
+          td
+            button(type="submit", class="btn btn-primary") Сохранить изменения
+            a(href="#myModal", class="btn btn-danger pull-right", data-toggle="modal")
+              i(class="icon-trash icon-white")
+              &nbsp;
+              Удалить запись
+
+
+  <!-- Modal -->
+  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
+      h3(id="myModalLabel") Требуется подтверждение
+    div(class="modal-body")
+      p Вы действительно хотите удалить эту запись?
+    div(class="modal-footer")
+      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
+      a(href="/adm/del-post/#{post.blog_id}/", id="del-link", class="btn btn-danger") Удалить
+
+
+  script(type="text/javascript")
+    $(".add-tag, .del-tag").click(function(){
+      var targClass='label-info';
+      if ($(this).parent().hasClass(targClass)) {
+        oper = 'remove';
+      } else {
+        oper = 'add';
+      }
+      $(this).parent().toggleClass(targClass);
+      $.get('/adm/change-tag/#{post.blog_id}/' + oper + '/' + $(this).prop('rel'), function(data) {
+        $('.result').html(data);
+      });
+      return false;
+    });

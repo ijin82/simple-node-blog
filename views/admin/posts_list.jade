@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+
+  - var active_tab = {post_list: 'active'}
+  include sub_navi.jade
+
+  - if (tag.tag_id) {
+    h4 Выборка по тегу: #{tag.tag_name}
+  - }
+
+  table.table.table-striped.table-hover
+    thead
+      th Дата
+      th
+        Запись
+        a(href="/adm/post-new/", class="btn btn-mini pull-right") Добавить запись
+      th &nbsp;
+      th &nbsp;
+    tbody
+    - each post in posts
+      - if (post.visible == 1) {
+      -    var trClass = '';
+      - } else {
+      -    var trClass = 'warning';
+      - }
+      tr(class=trClass)
+        td.span3
+          = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+        td
+          a(href="/adm/edit-post/#{post.blog_id}/", title="Редактировать") #{post.header || '- нет -'}
+          &nbsp;
+          a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10", target="_blank") Предпросмотр
+        td
+          - if (post.visible == 1) {
+              a(href="/adm/post-visible/#{post.blog_id}/")
+                i(class="icon-eye-open")
+          - } else {
+              a(href="/adm/post-visible/#{post.blog_id}/")
+                i(class="icon-eye-close")
+          - }
+        td
+          - if (post.comments_cnt > 0)
+            span.label.label-success.m-l10
+              + #{post.comments_cnt}

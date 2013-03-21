@@ -1,0 +1,11 @@
+ul(class="nav nav-tabs")
+  li(class=active_tab.post_list)
+    a(href="/adm/posts/") Все записи
+  li(class=active_tab.tags_list)
+    a(href="/adm/tags/") Теги
+  li(class=active_tab.images_list)
+    a(href="/adm/users/") Пользователи
+  - if (active_tab.edit_post == 'active') {
+  li(class="active")
+    a(href="#") Редактирование записи
+  - }
