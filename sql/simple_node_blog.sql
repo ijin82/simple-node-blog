@@ -31,7 +31,7 @@ CREATE TABLE `Sessions` (
   `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `sid` (`sid`)
-) ENGINE=InnoDB AUTO_INCREMENT=9540 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `Sessions` (
 
 LOCK TABLES `Sessions` WRITE;
 /*!40000 ALTER TABLE `Sessions` DISABLE KEYS */;
+INSERT INTO `Sessions` VALUES ('MBNFpl57Xy5PEDcKhDUDbQQy',1364338226,'{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"passport\":{\"user\":{\"user_id\":1,\"name\":\"admin\",\"login\":\"admin\",\"pass\":\"21232f297a57a5a743894a0e4a801fc3\",\"role\":\"admin\",\"reg_date\":\"2013-03-21T22:11:14.000Z\",\"login_date\":\"2013-03-21T22:11:14.000Z\",\"facebook_id\":0,\"twitter_id\":0,\"github_id\":0}},\"cocainum_auth\":1,\"auth_type\":\"local\",\"userInfo\":{\"user_id\":1,\"name\":\"admin\",\"login\":\"admin\",\"pass\":\"21232f297a57a5a743894a0e4a801fc3\",\"role\":\"admin\",\"reg_date\":\"2013-03-21T22:11:14.000Z\",\"login_date\":\"2013-03-21T22:11:14.000Z\",\"facebook_id\":0,\"twitter_id\":0,\"github_id\":0,\"auth\":1}}',1,'2013-03-22 01:50:03','2013-03-22 01:50:26');
 /*!40000 ALTER TABLE `Sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,7 +59,7 @@ CREATE TABLE `blog` (
   `comments_cnt` int(11) DEFAULT '0',
   `post_date` datetime NOT NULL,
   PRIMARY KEY (`blog_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=188 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +68,7 @@ CREATE TABLE `blog` (
 
 LOCK TABLES `blog` WRITE;
 /*!40000 ALTER TABLE `blog` DISABLE KEYS */;
-INSERT INTO `blog` VALUES (182,1,'Первая запись','Это первая запись в Simple node blog!',0,'2013-03-22 01:23:37'),(183,1,'Вторая запись','Это вторая запись без ценного содержимого!',0,'2013-03-22 01:30:27'),(184,1,'','',0,'2013-03-22 01:31:29');
+INSERT INTO `blog` VALUES (1,1,'Первая запись','Это первая запись в Simple node blog!',0,'2013-03-22 01:23:37'),(2,1,'Вторая запись','Это вторая запись без ценного содержимого!',0,'2013-03-22 01:30:27'),(3,0,'','',0,'2013-03-22 01:31:29');
 /*!40000 ALTER TABLE `blog` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +83,7 @@ CREATE TABLE `blog_tags` (
   `blog_id` int(11) NOT NULL,
   `tag_id` int(11) NOT NULL,
   UNIQUE KEY `blog_id` (`blog_id`,`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +111,7 @@ CREATE TABLE `comments` (
   `text` text,
   PRIMARY KEY (`comment_id`),
   KEY `by_post` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +134,7 @@ CREATE TABLE `tags` (
   `tag_id` int(11) NOT NULL AUTO_INCREMENT,
   `tag_name` varchar(255) NOT NULL,
   PRIMARY KEY (`tag_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=cp1251;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +166,7 @@ CREATE TABLE `users` (
   `twitter_id` bigint(20) DEFAULT '0',
   `github_id` bigint(20) DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +175,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (28,'admin','admin','21232f297a57a5a743894a0e4a801fc3','admin','2013-03-22 01:11:14','2013-03-22 01:11:14',0,0,0);
+INSERT INTO `users` VALUES (1,'admin','admin','21232f297a57a5a743894a0e4a801fc3','admin','2013-03-22 01:11:14','2013-03-22 01:11:14',0,0,0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -187,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-22  1:41:09
+-- Dump completed on 2013-03-22  1:52:46
