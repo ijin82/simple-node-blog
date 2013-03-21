@@ -1,7 +1,8 @@
 simple-node-blog
 --
 Simple blog based on node.js + express.js + jade + mysql
-This is learninig example app for newbies in node, here we look at
+
+This is learninig example app for newbies in node, here we look at:
 - work with mysql
 - work with jade
 - look at express.js
