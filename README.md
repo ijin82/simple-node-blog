@@ -28,4 +28,20 @@ Install
 8. node app.js -- let's run
 9. for passport auth usage change access params at config/ folder
 
+Access params
+--
+admin:admin
+
+Pasword is in users.pass field, a simple md5 hash so you can easy change it.
+
+Language of interface
+--
+Only RU now..
+But it's simple!
+
+Planned
+--
+1. User personal info correction (profile)
+2. Social connections merge on the current user account (from profile)
+3. Multi-authors? or smth like this.
 
