@@ -1,4 +1,3 @@
-
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , db = require('../libs/db');
@@ -16,8 +15,11 @@ module.exports = function(app)
             FROM users \
             WHERE login=? AND pass=md5(?)\
               AND login<>'' AND pass<>''",
-            [login, pass],
-            function(user){
+            [
+              login,
+              pass
+            ], function(err, user){
+              if (err) return next(err);
 
               if(!user)
                 next(null, false);

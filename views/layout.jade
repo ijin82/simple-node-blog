@@ -4,16 +4,16 @@ html
     block head
       title= title
       meta(charset="utf-8")
-      link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')
+      link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/awesome/css/font-awesome.min.css')
       script(type="text/javascript", src="/js/jquery.min.js")
       script(type="text/javascript", src="/bootstrap/js/bootstrap.js")
       link(rel='stylesheet', href='/css/main.css')
+      script(type="text/javascript", src="/highlight.js/highlight.pack.js")
+      link(rel='stylesheet', href='/highlight.js/github.css')
 
-      link(rel='stylesheet', href='http://yandex.st/highlightjs/7.3/styles/default.min.css')
-      script(type="text/javascript", src="http://yandex.st/highlightjs/7.3/highlight.min.js")
-
-      meta(name="description", content="simple node blog")
-      meta(name="keywords", content="simple node blog")
+      meta(name="description", content="уютненький бложик, дорогойдневничок")
+      meta(name="keywords", content="техноблог, блог, php, mysql, ubuntu, linux, bash, node.js, express.js")
 
   body
 
@@ -26,7 +26,9 @@ html
             - else
                 if (userInfo.role == 'admin')
                   &nbsp;
-                  a(href="/adm/posts/", class="btn btn-mini m-r10") Управление
+                  a(href="/adm/posts/", class="black-icon-link")
+                    i(class="icon-edit")
+                  &nbsp;
                 !{userInfo.name} &nbsp;
                 a(href="/logout/") Выход
 
@@ -40,6 +42,8 @@ html
 
     div#footer
       div.container
+        i(class="icon-github-alt")
+        |&nbsp;
         a(href="https://github.com/ijin82/simple-node-blog", target="_blank") simple node blog
         |&nbsp;
         span.label.label-info.site-a-label.label-inline

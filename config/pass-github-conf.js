@@ -11,15 +11,15 @@ module.exports = function(app)
     // dev & production settings
     // .bashrc -> export NODE_ENV=development
     app.configure('development', function(){
-        app.set('GITHUB_APP_ID', '--key--');
-        app.set('GITHUB_APP_SECRET', '--key--');
+        app.set('GITHUB_APP_ID', 'key');
+        app.set('GITHUB_APP_SECRET', 'key');
         app.set('GITHUB_CALLBACK_URL', 'http://127.0.0.1:3434/auth/github/callback');
     });
 
     // .bashrc -> export NODE_ENV=production
     app.configure('production', function(){
-        app.set('GITHUB_APP_ID', '111');
-        app.set('GITHUB_APP_SECRET', '111');
+        app.set('GITHUB_APP_ID', 'key');
+        app.set('GITHUB_APP_SECRET', 'key');
         app.set('GITHUB_CALLBACK_URL', 'http://host.com/auth/github/callback');
     });
 

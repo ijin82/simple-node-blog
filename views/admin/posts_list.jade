@@ -19,11 +19,7 @@ block content
       th &nbsp;
     tbody
     - each post in posts
-      - if (post.visible == 1) {
-      -    var trClass = '';
-      - } else {
-      -    var trClass = 'warning';
-      - }
+      - if (post.visible == 1) { trClass = ''} else {trClass = 'warning'}
       tr(class=trClass)
         td.span3
           = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
@@ -32,13 +28,12 @@ block content
           &nbsp;
           a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10", target="_blank") Предпросмотр
         td
-          - if (post.visible == 1) {
-              a(href="/adm/post-visible/#{post.blog_id}/")
+          a(href="/adm/post-visible/#{post.blog_id}", class="black-icon-link")
+            - if (post.visible == 1) {
                 i(class="icon-eye-open")
-          - } else {
-              a(href="/adm/post-visible/#{post.blog_id}/")
+            - } else {
                 i(class="icon-eye-close")
-          - }
+            - }
         td
           - if (post.comments_cnt > 0)
             span.label.label-success.m-l10

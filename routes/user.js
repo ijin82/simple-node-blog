@@ -43,22 +43,25 @@ exports.set_user = function(req, next){
     twitter: 'twitter_id',
     github: 'github_id'
   };
-
+console.log(req.session.auth_type);
   switch (req.session.auth_type)
   {
     case 'local': // local auth
       db.getRow("SELECT * \
         FROM users \
         WHERE user_id=?",
-        [passp.user_id],
-        function(user){
+        [
+          passp.user_id
+        ],
+        function(err, user){
+          if (err) return next(err);
+console.log(user, '-------------------');
           // save userinfo
           req.session.userInfo = user;
           next();
         });
     break;
 
-    case 'google': // google auth
     case 'github': // github auth
     case 'twitter': // twitter auth
     case 'facebook': // facebook auth
@@ -70,7 +73,8 @@ exports.set_user = function(req, next){
         FROM users \
         WHERE " + field + "=?",
         [passp.id],
-        function(user){
+        function(err, user){
+          if (err) return next(err);
 
           if(!user) // no user by this field id
           {

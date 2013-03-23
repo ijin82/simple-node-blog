@@ -1,4 +1,4 @@
-
+  
 var sanitize = require('validator').sanitize;
 
 module.exports = function(app)

@@ -8,8 +8,8 @@ var passport = require('passport')
  */
 module.exports = function(app)
 {
-    app.set('TWITTER_APP_ID', '--key--');
-    app.set('TWITTER_APP_SECRET', '--key--');
+    app.set('TWITTER_APP_ID', 'key');
+    app.set('TWITTER_APP_SECRET', 'key');
 
     // dev & production settings
     // .bashrc -> export NODE_ENV=development

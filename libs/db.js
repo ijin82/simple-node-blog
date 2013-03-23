@@ -1,18 +1,20 @@
-
 /**
- * decorator for mysql class
+ * decorator for mysql
  */
 
 var mysql = require('mysql');
-var db_config = require('./db_config');
 
-var db = mysql.createConnection({
+var conn = mysql.createConnection({
     user: db_config.user,
     password: db_config.pass,
     host: db_config.host
 });
 
-db.query("use " + db_config.name);
+conn.on('error', function(err) {
+  console.log('no callback error: ' + err);
+});
+
+conn.query("use " + db_config.name);
 
 // standard query
 exports.q = function(sql, callee, next){
@@ -22,14 +24,19 @@ exports.q = function(sql, callee, next){
   else
     callee_orig = callee;
 
-  db.query(sql, callee_orig, function(err, qres){
-    if(err)
-      throw new Error(err);
+  conn.query(sql, callee_orig, function(err, qres){
 
-    if (typeof(callee) == 'function')
-      callee(qres);
-    else if (typeof(next) == 'function')
-      next(qres);
+    if (err) return next(err);
+
+    // check callback errors
+    try {
+      if (typeof(callee) == 'function')
+        callee(err, qres);
+      else if (typeof(next) == 'function')
+        next(err, qres);
+    } catch (err) {
+      return next(err);
+    }
   });
 }
 
@@ -41,40 +48,53 @@ exports.getRow = function(sql, callee, next){
   else
     callee_orig = callee;
 
-  db.query(sql, callee_orig, function sres(err, res){
+  conn.query(sql, callee_orig, function(err, res) {
 
-    if(err)
-      throw new Error(err);
+    if (!err) {
+      row = (res[0]) ? res[0]: false ;
+    } else {
+      row = false;
+    }
 
-    row = (res[0]) ? res[0]: false ;
-
-    if (typeof(callee) == 'function')
-      callee(row);
-    else if (typeof(next) == 'function')
-      next(row);
+    // check callback errors
+    try {
+      if (typeof(callee) == 'function')
+        callee(err, row);
+      else if (typeof(next) == 'function')
+        next(err, row);
+    } catch (err) {
+      return next(err);
+    }
   });
 }
 
 // last insert id
 exports.lastId = function(next){
 
-  db.query("SELECT LAST_INSERT_ID() as id", function sres(err, res){
-    if(err)
-      throw new Error(err);
+  conn.query("SELECT LAST_INSERT_ID() as id", function sres(err, res){
+    if(err) return next(err);
 
     var id = (res[0].id) ? res[0].id: false ;
-    next(id);
+    try {
+      next(err, id);
+    } catch (e) {
+      return next(err);
+    }
 
   });
 }
 
 // calc found rows
 exports.foundRows = function(next){
-  db.query("select found_rows() as cnt", function(err, res){
-    if(err)
-      throw new Error(err);
+  conn.query("select found_rows() as cnt", function(err, res){
+    if(err) return next(err);
+
     var cnt = (res[0].cnt) ? res[0].cnt : false ;
 
-    next(cnt);
+    try {
+      next(err, cnt);
+    } catch (e) {
+      return next(err);
+    }
   });
 }

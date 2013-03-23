@@ -21,10 +21,13 @@ block content
         Теги: !{mytags}
 
     div.social
-      <div class="fb-like" data-send="true" data-layout="button_count" data-width="450"
-      | data-show-faces="true" data-font="verdana"></div>
-      | <a href="https://twitter.com/share" class="twitter-share-button"
-      | data-via="twitterapi" data-lang="ru">Tweet</a>
+      div(class="fb-like", data-send="true", data-layout="button_count", 
+        data-width="450", data-show-faces="true", data-font="verdana", style="float: left;")
+      div(style="float: left;")
+        &nbsp;
+        a(href="https://twitter.com/share", class="twitter-share-button",
+          data-via="twitterapi", data-lang="ru") Tweet
+      div(class="clearfix")
 
   div.post
     h2 Комментарии

@@ -96,6 +96,11 @@ div.login-toplink {
     font-weight: bold;
 }
 
+a.black-icon-link {
+    color: #000;
+    text-decoration: none;
+}
+
 /* auth links */
 .h-list {
     margin: 0px;

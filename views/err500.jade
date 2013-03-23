@@ -4,7 +4,24 @@ block content
 
   div.post
     h2 500
-    div.p-header-sub Работают роботы.
+    div.p-header-sub Ой! Что-то сломалось. 
     br
     div.p-body
-      img(src='/img/404/' + err_id + '.jpg')
+      - if (err) {
+        pre #{err.stack}
+      - } else{
+        pre(style="text-align: center;")
+          i(class="icon-ambulance", style="font-size:40px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:50px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:60px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:70px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:60px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:50px;")
+          &nbsp;
+          i(class="icon-ambulance", style="font-size:40px;")
+      - }

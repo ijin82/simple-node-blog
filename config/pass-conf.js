@@ -1,4 +1,4 @@
-
+// init passport
 var passport = require('passport');
 
 /**
