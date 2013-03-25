@@ -287,11 +287,11 @@ exports.newComment = function(req, res)
                 // send email
                 var Email = require('email').Email
                 new Email(
-                  { from: "noreply@cocainum.info"
-                    , to:   "ilya.rogojin@gmail.com"
+                  { from: "noreply@host.com"
+                    , to:   "user@host.com"
                     , subject: "Новый комментарий #" + comment_id
                     , body: "Пользователь " + req.userInfo.name +
-                      " оставил новый комментарий в блоге: http://cocainum.info/post/" +
+                      " оставил новый комментарий в блоге: http://host.com/post/" +
                       post.blog_id + "/"
                   }).send(function(err){
                     // gag for errors
