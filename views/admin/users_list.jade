@@ -1,0 +1,60 @@
+extends ../layout
+
+block content
+
+  - var active_tab = {users: 'active'}
+  include sub_navi.jade
+
+  table.table.table-striped.table-hover
+    thead
+      th ID
+      th Имя на сайте
+      th Логин
+      th Роль
+      th.span1.text-center
+        i(class="icon-facebook-sign icon-2x")
+      th.span1.text-center
+        i(class="icon-twitter-sign icon-2x")
+      th.span1.text-center
+        i(class="icon-github icon-2x")
+      th.span1.text-center
+        &nbsp;
+    tbody
+    - each user in users
+      tr
+        td #{user.user_id}
+        td #{user.name}
+        td #{user.login || '-'}
+        td
+          div(class="btn-group")
+            a(class="btn btn-small dropdown-toggle", data-toggle="dropdown", href="#") #{user.role}
+              &nbsp;
+              span(class="caret")
+            ul(class="dropdown-menu")
+              li
+                a(href="#") admin
+              li
+                a(href="#") writer
+              li
+                a(href="#") user
+        td.text-center
+          - if (user.facebook_id) {
+              i(class="icon-star")
+          - } else {
+            -
+          - }
+        td.text-center
+          - if (user.twitter_id) {
+              i(class="icon-star")
+          - } else {
+              -
+          - }
+        td.text-center
+          - if (user.github_id) {
+              i(class="icon-star")
+          - } else {
+              -
+          - }
+        td.text-center
+          a(href="#", class="btn btn-danger")
+            i(class="icon-trash")
