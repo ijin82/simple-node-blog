@@ -1,100 +1,104 @@
 /**
  * decorator for mysql
  */
-
-var mysql = require('mysql');
-
-var conn = mysql.createConnection({
-    user: db_config.user,
-    password: db_config.pass,
-    host: db_config.host
-});
-
-conn.on('error', function(err) {
-  console.log('no callback error: ' + err);
-});
-
-conn.query("use " + db_config.name);
+var mysql = require('mysql'),
+    conn = mysql.createConnection(dbConfig);
 
 // standard query
 exports.q = function(sql, callee, next){
 
-  if (typeof(callee) != 'object' || !(callee instanceof Array))
-    callee_orig = [];
-  else
-    callee_orig = callee;
+  if (typeof(callee) != 'object' || !(callee instanceof Array)) {
+    calleeSend = [];
+  } else {
+    calleeSend = callee;
+  }
 
-  conn.query(sql, callee_orig, function(err, qres){
-
-    if (err) return next(err);
-
-    // check callback errors
-    try {
-      if (typeof(callee) == 'function')
-        callee(err, qres);
-      else if (typeof(next) == 'function')
-        next(err, qres);
-    } catch (err) {
-      return next(err);
+  conn.query(sql, calleeSend, function(err, qres){
+    if (err){
+      if (typeof(callee) == 'function') {
+        return callee(err);
+      } else if (typeof(next) == 'function') {
+        return next(err);
+      } else {
+        console.log('Uncaught DB error: ', err);
+        console.log('Uncaught error in query: ', sql);
+      }
     }
+
+    try {
+      if (typeof(callee) == 'function') {
+        callee(err, qres);
+      } else if (typeof(next) == 'function') {
+        next(err, qres);
+      }
+    } catch(e) {
+      next(e);
+    }
+
   });
-}
+};
 
 // get row
 exports.getRow = function(sql, callee, next){
 
-  if (typeof(callee) != 'object' || !(callee instanceof Array))
-    callee_orig = [];
-  else
-    callee_orig = callee;
+  if (typeof(callee) != 'object' || !(callee instanceof Array)) {
+    calleeSend = [];
+  } else {
+    calleeSend = callee;
+  }
 
-  conn.query(sql, callee_orig, function(err, res) {
-
-    if (!err) {
-      row = (res[0]) ? res[0]: false ;
-    } else {
-      row = false;
+  conn.query(sql, calleeSend, function(err, qres){
+    if (err){
+      if (typeof(callee) == 'function') {
+        return callee(err);
+      } else if (typeof(next) == 'function') {
+        return next(err);
+      } else {
+        console.log('Uncaught DB error: ', err);
+        console.log('Uncaught error in query: ', sql);
+      }
     }
 
-    // check callback errors
+    row = (qres[0]) ? qres[0]: false ;
+
     try {
-      if (typeof(callee) == 'function')
+      if (typeof(callee) == 'function') {
         callee(err, row);
-      else if (typeof(next) == 'function')
+      } else if (typeof(next) == 'function') {
         next(err, row);
-    } catch (err) {
-      return next(err);
+      }
+    } catch(e) {
+      next(e);
     }
+
   });
-}
+
+};
 
 // last insert id
 exports.lastId = function(next){
 
-  conn.query("SELECT LAST_INSERT_ID() as id", function sres(err, res){
-    if(err) return next(err);
+  conn.query("SELECT LAST_INSERT_ID() as id", function sres(err, qres){
+    var id = (qres[0].id) ? qres[0].id: false ;
 
-    var id = (res[0].id) ? res[0].id: false ;
     try {
       next(err, id);
     } catch (e) {
-      return next(err);
+      return next(e);
     }
 
   });
-}
+};
 
 // calc found rows
 exports.foundRows = function(next){
-  conn.query("select found_rows() as cnt", function(err, res){
-    if(err) return next(err);
-
-    var cnt = (res[0].cnt) ? res[0].cnt : false ;
+  conn.query("select found_rows() as cnt", function(err, qres){
+    var cnt = (qres[0].cnt) ? qres[0].cnt : false ;
 
     try {
       next(err, cnt);
     } catch (e) {
-      return next(err);
+      return next(e);
     }
   });
-}
+};

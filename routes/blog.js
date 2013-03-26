@@ -1,7 +1,6 @@
 /**
  * blog module
  */
-
 var counters = { tags:0 };
 
 // select all tags for selected post
@@ -139,40 +138,42 @@ exports.delComment = function(req, res, next)
 
     check(req.params.comment_id).is(/^[0-9]+$/);
     comment_id = req.params.comment_id;
-
   }catch(e){
 
-    res.redirect('back');
-    return;
+    comment_id = 0;
   }
 
   db.getRow("SELECT * \
-    FROM comments\
+    FROM comments \
     WHERE comment_id=?",
-    [comment_id],
-    function(err, comment){
+    [
+      comment_id
+    ], function(err, comment){
       if (err) return next(err);
 
       if(comment)
       {
         // if curren user is owner of comment or admin
-        if( comment.user_id == req.userInfo.user_id
-          || req.userInfo.role == 'admin')
+        if( comment.user_id == req.userInfo.user_id || req.userInfo.role == 'admin')
         {
           db.q("DELETE \
             FROM comments \
             WHERE comment_id=?",
             [
               comment_id
-            ]);
+            ], function(err, qres){
+              if (err) return next(err);
 
-          // count comments count for post, async
-          updateCommentsCount(comment.post_id);
+                // count comments count for post, async
+                updateCommentsCount(comment.post_id);
+                return res.redirect('back');
+          });
+        } else {
+          return res.redirect('back');
         }
+      } else {
+        return res.redirect('back');
       }
-
-      res.redirect('back');
-      return;
     });
 }
 
@@ -192,10 +193,7 @@ exports.blogPost = function(req, res, next)
         [post_id],
         function sres(err, post){
 
-          if (err) {
-            next(err);
-            return;
-          }
+          if (err) return next(err);
 
           // wrong page no posts
           if(!post) {
@@ -207,27 +205,27 @@ exports.blogPost = function(req, res, next)
 
           // post tags
           db.q("SELECT t.* \
-              FROM blog_tags bt \
-              INNER JOIN tags t ON t.tag_id=bt.tag_id \
-              WHERE bt.blog_id=?",
-              [
-                post.blog_id
-              ], function(err, tags) {
+            FROM blog_tags bt \
+            INNER JOIN tags t ON t.tag_id=bt.tag_id \
+            WHERE bt.blog_id=?",
+            [
+              post.blog_id
+            ], function(err, tags) {
+              if (err) return next(err);
+
+              getPostComments(post.blog_id, function(err, comments){
                 if (err) return next(err);
 
-                getPostComments(post.blog_id, function(err, comments){
-                  if (err) return next(err);
-
-                  // render post page
-                  res.render('blog_post',{
-                    title: post.header,
-                    post: post,
-                    host: req.headers.host,
-                    tags: tags,
-                    comments: comments
-                  });
+                // render post page
+                res.render('blog_post',{
+                  title: post.header,
+                  post: post,
+                  host: req.headers.host,
+                  tags: tags,
+                  comments: comments
                 });
-              }); // close post tags query
+              });
+            }); // close post tags query
         }); // close post db query
 }
 
@@ -265,8 +263,7 @@ exports.newComment = function(req, res)
       WHERE blog_id=?",
       [
         req.body.post_id
-      ],
-      function(err, post){
+      ], function(err, post){
         if (err) return next(err);
 
         if (post)
@@ -283,22 +280,26 @@ exports.newComment = function(req, res)
               // count commets count for post, async
               updateCommentsCount(post.blog_id);
 
-              db.lastId(function(comment_id){
+              db.lastId(function(err, commentId){
+                if (err) return next(err);
+
                 // send email
-                var Email = require('email').Email
-                new Email(
-                  { from: "noreply@cocainum.info"
-                    , to:   "ilya.rogojin@gmail.com"
-                    , subject: "Новый комментарий #" + comment_id
-                    , body: "Пользователь " + req.userInfo.name +
-                      " оставил новый комментарий в блоге: http://cocainum.info/post/" +
-                      post.blog_id + "/"
-                  }).send(function(err){
-                    // gag for errors
-                    console.log('cant send email now');
-                  });
-              });
-          });
+                if (appConfig.send_comment_notice && appConfig.comment_notice_email) {
+                  var Email = require('email').Email;
+                  new Email(
+                    { from: "noreply@" + req.headers.host,
+                      to: appConfig.comment_notice_email,
+                      subject: "Новый комментарий #" + commentId,
+                      body: "Пользователь " + req.userInfo.name +
+                        " оставил новый комментарий в блоге: http://" +
+                        req.headers.host+ "/post/" + post.blog_id + "/"
+                    }).send(function(err){
+                      // gag for errors
+                      console.log('cant send email now for comment #' + commentId);
+                    });
+                }
+              }); // last id
+          }); // get comments
         }
 
       });

@@ -9,20 +9,18 @@ block content
     input(type="hidden", name="post_id", value=post.blog_id)
     table.table.table-striped.table-hover
       tbody
-        tr
+        - var rowClass = (post.visible == 1)? '': 'warning';
+        tr(class=rowClass)
           td
             Видимость
           td
-            - if (post.visible == 1) {
-              i(class="icon-eye-open")
-              &nbsp;
-              a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini btn-danger") Сделать невидимым
-            - } else {
-              i(class="icon-eye-close")
-              &nbsp;
-              a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini") Сделать видимым
-            - }
-            a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10", target="_blank") Предпросмотр
+            - var linkTitle = (post.visible == 1)? 'Сделать невидимым': 'Сделать видимым';
+            - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
+            a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini", title=linkTitle)
+              i(class=linkIcon)
+            a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10",
+              target="_blank", title="Предпросмотр")
+              i(class="icon-arrow-right")
         tr
           td Теги
           td
@@ -45,6 +43,10 @@ block content
           td Дата создания
           td
             = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+        tr
+          td Обновить дату
+          td
+            input(type="checkbox", name="up_date", value="1")
         tr
           td &nbsp;
           td

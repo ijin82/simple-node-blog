@@ -7,7 +7,7 @@ module.exports = function(app)
   app.use(function(req, res, next) {
 
     // filter user comments here
-    res.locals.f_comment = function(str){
+    res.locals.filterComment = function(str){
 
       // encode all html
       str = sanitize(str).trim();
@@ -19,6 +19,21 @@ module.exports = function(app)
       str = str.replace(/\n/g,'<br />');
 
       return str;
+    };
+
+    // get App config value
+    res.locals.appConfig = function(key, defaultVal){
+
+      if (appConfig[key]) {
+
+        return appConfig[key];
+      } else if (defaultVal){
+
+        return defaultVal;
+      } else {
+
+        return null;
+      }
     };
 
     next();

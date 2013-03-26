@@ -1,9 +1,9 @@
 div#tags_line
-    - each tag in tags_line
-        if(tag_id && tag_id == tag.tag_id)
-            span.label.label-info.site-a-label
-              a.current(href="/tag/#{tag.tag_id}/") #{tag.tag_name}
-        else
-            span.label.site-a-label
-              a(href="/tag/#{tag.tag_id}/") #{tag.tag_name}
-    <div style="clear:both;"></div>
+  - each tag in tags_line
+    - if(tag_id && tag_id == tag.tag_id)
+      span.label.label-info.site-a-label
+        a.current(href="/tag/#{tag.tag_id}/") #{tag.tag_name}
+    - else
+      span.label.site-a-label
+        a(href="/tag/#{tag.tag_id}/") #{tag.tag_name}
+  div(class="clearfix")

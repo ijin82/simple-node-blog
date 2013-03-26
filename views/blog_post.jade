@@ -3,14 +3,19 @@ extends layout
 block content
 
   div.post
+    h2= post.header
 
-   h2
-     !{post.header}
+    ul(class="post-meta")
+     li
+       i(class="icon-calendar")
+       = dateformat(post.post_date,"dddd, d mmmm yyyy")
+     - if (post.comments_cnt > 0) {
+       li
+         span.label.label-success
+           + #{post.comments_cnt}
+     - }
 
-    span.label.m-b10
-      = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
-
-    div !{post.text}
+    div(class="m-t10") !{post.text}
 
     div
       - if (tags.length>0)
@@ -21,7 +26,7 @@ block content
         Теги: !{mytags}
 
     div.social
-      div(class="fb-like", data-send="true", data-layout="button_count", 
+      div(class="fb-like", data-send="true", data-layout="button_count",
         data-width="450", data-show-faces="true", data-font="verdana", style="float: left;")
       div(style="float: left;")
         &nbsp;
@@ -40,19 +45,21 @@ block content
             a(href="#"+comment.user_id) #{comment.name}
             &nbsp; / &nbsp;
             em
-              = dateformat(comment.pub_date,"yyyy.mm.dd HH:MM:ss")
+              = dateformat(comment.pub_date,"dddd, d mmmm yyyy, HH:MM")
             &nbsp; / &nbsp;
             b
               ##{comment.comment_id}
             if (comment.user_id == userInfo.user_id || userInfo.role == 'admin')
               &nbsp;&nbsp;
               span.label.label-important.site-a-label
-                a(href="/delcomment/" + comment.comment_id,
-                  class="no-dec",
+                a(href="#myModal",
+                  rel="/delcomment/" + comment.comment_id,
+                  class="no-dec del-comment",
                   title="Удалить комментарий",
-                  onclick="return confirm('Удалить комментарий?');") удалить
+                  data-toggle="modal") удалить
           div.comment-text
-            != f_comment(comment.text)
+            != filterComment(comment.text)
+
     div.comment-new-header Написать комментарий
     if (userInfo.auth == 1)
       form(method="post", action="/comment")
@@ -76,3 +83,19 @@ block content
           div.clear
 
   include includes/social.html
+
+  <!-- Modal -->
+  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
+      h3(id="myModalLabel") Требуется подтверждение
+    div(class="modal-body")
+      p Вы действительно хотите удалить комментарий?
+    div(class="modal-footer")
+      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
+      a(href="#", id="del-link", class="btn btn-danger") Удалить
+
+  script(type="text/javascript")
+    $(".del-comment").click(function(){
+      $("#del-link").prop('href', $(this).prop('rel'));
+    });

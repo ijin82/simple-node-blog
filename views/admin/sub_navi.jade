@@ -1,11 +1,34 @@
 ul(class="nav nav-tabs")
   li(class=active_tab.post_list)
-    a(href="/adm/posts/") Все записи
+    a(href="/adm/posts/")
+      i(class="icon-list-alt black-icon")
+      &nbsp;Все записи
+
   li(class=active_tab.tags_list)
-    a(href="/adm/tags/") Теги
-  li(class=active_tab.images_list)
-    a(href="/adm/users/") Пользователи
+    a(href="/adm/tags/")
+      i(class="icon-tags black-icon")
+      &nbsp;Теги
+
+  li(class=active_tab.users)
+    a(href="/adm/users/")
+      i(class="icon-user black-icon")
+      &nbsp;Пользователи
+
+  li(class=active_tab.settings)
+    a(href="/adm/settings/")
+      i(class="icon-cog black-icon")
+      &nbsp;Настройки
+
   - if (active_tab.edit_post == 'active') {
   li(class="active")
-    a(href="#") Редактирование записи
+    a(href="#")
+      i(class="icon-edit black-icon")
+      &nbsp;Редактирование записи
+  - }
+
+  - if (active_tab.edit_param == 'active') {
+  li(class="active")
+    a(href="#")
+      i(class="icon-edit black-icon")
+      &nbsp;Редактирование настройки
   - }

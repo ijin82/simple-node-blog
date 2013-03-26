@@ -8,24 +8,28 @@ block content
 
     - each post in posts
         div.post
-            h1
-              <a href="/post/#{post.blog_id}/" title="открыть потс">#{post.header}</a>
+          h1
+            a(href="/post/#{post.blog_id}/", title="Открыть") #{post.header}
 
-            span.label.m-b10
-              = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
-            if (post.comments_cnt > 0)
-              span.label.label-success.m-l10
-                + #{post.comments_cnt}
+          ul(class="post-meta")
+            li
+              i(class="icon-calendar")
+              = dateformat(post.post_date,"dddd, d mmmm yyyy")
+            - if (post.comments_cnt > 0) {
+              li
+                span.label.label-success
+                  + #{post.comments_cnt}
+            - }
 
-            div
-              !{post.text}
+          div(class="m-t10")
+            !{post.text}
 
-            div
-            - if (post.tags.length>0)
-                - mytags = []
-                - each tag, i in post.tags
-                    - mytags.push('<a href="/tag/' + tag.tag_id + '/">' + tag.tag_name + '</a>')
-                - mytags = mytags.join(', ')
-                Теги: !{mytags}
+          div
+          - if (post.tags.length>0)
+              - mytags = []
+              - each tag, i in post.tags
+                  - mytags.push('<a href="/tag/' + tag.tag_id + '/">' + tag.tag_name + '</a>')
+              - mytags = mytags.join(', ')
+              Теги: !{mytags}
 
     include pager

@@ -45,11 +45,14 @@ h1 a:hover {
 
 .m-b10 {
     margin-bottom: 10px;
-    clear: both;
 }
 
 .m-l10 {
     margin-left: 10px;
+}
+
+.m-t10 {
+    margin-top: 10px;
 }
 
 .m-r10 {
@@ -100,6 +103,32 @@ a.black-icon-link {
     color: #000;
     text-decoration: none;
 }
+
+a i.black-icon {
+    color: #000;
+    text-decoration: none;
+}
+
+.post-meta {
+    list-style: none;
+    margin: 0px 0px 0px 0px;
+    color: #999999;
+}
+
+.post-meta li {
+    display: inline;
+    padding-right: 10px;
+}
+
+.post-meta li i {
+    font-size: 18px;
+}
+
+td.text-center,
+th.text-center {
+    text-align: center;
+}
+
 
 /* auth links */
 .h-list {

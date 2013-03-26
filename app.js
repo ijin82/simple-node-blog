@@ -5,17 +5,29 @@ var express = require('express')
   , path = require('path');
 
 // global vars
-db_config = require('./config/db_config')
-  , db = require('./libs/db')
-  , check = require('validator').check
-  , dateformat = require('dateformat');
+  dbConfig = require("./config/dbConfig"),
+  db = require('./libs/db'),
+  check = require('validator').check,
+  dateformat = require('dateformat');
+
+// rus lang for dateformat
+dateformat.i18n = {
+  dayNames: [
+    "Вск", "Пон", "Вт", "Ср", "Чт", "Пт", "Сб",
+    "Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"
+  ],
+  monthNames: [
+    "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек",
+    "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
+  ]
+};
 
 // helpers
 require('./libs/helpers')(app);
 
 // main config area
 app.configure(function(){
-
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   app.set('port', 3434);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
@@ -30,7 +42,7 @@ app.configure(function(){
   // sessions mysql store
   var MySQLSessionStore = require('connect-mysql-session')(express);
   app.use(express.session({
-    store: new MySQLSessionStore(db_config.name, db_config.user, db_config.pass, {
+    store: new MySQLSessionStore(dbConfig.database, dbConfig.user, dbConfig.password, {
         defaultExpiration: 5*60*60*24*1000, // 5 days
         logging: false // log to console switch
     }),
@@ -51,6 +63,7 @@ app.configure(function(){
 
   // error 404 (just last available route)
   app.use(function(req, res, next){
+
     res.status(404).render('err404', { // error http code 404
       title: 'ouch.. 404 error',
       err_id: Math.floor((Math.random() * 12) + 1) // random 1 to 12
@@ -59,36 +72,50 @@ app.configure(function(){
 
 });
 
-// handing 500 error
-
 app.configure('development', function(){
-  // error 500
   app.use(function(err, req, res, next) {
+
     res.status(500).render('err500', {
-      title: 'ouch.. 500 error',
+      title: 'ouch.. 500 error [dev]',
       err: err
     });
   });
-});
+})
 
 app.configure('production', function(){
-  // error 500
   app.use(function(err, req, res, next) {
+
     res.status(500).render('err500', {
       title: 'ouch.. 500 error',
       err: ''
     });
   });
-});
+})
 
-// user module
+// load global app config
+var settings = require('./routes/admin/settings');
+
+// global config here
+appConfig = {};
+settings.getConf(function(err){
+  if (err) throw err;
+}); // loaded config
+
+// user module (have to be first loaded)
 require('./routes/user-routes')(app, require('./routes/user'));
+
+// admin settings module
+require('./routes/admin/settings-routes')(app, settings);
+
 // blog module
 require('./routes/blog-routes')(app, require('./routes/blog'));
-// admin module
-require('./routes/admin-routes')(app, require('./routes/admin'));
+
+// admin BASE module (main routing check)
+require('./routes/admin/admin-routes')(app, require('./routes/admin/admin'));
+// admin users module
+require('./routes/admin/users-routes')(app, require('./routes/admin/users'));
 
 // start http server here
 http.createServer(app).listen(app.get('port'), function(){
-    console.log(" -- simple node blog listening on port " + app.get('port') + " -- ");
+  console.log("-- simple node blog listening on port " + app.get('port') + " --");
 });

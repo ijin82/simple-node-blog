@@ -5,35 +5,33 @@ block content
   - var active_tab = {post_list: 'active'}
   include sub_navi.jade
 
-  - if (tag.tag_id) {
-    h4 Выборка по тегу: #{tag.tag_name}
-  - }
+  include tags_line.jade
 
   table.table.table-striped.table-hover
     thead
       th Дата
-      th
+      th(colspan="3")
         Запись
         a(href="/adm/post-new/", class="btn btn-mini pull-right") Добавить запись
-      th &nbsp;
-      th &nbsp;
     tbody
     - each post in posts
       - if (post.visible == 1) { trClass = ''} else {trClass = 'warning'}
       tr(class=trClass)
         td.span3
-          = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
+          ul(class="post-meta")
+            li
+              i(class="icon-calendar")
+              = dateformat(post.post_date,"dd.mm.yyyy hh:mm:ss")
         td
           a(href="/adm/edit-post/#{post.blog_id}/", title="Редактировать") #{post.header || '- нет -'}
           &nbsp;
-          a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10", target="_blank") Предпросмотр
+          a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success pull-right", target="_blank", title="Предпросмотр")
+            i(class="icon-arrow-right")
         td
-          a(href="/adm/post-visible/#{post.blog_id}", class="black-icon-link")
-            - if (post.visible == 1) {
-                i(class="icon-eye-open")
-            - } else {
-                i(class="icon-eye-close")
-            - }
+          - var linkTitle = (post.visible == 1)? 'Сделать невидимым': 'Сделать видимым';
+          - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
+          a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini", title=linkTitle)
+            i(class=linkIcon)
         td
           - if (post.comments_cnt > 0)
             span.label.label-success.m-l10

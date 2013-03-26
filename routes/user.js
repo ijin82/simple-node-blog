@@ -43,7 +43,7 @@ exports.set_user = function(req, next){
     twitter: 'twitter_id',
     github: 'github_id'
   };
-console.log(req.session.auth_type);
+
   switch (req.session.auth_type)
   {
     case 'local': // local auth
@@ -55,7 +55,7 @@ console.log(req.session.auth_type);
         ],
         function(err, user){
           if (err) return next(err);
-console.log(user, '-------------------');
+
           // save userinfo
           req.session.userInfo = user;
           next();
