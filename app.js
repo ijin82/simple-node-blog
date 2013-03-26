@@ -28,7 +28,7 @@ require('./libs/helpers')(app);
 // main config area
 app.configure(function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  app.set('port', 3434);
+  app.set('port', 3737);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon(__dirname + '/public/favicon.ico'));
