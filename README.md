@@ -10,6 +10,10 @@ This is learninig example app for newbies in node, here we look at:
 - passport
 - bootstrap usage examples
 
+Demo version
+-- 
+http://demo.cocainum.info/
+
 Included externals
 --
 - bootstrap v2.3.1
