@@ -25,7 +25,7 @@ Install
 3. git clone https://github.com/ijin82/simple-node-blog.git .
 4. mysql -u root -p -- Create database db_name
 5. mysql -u root -p db_name < sql/simple_node_blog.sql
-6. vim libs/db_config.js -- to correct your db access
+6. vim config/dbConfig.js -- to correct your db access
 7. npm install
 8. node app.js 
 9. for passport auth usage change access params at config/ folder

@@ -284,6 +284,7 @@ exports.newComment = function(req, res)
                 if (err) return next(err);
 
                 // send email
+
                 if (appConfig.send_comment_notice && appConfig.comment_notice_email) {
                   var Email = require('email').Email;
                   new Email(
