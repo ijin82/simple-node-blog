@@ -34,6 +34,12 @@ Install
 8. node app.js 
 9. for passport auth usage change access params at config/ folder
 
+Debug
+--
+- Use <a href="https://npmjs.org/package/nodemon">nodemon</a> for debug, it is comfortable
+- npm -g install nodemon
+- nodemon app.js
+
 Access params
 --
 admin:admin
