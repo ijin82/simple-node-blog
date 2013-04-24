@@ -17,7 +17,7 @@ http://demo.cocainum.info/
 Included externals
 --
 - bootstrap v2.3.1
-- jquery v1.9.1
+- jquery v2.0.0
 - highlight.js 7.3
 - Font Awesome 3.0
 
@@ -38,7 +38,7 @@ Access params
 --
 admin:admin
 
-Pasword is in users.pass field, a simple md5 hash so you can easy change it.
+Pasword is in users.pass field, a simple md5 hash so you can change it easily.
 
 Language of interface
 --
