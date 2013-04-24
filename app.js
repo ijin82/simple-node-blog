@@ -104,9 +104,6 @@ settings.getConf(function(err){
 // user module (have to be first loaded)
 require('./routes/user-routes')(app, require('./routes/user'));
 
-// admin settings module
-require('./routes/admin/settings-routes')(app, settings);
-
 // blog module
 require('./routes/blog-routes')(app, require('./routes/blog'));
 
@@ -114,6 +111,8 @@ require('./routes/blog-routes')(app, require('./routes/blog'));
 require('./routes/admin/admin-routes')(app, require('./routes/admin/admin'));
 // admin users module
 require('./routes/admin/users-routes')(app, require('./routes/admin/users'));
+// admin settings module
+require('./routes/admin/settings-routes')(app, settings);
 
 // start http server here
 http.createServer(app).listen(app.get('port'), function(){
