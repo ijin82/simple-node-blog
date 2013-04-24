@@ -1,3 +1,4 @@
+[![Dependency Status](https://gemnasium.com/ijin82/simple-node-blog.png)](https://gemnasium.com/ijin82/simple-node-blog)
 simple-node-blog
 --
 Simple blog based on node.js + express.js + jade + mysql
