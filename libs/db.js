@@ -2,7 +2,7 @@
  * decorator for mysql
  */
 var mysql = require('mysql'),
-    conn = mysql.createConnection(dbConfig);
+    conn = mysql.createClient(dbConfig);
 
 // standard query
 exports.q = function(sql, callee, next){

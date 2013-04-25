@@ -34,7 +34,7 @@ html
 
           h2
             a(href='/')
-              != appConfig('blog_name', 'simple node blog');
+              != appConfig('blog_name', 'simple node blog')
 
       div.container
         block content
@@ -49,7 +49,7 @@ html
         span.label.label-info.site-a-label.label-inline
           a(href="/full-list/") Все записи
 
-    != appConfig('counter_code', '<!-- counter_code -->');
+    != appConfig('counter_code', '<!-- counter_code -->')
 
     script(type="text/javascript")
       $('pre.code').each(function(i, e) {hljs.highlightBlock(e)});
