@@ -1,14 +1,15 @@
+[![Dependency Status](https://gemnasium.com/ijin82/simple-node-blog.png)](https://gemnasium.com/ijin82/simple-node-blog)
 simple-node-blog
 --
 Simple blog based on node.js + express.js + jade + mysql
 
 This is learninig example app for newbies in node, here we look at:
-- work with mysql
-- work with jade
-- closer look at express.js
-- Sessions
-- passport
-- bootstrap usage examples
+- work with <a href="https://npmjs.org/package/mysql">mysql</a>
+- work with <a href="https://github.com/visionmedia/jade">jade</a>
+- closer look at <a href="https://github.com/visionmedia/express">express</a>
+- <a href="https://github.com/CarnegieLearning/connect-mysql-session">Sessions</a>
+- <a href="https://github.com/jaredhanson/passport">passport</a>
+- <a href="http://twitter.github.io/bootstrap/">bootstrap</a> usage examples
 
 Demo version
 -- 
@@ -17,7 +18,7 @@ http://demo.cocainum.info/
 Included externals
 --
 - bootstrap v2.3.1
-- jquery v1.9.1
+- jquery v2.0.0
 - highlight.js 7.3
 - Font Awesome 3.0
 
@@ -34,11 +35,17 @@ Install
 8. node app.js 
 9. for passport auth usage change access params at config/ folder
 
+Debug
+--
+- Use <a href="https://npmjs.org/package/nodemon">nodemon</a> for debug, it is comfortable
+- npm -g install nodemon
+- nodemon app.js
+
 Access params
 --
 admin:admin
 
-Pasword is in users.pass field, a simple md5 hash so you can easy change it.
+Pasword is in users.pass field, a simple md5 hash so you can change it easily.
 
 Language of interface
 --
