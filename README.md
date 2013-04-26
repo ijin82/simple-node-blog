@@ -45,7 +45,7 @@ Access params
 --
 admin:admin
 
-Pasword is in users.pass field, a simple md5 hash so you can change it easily.
+Pasword is in users.pass field, a simple md5 hash so you can easily change it.
 
 Language of interface
 --
@@ -54,7 +54,7 @@ But it's simple!
 
 Planned
 --
-1. User personal info correction (profile)
-2. Social connections merge on the current user account (from profile)
-3. Multi-authors? or smth like this.
+1. Extend user profile (login, pass change, info)
+2. Roles changing
+3. Social blog mode (seemed to be in far far glorious future)
 
