@@ -17,6 +17,7 @@ body {
 #push,
 #footer {
     height: 40px;
+    margin-top:10px;
 }
 
 #footer {
@@ -111,7 +112,7 @@ a i.black-icon {
 
 .post-meta {
     list-style: none;
-    margin: 0px 0px 0px 0px;
+    margin: 0px;
     color: #999999;
 }
 
@@ -129,30 +130,30 @@ th.text-center {
     text-align: center;
 }
 
-
 /* auth links */
+.social-icon-link {
+    color: #999;
+}
+.social-icon-link:hover {
+    text-decoration: none;
+}
+
 .h-list {
-    margin: 0px;
+    list-style: none;
 }
-.h-list li{
-    margin: 2px;
-    padding: 0px;
-    float:left;
-    list-style-type: none;
-}
-.h-list li a{
-    margin: 0px;
-    display: block;
-    width: 100%;
-    height: 100%;
+.h-list a i {
+    line-height: 16px;
+    margin: 0px 5px 0px 0px;
+    height:22px;
+    vertical-align: bottom;
 }
 
-.sp-big-facebook{ background: url(/img/sp-big.png) 0 0; width: 128px; height: 128px; }
-.sp-big-github{ background: url(/img/sp-big.png) -129px 0; width: 128px; height: 128px; }
-.sp-big-google{ background: url(/img/sp-big.png) -258px 0; width: 128px; height: 128px; }
-.sp-big-twitter{ background: url(/img/sp-big.png) -387px 0; width: 128px; height: 128px; }
+/* social connect */
+.icon-social-active {
+    color: #08c;
+}
 
-.sp-med-facebook{ background: url(/img/sp-med.png) 0 0; width: 64px; height: 64px; }
-.sp-med-github{ background: url(/img/sp-med.png) -65px 0; width: 64px; height: 64px; }
-.sp-med-google{ background: url(/img/sp-med.png) -130px 0; width: 64px; height: 64px; }
-.sp-med-twitter{ background: url(/img/sp-med.png) -195px 0; width: 64px; height: 64px; }
+.sign-social:hover {
+    text-decoration: none;
+    color: #666;
+}

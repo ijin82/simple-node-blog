@@ -1,8 +1,9 @@
 // local vars
-var express = require('express')
-  , app = express()
-  , http = require('http')
-  , path = require('path');
+var express = require('express'),
+    app = express(),
+    http = require('http'),
+    path = require('path'),
+    flash = require('connect-flash');
 
 // global vars
   dbConfig = require("./config/dbConfig"),
@@ -37,7 +38,7 @@ app.configure(function(){
   app.use(express.methodOverride());
 
   // init session
-  app.use(express.cookieParser('lalalekndfldsaknflsdfsdf'));
+  app.use(express.cookieParser('sdfsdfafq32r4q32rfadsv34r52!@#dsfrg'));
 
   // sessions mysql store
   var MySQLSessionStore = require('connect-mysql-session')(express);
@@ -46,7 +47,8 @@ app.configure(function(){
         defaultExpiration: 5*60*60*24*1000, // 5 days
         logging: false // log to console switch
     }),
-    secret: 'adsfjah;f~~~afiuailfasiludfgliadgsfib 2348o134t8734t5rqwdekfanfw'}));
+    secret: 'adsfjah;fdfgliadgsfib 2348o134t8734t5rqwdekfanfw'}));
+  app.use(flash());
 
   // passport init & conf have to be here
   require('./config/pass-conf')(app);
@@ -76,7 +78,7 @@ app.configure('development', function(){
   app.use(function(err, req, res, next) {
 
     res.status(500).render('err500', {
-      title: 'ouch.. 500 error [dev]',
+      title: 'ouch.. 500 [dev]',
       err: err
     });
   });
@@ -86,7 +88,7 @@ app.configure('production', function(){
   app.use(function(err, req, res, next) {
 
     res.status(500).render('err500', {
-      title: 'ouch.. 500 error',
+      title: 'ouch.. 500',
       err: ''
     });
   });
@@ -113,6 +115,11 @@ require('./routes/admin/admin-routes')(app, require('./routes/admin/admin'));
 require('./routes/admin/users-routes')(app, require('./routes/admin/users'));
 // admin settings module
 require('./routes/admin/settings-routes')(app, settings);
+// user zone
+require('./routes/my-routes')(app, require('./routes/my'));
+
+// sitemap
+require('./routes/sitemap-routes')(app, require('./routes/sitemap'));
 
 // start http server here
 http.createServer(app).listen(app.get('port'), function(){

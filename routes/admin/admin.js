@@ -48,7 +48,7 @@ exports.postsList = function(req, res, next)
         if (err) return next(err);
 
         res.render('admin/posts_list', {
-          title: 'cocainum posts list',
+          title: 'posts list',
           posts: qres,
           tag_id: tag_id,
           tags_line: tags
@@ -63,7 +63,7 @@ exports.tagsList = function(req, res, next)
     if (err) return next(err);
 
     res.render('admin/tags_list', {
-      title: 'cocainum tags list',
+      title: 'tags list',
       tags: tags
     });
   });
@@ -107,7 +107,7 @@ exports.editPost = function(req, res, next)
           if (err) return next(err);
 
           res.render('admin/edit_post', {
-            title: 'cocainum edit post',
+            title: 'edit post',
             post: post,
             tags: tags
           });

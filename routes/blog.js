@@ -99,7 +99,6 @@ exports.blogList = function(req, res, next)
                     if(counters.tags == 0)
                     {
                         res.render('blog_list', {
-                            title: 'cocainum shoo shooo',
                             posts: qres ,
                             pager_cnt: cnt, // total posts quant
                             pager_size: page_size, // page size, posts on page
@@ -218,7 +217,7 @@ exports.blogPost = function(req, res, next)
 
                 // render post page
                 res.render('blog_post',{
-                  title: post.header,
+                  fullTitle: post.header,
                   post: post,
                   host: req.headers.host,
                   tags: tags,
@@ -284,7 +283,6 @@ exports.newComment = function(req, res)
                 if (err) return next(err);
 
                 // send email
-
                 if (appConfig.send_comment_notice && appConfig.comment_notice_email) {
                   var Email = require('email').Email;
                   new Email(
@@ -319,16 +317,34 @@ exports.newComment = function(req, res)
 
 exports.blogPostsList = function(req, res, next)
 {
-    db.q("SELECT b.*\
-        FROM blog  b\
-        WHERE b.visible=1 \
-        ORDER BY b.blog_id DESC",
-        function(err, qres) {
-          if (err) return next(err);
+  // tag id
+  try{
+    check(req.params.tag_id).is(/^[0-9]+$/);
+    tag_id=req.params.tag_id;
 
-          res.render('blog_posts_list', {
-              title: 'cocainum full list of notes',
-              posts: qres
-          });
+  }catch(e){
+    tag_id=0;
+  }
+
+  if (tag_id != 0)
+    searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
+  else
+    searchByTag = "";
+
+  db.q("SELECT b.* \
+      FROM blog  b \
+      " + searchByTag + " \
+      WHERE b.visible=1 \
+      ORDER BY b.blog_id DESC",
+      function(err, qres) {
+        if (err) return next(err);
+
+        res.render('blog_posts_list', {
+            title: 'full list of notes',
+            posts: qres,
+            tags_line: req.tags_line,
+            tags_line_link: 'full-list',
+            tag_id: tag_id
         });
+      });
 }

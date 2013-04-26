@@ -13,7 +13,7 @@ module.exports = function(app, blog)
   app.get('/post/:post_id', blog.blogPost);
 
   // full posts listing
-  app.get('/full-list', blog.blogPostsList);
+  app.get('/full-list/:tag_id?', blog.tagsLine, blog.blogPostsList);
 
   // add comment
   app.post('/comment', blog.newComment);

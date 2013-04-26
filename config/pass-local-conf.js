@@ -21,8 +21,9 @@ module.exports = function(app)
             ], function(err, user){
               if (err) return next(err);
 
-              if(!user)
+              if(!user) {
                 next(null, false);
+              }
 
               return next(null, user);
           });
@@ -31,9 +32,9 @@ module.exports = function(app)
 
     // local auth routes here
     app.post('/auth/local',
-        passport.authenticate('local', { failureRedirect: '/login' }),
+        passport.authenticate('local', { failureRedirect: '/login', failureFlash: 'passport-error' }),
         function(req, res) {
-          req.session.cocainum_auth = 1;
+          req.session.sys_auth = 1;
           req.session.auth_type = 'local';
           // set user params
           require('../routes/user').set_user(req, function(){

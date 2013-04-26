@@ -1,0 +1,82 @@
+extends layout
+
+block content
+
+  div
+    div(style="padding: 8% 15%")
+      form(method="post", class="form-horizontal", action="/my/saveProfile",)
+        div.control-group
+          div.controls
+            strong Привет, #{userInfo.name}!
+        div.control-group
+          label(class="control-label", for="inName") Ваше имя на сайте
+          div.controls
+            input(type="text", value=userInfo.name, name="name", id="inName")
+        div.control-group
+          div.controls
+            button(type="submit", class="btn btn-primary") Сохранить
+
+        div.control-group
+          label(class="control-label") Вход через Facebook
+          div.controls
+            - if (userInfo.facebook_id) {
+                i(class="icon-facebook-sign icon-2x icon-social-active", title="Вкл")
+                a(href="/auth-off/facebook_id", class="sign-social m-l10 black-icon-link", title="Отвязать")
+                  i(class="icon-minus-sign icon-2x")
+            - } else {
+                i(class="icon-facebook-sign icon-2x", title="Выкл")
+                a(href="/auth/facebook", class="sign-social m-l10", title="Привязать")
+                  i(class="icon-plus-sign icon-2x")
+            - }
+        div.control-group
+          label(class="control-label") Вход через Twitter
+          div.controls
+            - if (userInfo.twitter_id) {
+              i(class="icon-twitter-sign icon-2x icon-social-active", title="Вкл")
+              a(href="/auth-off/twitter_id", class="sign-social m-l10 black-icon-link", title="Отвязать")
+                i(class="icon-minus-sign icon-2x")
+            - } else {
+              i(class="icon-twitter-sign icon-2x", title="Выкл")
+              a(href="/auth/twitter", class="sign-social m-l10", title="Привязать")
+                i(class="icon-plus-sign icon-2x")
+            - }
+        div.control-group
+          label(class="control-label") Вход через Github
+          div.controls
+            - if (userInfo.github_id) {
+              i(class="icon-github icon-2x icon-social-active", title="Вкл")
+              a(href="/auth-off/github_id", class="sign-social m-l10 black-icon-link", title="Отвязать")
+                i(class="icon-minus-sign icon-2x")
+            - } else {
+              i(class="icon-github icon-2x", title="Выкл")
+              a(href="/auth/github", class="sign-social m-l10", title="Привязать")
+                i(class="icon-plus-sign icon-2x")
+            - }
+        - each m in msg
+            - if (m == 'link_add')
+                div.control-group
+                  div.controls
+                    label(class="label label-success") Добавлена привязка
+            - if (m == 'link_remove')
+                div.control-group
+                  div.controls
+                    label(class="label label-success") Привязка удалена
+            - if (m == 'name_saved')
+                div.control-group
+                  div.controls
+                    label(class="label label-success") Имя пользователя сохранено
+
+        - each w in warn
+            - if (w == 'empty_name')
+              div.control-group
+                div.controls
+                  label(class="label label-important") Имя не может быть пустым
+            - if (w == 'wrong_name')
+              div.control-group
+                div.controls
+                  label(class="label label-important") Имя может состоять из символов "a-z0-9а-я _-"
+
+
+      div.clearfix
+
+

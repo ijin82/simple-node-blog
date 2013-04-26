@@ -5,7 +5,7 @@ exports.usersList = function(req, res, next)
     ORDER BY `name`",
     function(err, qres){
       res.render('admin/users_list', {
-        title: 'cocainum users list',
+        title: 'users list',
         users: qres
       });
     });

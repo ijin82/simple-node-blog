@@ -6,7 +6,7 @@ exports.settingsList = function(req, res, next)
       if (err) return next(err);
 
       res.render('admin/settings_list', {
-        title: 'cocainum settings list',
+        title: 'settings list',
         settings: qres
       });
   });
@@ -34,7 +34,7 @@ exports.editParamm = function(req, res, next)
       }
 
       res.render('admin/edit_param', {
-        title: 'cocainum edit param',
+        title: 'edit param',
         setParam: row
       });
     });
@@ -164,8 +164,6 @@ exports.addParamm = function(req, res, next)
   if (typeof req.body.type == 'undefined') {
     return res.redirect('/');
   }
-
-  console.log(req.body.type);
 
   db.q("INSERT settings \
     SET `type`=?",

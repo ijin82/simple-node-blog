@@ -11,4 +11,7 @@ module.exports = function(app, user)
     req.session.destroy();
     res.redirect('back');
   });
+
+  // remove social attach
+  app.get('/auth-off/:social_type', user.authOff);
 }

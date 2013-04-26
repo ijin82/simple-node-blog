@@ -60,7 +60,7 @@ block content
           div.comment-text
             != filterComment(comment.text)
 
-    div.comment-new-header Написать комментарий
+    h4 Написать комментарий
     if (userInfo.auth == 1)
       form(method="post", action="/comment")
         input(type="hidden", name="post_id", value=post.blog_id)
@@ -68,19 +68,16 @@ block content
         br
         button(type="submit", class="btn") Комментировать
     else
-      p
+      div.p-t10
         Чтобы оставить комментарий, нужно пройти авторизацию
-        ul.h-list
-          li(class="sp-med-facebook")
-            a(href="/auth/facebook", title="facebook")
-          li(class="sp-med-twitter")
-            a(href="/auth/twitter", title="twitter")
-          li(class="sp-med-github")
-            a(href="/auth/github", title="github")
-          //-
-            li(class="sp-med-google")
-            a(href="/auth/google", title="google")
-          div.clear
+        div.m-b10
+        span.h-list
+          a(href="/auth/facebook", title="facebook", class="social-icon-link")
+            i(class="icon-facebook-sign icon-2x")
+          a(href="/auth/twitter", title="twitter", class="social-icon-link")
+            i(class="icon-twitter-sign icon-2x")
+          a(href="/auth/github", title="github", class="social-icon-link")
+            i(class="icon-github icon-2x")
 
   include includes/social.html
 
