@@ -11,15 +11,15 @@ module.exports = function(app)
     // dev & production settings
     // .bashrc -> export NODE_ENV=development
     app.configure('development', function(){
-        app.set('FACEBOOK_APP_ID', 'key');
-        app.set('FACEBOOK_APP_SECRET', 'key');
+        app.set('FACEBOOK_APP_ID', '-key-');
+        app.set('FACEBOOK_APP_SECRET', '-key-');
         app.set('FACEBOOK_CALLBACK_URL', 'http://127.0.0.1:3434/auth/facebook/callback');
     });
 
     // .bashrc -> export NODE_ENV=production
     app.configure('production', function(){
-        app.set('FACEBOOK_APP_ID', 'key');
-        app.set('FACEBOOK_APP_SECRET', 'key');
+        app.set('FACEBOOK_APP_ID', '-key-');
+        app.set('FACEBOOK_APP_SECRET', '-key-');
         app.set('FACEBOOK_CALLBACK_URL', 'http://host.com/auth/facebook/callback');
     });
 
@@ -56,7 +56,7 @@ module.exports = function(app)
     app.get('/auth/facebook/callback',
         passport.authenticate('facebook', { failureRedirect: '/login' }),
         function(req, res) {
-            req.session.cocainum_auth = 1;
+            req.session.sys_auth = 1;
             req.session.auth_type = 'facebook';
             // set user params
             require('../routes/user').set_user(req, function(){

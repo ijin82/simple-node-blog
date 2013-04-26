@@ -8,8 +8,8 @@ var passport = require('passport')
  */
 module.exports = function(app)
 {
-    app.set('TWITTER_APP_ID', 'key');
-    app.set('TWITTER_APP_SECRET', 'key');
+    app.set('TWITTER_APP_ID', '-key-');
+    app.set('TWITTER_APP_SECRET', '-key-');
 
     // dev & production settings
     // .bashrc -> export NODE_ENV=development
@@ -56,7 +56,7 @@ module.exports = function(app)
     app.get('/auth/twitter/callback',
         passport.authenticate('twitter', { failureRedirect: '/login' }),
         function(req, res) {
-            req.session.cocainum_auth = 1;
+            req.session.sys_auth = 1;
             req.session.auth_type = 'twitter';
             // set user params
             require('../routes/user').set_user(req, function(){
