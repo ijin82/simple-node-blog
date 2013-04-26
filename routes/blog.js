@@ -19,7 +19,7 @@ function getBlogTags(blog_id, pKey, next)
         if (err) return next(err);
 
         counters.tags--;
-        next(tags, pKey);
+        next(err, tags, pKey);
       }); // close post tags query
 }
 
@@ -92,21 +92,23 @@ exports.blogList = function(req, res, next)
 
             for(i in qres)
             {
-                getBlogTags(qres[i].blog_id, i, function(tags, pKey){
-                    qres[pKey].tags = tags;
+                getBlogTags(qres[i].blog_id, i, function(err, tags, pKey){
+                  if (err) return next(err);
 
-                    // render blog page
-                    if(counters.tags == 0)
-                    {
-                        res.render('blog_list', {
-                            posts: qres ,
-                            pager_cnt: cnt, // total posts quant
-                            pager_size: page_size, // page size, posts on page
-                            pager_current: page_id, // current page
-                            tag_id: tag_id, // current tag
-                            tags_line: req.tags_line // all tags array
-                        });
-                    }
+                  qres[pKey].tags = tags;
+
+                  // render blog page
+                  if(counters.tags == 0)
+                  {
+                      res.render('blog_list', {
+                          posts: qres ,
+                          pager_cnt: cnt, // total posts quant
+                          pager_size: page_size, // page size, posts on page
+                          pager_current: page_id, // current page
+                          tag_id: tag_id, // current tag
+                          tags_line: req.tags_line // all tags array
+                      });
+                  }
                 });
             }
         });

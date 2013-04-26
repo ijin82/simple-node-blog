@@ -8,21 +8,6 @@ var passport = require('passport')
  */
 module.exports = function(app)
 {
-    // dev & production settings
-    // .bashrc -> export NODE_ENV=development
-    app.configure('development', function(){
-        app.set('FACEBOOK_APP_ID', '-key-');
-        app.set('FACEBOOK_APP_SECRET', '-key-');
-        app.set('FACEBOOK_CALLBACK_URL', 'http://127.0.0.1:3434/auth/facebook/callback');
-    });
-
-    // .bashrc -> export NODE_ENV=production
-    app.configure('production', function(){
-        app.set('FACEBOOK_APP_ID', '-key-');
-        app.set('FACEBOOK_APP_SECRET', '-key-');
-        app.set('FACEBOOK_CALLBACK_URL', 'http://host.com/auth/facebook/callback');
-    });
-
     // passport-facebook
     passport.use(new FacebookStrategy({
             clientID: app.get('FACEBOOK_APP_ID'),
@@ -46,11 +31,7 @@ module.exports = function(app)
 
     // facebook auth
     app.get('/auth/facebook',
-        passport.authenticate('facebook'),
-        function(req, res){
-            // The request will be redirected to Facebook for authentication, so this
-            // function will not be called.
-        });
+        passport.authenticate('facebook'));
 
     // GET /auth/facebook/callback
     app.get('/auth/facebook/callback',
@@ -59,7 +40,7 @@ module.exports = function(app)
             req.session.sys_auth = 1;
             req.session.auth_type = 'facebook';
             // set user params
-            require('../routes/user').set_user(req, function(){
+            require('../routes/auth').set_user(req, function(){
 
               if(req.cookies.back_after_auth)
                 res.redirect(req.cookies.back_after_auth);

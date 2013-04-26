@@ -28,8 +28,15 @@ require('./libs/helpers')(app);
 
 // main config area
 app.configure(function(){
+
+  // static have to be  1st
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  // error handler
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  app.set('port', 3737);
+
+  // etc settings
+  app.set('port', 3434);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.favicon(__dirname + '/public/favicon.ico'));
@@ -38,7 +45,7 @@ app.configure(function(){
   app.use(express.methodOverride());
 
   // init session
-  app.use(express.cookieParser('sdfsdfafq32r4q32rfadsv34r52!@#dsfrg'));
+  app.use(express.cookieParser('lalalekeqwe123123ndfldsaknflsdfsdf'));
 
   // sessions mysql store
   var MySQLSessionStore = require('connect-mysql-session')(express);
@@ -47,11 +54,12 @@ app.configure(function(){
         defaultExpiration: 5*60*60*24*1000, // 5 days
         logging: false // log to console switch
     }),
-    secret: 'adsfjah;fdfgliadgsfib 2348o134t8734t5rqwdekfanfw'}));
+    secret: 'adsfjah;f~~~afiuailfasilu123dfgliadgsfib 2348o134t8734t5rqwdekfanfw'}));
   app.use(flash());
 
   // passport init & conf have to be here
   require('./config/pass-conf')(app);
+  require('./config/pass-keys')(app);
   require('./config/pass-facebook-conf')(app);
   require('./config/pass-twitter-conf')(app);
   require('./config/pass-github-conf')(app);
@@ -59,9 +67,6 @@ app.configure(function(){
 
   // router
   app.use(app.router);
-
-  // static
-  app.use(express.static(path.join(__dirname, 'public')));
 
   // error 404 (just last available route)
   app.use(function(req, res, next){
@@ -103,8 +108,8 @@ settings.getConf(function(err){
   if (err) throw err;
 }); // loaded config
 
-// user module (have to be first loaded)
-require('./routes/user-routes')(app, require('./routes/user'));
+// auth module
+require('./routes/auth-routes')(app, require('./routes/auth'));
 
 // blog module
 require('./routes/blog-routes')(app, require('./routes/blog'));
@@ -115,6 +120,7 @@ require('./routes/admin/admin-routes')(app, require('./routes/admin/admin'));
 require('./routes/admin/users-routes')(app, require('./routes/admin/users'));
 // admin settings module
 require('./routes/admin/settings-routes')(app, settings);
+
 // user zone
 require('./routes/my-routes')(app, require('./routes/my'));
 

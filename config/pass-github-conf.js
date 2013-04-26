@@ -8,27 +8,12 @@ var passport = require('passport')
  */
 module.exports = function(app)
 {
-    // dev & production settings
-    // .bashrc -> export NODE_ENV=development
-    app.configure('development', function(){
-        app.set('GITHUB_APP_ID', '-key-');
-        app.set('GITHUB_APP_SECRET', '-key-');
-        app.set('GITHUB_CALLBACK_URL', 'http://127.0.0.1:3434/auth/github/callback');
-    });
-
-    // .bashrc -> export NODE_ENV=production
-    app.configure('production', function(){
-        app.set('GITHUB_APP_ID', '-key-');
-        app.set('GITHUB_APP_SECRET', '-key-');
-        app.set('GITHUB_CALLBACK_URL', 'http://host.com/auth/github/callback');
-    });
-
-
     // passport-github
     passport.use(new GithubStrategy({
             clientID: app.get('GITHUB_APP_ID'),
             clientSecret: app.get('GITHUB_APP_SECRET'),
-            callbackURL: app.get('GITHUB_CALLBACK_URL')
+            callbackURL: app.get('GITHUB_CALLBACK_URL'),
+            customHeaders: { 'User-Agent' : 'simple node blog app'}
         },
         function(accessToken, refreshToken, profile, done) {
             // asynchronous verification, for effect...
@@ -47,11 +32,7 @@ module.exports = function(app)
 
     // github auth
     app.get('/auth/github',
-        passport.authenticate('github'),
-        function(req, res){
-            // The request will be redirected to Facebook for authentication, so this
-            // function will not be called.
-        });
+        passport.authenticate('github'));
 
     // GET /auth/github/callback
     app.get('/auth/github/callback',
@@ -60,7 +41,7 @@ module.exports = function(app)
             req.session.sys_auth = 1;
             req.session.auth_type = 'github';
             // set user params
-            require('../routes/user').set_user(req, function(){
+            require('../routes/auth').set_user(req, function(){
 
               if(req.cookies.back_after_auth)
                 res.redirect(req.cookies.back_after_auth);

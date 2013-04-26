@@ -29,7 +29,7 @@ html
       div#header
         div.container
           div.login-toplink.pull-right
-            - if (!userInfo.auth)
+            - if (!locals.userInfo || !userInfo.auth)
                 a(href="/login/", class="btn btn-mini") Вход
             - else
                 !{userInfo.name} &nbsp;
@@ -58,7 +58,6 @@ html
         |&nbsp;
         a(href="https://github.com/ijin82/simple-node-blog", target="_blank") simple node blog
         |&nbsp;
-        span.label.label-inline
         span.label.label-info.site-a-label.label-inline
           a(href="/full-list/") Все записи
 

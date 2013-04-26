@@ -16,7 +16,7 @@ exports.loadUserInfo = function(req, res, next){
   res.locals.userInfo = userInfo; // for templates
 
   next();
-};
+}
 
 exports.login_form = function(req, res){
 
@@ -34,7 +34,7 @@ exports.login_form = function(req, res){
         title: 'Вход',
         authErr: req.flash('error')
     });
-};
+}
 
 // set user params after successful auth
 exports.set_user = function(req, next){
@@ -182,7 +182,7 @@ exports.set_user = function(req, next){
       });
     break;
   }
-};
+}
 
 exports.authOff = function (req, res, next)
 {
@@ -229,4 +229,4 @@ exports.authOff = function (req, res, next)
   } else {
     return res.redirect('back');
   }
-};
+}

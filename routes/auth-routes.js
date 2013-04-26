@@ -1,10 +1,10 @@
-module.exports = function(app, user)
+module.exports = function(app, obj)
 {
   // load userInfo all requests
-  app.all('*', user.loadUserInfo);
+  app.all('*', obj.loadUserInfo);
 
   // auth form on site
-  app.get('/login', user.login_form);
+  app.get('/login', obj.login_form);
 
   // logout
   app.get('/logout', function(req, res){
@@ -13,5 +13,5 @@ module.exports = function(app, user)
   });
 
   // remove social attach
-  app.get('/auth-off/:social_type', user.authOff);
+  app.get('/auth-off/:social_type', obj.authOff);
 }

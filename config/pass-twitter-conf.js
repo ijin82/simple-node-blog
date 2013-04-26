@@ -8,21 +8,6 @@ var passport = require('passport')
  */
 module.exports = function(app)
 {
-    app.set('TWITTER_APP_ID', '-key-');
-    app.set('TWITTER_APP_SECRET', '-key-');
-
-    // dev & production settings
-    // .bashrc -> export NODE_ENV=development
-    app.configure('development', function(){
-        app.set('TWITTER_CALLBACK_URL', 'http://127.0.0.1:3434/auth/twitter/callback');
-    });
-
-    // .bashrc -> export NODE_ENV=production
-    app.configure('production', function(){
-        app.set('TWITTER_CALLBACK_URL', 'http://host.com/auth/twitter/callback');
-    });
-
-
     // passport-twitter
     passport.use(new TwitterStrategy({
             consumerKey: app.get('TWITTER_APP_ID'),
@@ -46,11 +31,7 @@ module.exports = function(app)
 
     // twitter auth
     app.get('/auth/twitter',
-        passport.authenticate('twitter'),
-        function(req, res){
-            // The request will be redirected to Facebook for authentication, so this
-            // function will not be called.
-        });
+        passport.authenticate('twitter'));
 
     // GET /auth/twitter/callback
     app.get('/auth/twitter/callback',
@@ -59,7 +40,7 @@ module.exports = function(app)
             req.session.sys_auth = 1;
             req.session.auth_type = 'twitter';
             // set user params
-            require('../routes/user').set_user(req, function(){
+            require('../routes/auth').set_user(req, function(){
 
               if(req.cookies.back_after_auth)
                 res.redirect(req.cookies.back_after_auth);

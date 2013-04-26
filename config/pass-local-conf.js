@@ -37,7 +37,7 @@ module.exports = function(app)
           req.session.sys_auth = 1;
           req.session.auth_type = 'local';
           // set user params
-          require('../routes/user').set_user(req, function(){
+          require('../routes/auth').set_user(req, function(){
             res.redirect('/');
           });
     });
