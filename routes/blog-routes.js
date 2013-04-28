@@ -1,5 +1,4 @@
-module.exports = function(app, blog)
-{
+module.exports = function (app, blog) {
   // main page
   app.get('/', blog.tagsLine, blog.blogList);
 

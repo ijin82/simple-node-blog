@@ -1,5 +1,4 @@
-module.exports = function(app, obj)
-{
+module.exports = function (app, obj) {
   // check access
   app.get('/adm/settings', obj.settingsList);
   // edit setings param card

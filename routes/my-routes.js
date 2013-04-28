@@ -1,5 +1,4 @@
-module.exports = function(app, obj)
-{
+module.exports = function (app, obj) {
   // check access
   app.all('/my/*', obj.access);
 

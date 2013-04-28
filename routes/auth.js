@@ -1,10 +1,9 @@
 // userinfo middleware
-exports.loadUserInfo = function(req, res, next){
+exports.loadUserInfo = function (req, res, next) {
 
   var userInfo = {};
 
-  if (req.session.sys_auth == 1 && req.session.userInfo != null)
-  {
+  if (req.session.sys_auth == 1 && req.session.userInfo != null) {
     userInfo = req.session.userInfo;
     userInfo.auth = 1;
   } else {
@@ -18,26 +17,26 @@ exports.loadUserInfo = function(req, res, next){
   next();
 }
 
-exports.login_form = function(req, res){
+exports.login_form = function (req, res) {
 
-    // check auth & redirect to main
-    if (req.session.sys_auth) {
-        res.redirect('/');
-      return;
-    }
+  // check auth & redirect to main
+  if (req.session.sys_auth) {
+    res.redirect('/');
+    return;
+  }
 
-    // navigation cookie for redirect after auth
-    res.cookie('back_after_auth', '/');
+  // navigation cookie for redirect after auth
+  res.cookie('back_after_auth', '/');
 
-    // render login
-    res.render('login_form',{
-        title: 'Вход',
-        authErr: req.flash('error')
-    });
+  // render login
+  res.render('login_form', {
+    title: 'Вход',
+    authErr: req.flash('error')
+  });
 }
 
 // set user params after successful auth
-exports.set_user = function(req, next){
+exports.set_user = function (req, next) {
 
   var passp = req.session.passport.user;
   var dbFiled = {
@@ -46,8 +45,7 @@ exports.set_user = function(req, next){
     github: 'github_id'
   };
 
-  switch (req.session.auth_type)
-  {
+  switch (req.session.auth_type) {
     case 'local': // local auth
       db.getRow("SELECT * \
         FROM users \
@@ -55,7 +53,7 @@ exports.set_user = function(req, next){
         [
           passp.user_id
         ],
-        function(err, user){
+        function (err, user) {
           if (err) return next(err);
 
           // update login time
@@ -64,7 +62,7 @@ exports.set_user = function(req, next){
             WHERE user_id=?",
             [
               user.user_id
-            ], function(err){
+            ], function (err) {
               if (err) return next(err);
 
               // save userinfo
@@ -72,7 +70,7 @@ exports.set_user = function(req, next){
               next();
             });
         });
-    break;
+      break;
 
     case 'github': // github auth
     case 'twitter': // twitter auth
@@ -85,7 +83,7 @@ exports.set_user = function(req, next){
         FROM users \
         WHERE " + field + "=?",
         [passp.id],
-        function(err, user){
+        function (err, user) {
           if (err) return next(err);
 
           // if already authorized
@@ -100,7 +98,7 @@ exports.set_user = function(req, next){
               [
                 passp.id,
                 userInfo.user_id
-              ], function(err){
+              ], function (err) {
                 if (err) return next(err);
 
                 // if there was a previous account, update
@@ -127,7 +125,7 @@ exports.set_user = function(req, next){
                   WHERE user_id=?",
                   [
                     userInfo.user_id
-                  ], function(err, user){
+                  ], function (err, user) {
                     if (err) return next(err);
 
                     req.flash('msg', 'link_add');
@@ -137,7 +135,7 @@ exports.set_user = function(req, next){
                   });
               });
 
-          } else if(!user) {
+          } else if (!user) {
             // no user by this field id, add new
             db.q("INSERT users \
               SET name=?,\
@@ -148,52 +146,49 @@ exports.set_user = function(req, next){
               [
                 passp.displayName,
                 passp.id
-              ], function(err, qres) {
+              ], function (err, qres) {
                 db.getRow("SELECT * \
                   FROM users \
                   WHERE " + field + "=?",
                   [
                     passp.id
-                  ], function(err, user){
+                  ], function (err, user) {
                     if (err) return next(err);
 
                     // save userinfo
                     req.session.userInfo = user;
                     next();
                   });
-            });
+              });
           }
-          else
-          {
-              // update login time
-              db.q("UPDATE users \
+          else {
+            // update login time
+            db.q("UPDATE users \
                 SET login_date=NOW()\
                 WHERE user_id=?",
-                [
-                  user.user_id
-                ], function(err){
-                  if (err) return next(err);
+              [
+                user.user_id
+              ], function (err) {
+                if (err) return next(err);
 
-                  // save userinfo
-                  req.session.userInfo = user;
-                  next();
-                });
+                // save userinfo
+                req.session.userInfo = user;
+                next();
+              });
           }
-      });
-    break;
+        });
+      break;
   }
 }
 
-exports.authOff = function (req, res, next)
-{
+exports.authOff = function (req, res, next) {
   if (!req.userInfo.auth) {
     return res.redirect('back');
   }
 
   if (typeof req.params.social_type != 'undefined') {
 
-    switch (req.params.social_type)
-    {
+    switch (req.params.social_type) {
       case 'facebook_id':
       case 'twitter_id':
       case 'github_id':
@@ -202,7 +197,7 @@ exports.authOff = function (req, res, next)
           WHERE user_id=?",
           [
             req.userInfo.user_id
-          ], function(err){
+          ], function (err) {
             if (err) return next(err);
 
             db.getRow("SELECT * \
@@ -210,7 +205,7 @@ exports.authOff = function (req, res, next)
                   WHERE user_id=?",
               [
                 req.userInfo.user_id
-              ], function(err, user){
+              ], function (err, user) {
                 if (err) return next(err);
 
                 req.flash('msg', 'link_remove');

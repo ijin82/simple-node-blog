@@ -1,5 +1,5 @@
 // access to user zone
-exports.access = function(req, res, next){
+exports.access = function (req, res, next) {
   if (req.userInfo.auth != 1) {
     return res.redirect('/');
   }
@@ -8,7 +8,7 @@ exports.access = function(req, res, next){
 };
 
 // userinfo middleware
-exports.viewProfile = function(req, res, next){
+exports.viewProfile = function (req, res, next) {
 
   // navigation cookie for redirect after auth
   res.cookie('back_after_auth', req.path);
@@ -19,8 +19,7 @@ exports.viewProfile = function(req, res, next){
   });
 };
 
-exports.saveProfile = function(req, res, next)
-{
+exports.saveProfile = function (req, res, next) {
   if (typeof  req.body.name != 'undefined' && !req.body.name.match(/^([ ]+|)$/i)) {
     if (req.body.name.match(/^[a-z0-9а-я\ \_\-]+$/i)) {
       // async update
@@ -28,8 +27,8 @@ exports.saveProfile = function(req, res, next)
         SET `name`=? \
         WHERE user_id=?",
         [
-            req.body.name,
-            req.userInfo.user_id
+          req.body.name,
+          req.userInfo.user_id
         ]);
 
       req.flash('msg', 'name_saved');

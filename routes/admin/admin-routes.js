@@ -1,5 +1,4 @@
-module.exports = function(app, admin)
-{
+module.exports = function (app, admin) {
   // check access
   app.all('/adm/*', admin.access);
   // posts list

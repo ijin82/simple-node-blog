@@ -1,32 +1,25 @@
-exports.settingsList = function(req, res, next)
-{
+exports.settingsList = function (req, res, next) {
   db.q("SELECT * \
     FROM settings",
-    function(err, qres){
+    function (err, qres) {
       if (err) return next(err);
 
       res.render('admin/settings_list', {
         title: 'settings list',
         settings: qres
       });
-  });
+    });
 };
 
-exports.editParamm = function(req, res, next)
-{
-  try{
-    check(req.params.param_id).is(/^[0-9]+$/);
-    param_id=req.params.param_id;
-  }catch(e){
-    param_id=0;
-  }
+exports.editParamm = function (req, res, next) {
+  param_id = check.numeric(req.params.param_id, 0);
 
   db.getRow("SELECT * \
     FROM settings \
     WHERE id=?",
     [
-        param_id
-    ], function(err, row){
+      param_id
+    ], function (err, row) {
       if (err) return next($err);
 
       if (!row) {
@@ -41,19 +34,17 @@ exports.editParamm = function(req, res, next)
 };
 
 // load config proc
-function loadConfig(next)
-{
+function loadConfig(next) {
   db.q("SELECT * \
     FROM settings",
-    function(err, qres){
+    function (err, qres) {
       if (err) return next(err);
 
       // tmp
       var newAppConfig = {};
 
-      for(i in qres){
-        switch (qres[i].type)
-        {
+      for (i in qres) {
+        switch (qres[i].type) {
           case 's_short':
             newAppConfig[qres[i].key] = qres[i].s_short;
             break;
@@ -78,25 +69,19 @@ function loadConfig(next)
 }
 
 // load config values from DB
-exports.getConf = function(next){
+exports.getConf = function (next) {
 
-  loadConfig(function(err){
+  loadConfig(function (err) {
     next(err);
   });
 };
 
 // save settings parameter
-exports.saveParamm = function(req, res, next)
-{
+exports.saveParamm = function (req, res, next) {
   var toSaveVar = [],
-      toSaveVal = [];
+    toSaveVal = [];
 
-  try{
-    check(req.body.id).is(/^[0-9]+$/);
-    id=req.body.id;
-  }catch(e){
-    id=0;
-  }
+  id = check.numeric(req.body.id, 0);
 
   // key
   var key = req.body.key;
@@ -110,13 +95,13 @@ exports.saveParamm = function(req, res, next)
   toSaveVal.push(req.body.name);
 
   // s_short
-  if (typeof req.body.s_short != 'undefined'){
+  if (typeof req.body.s_short != 'undefined') {
     toSaveVar.push('s_short=?');
     toSaveVal.push(req.body.s_short);
   }
 
   // s_long
-  if (typeof req.body.s_long != 'undefined'){
+  if (typeof req.body.s_long != 'undefined') {
     toSaveVar.push('s_long=?');
     toSaveVal.push(req.body.s_long);
   }
@@ -136,8 +121,8 @@ exports.saveParamm = function(req, res, next)
     FROM settings \
     WHERE id=?",
     [
-        id
-    ], function(err, row){
+      id
+    ], function (err, row) {
       if (err) return next(err);
 
       if (!row) return res.redirect('/');
@@ -145,22 +130,21 @@ exports.saveParamm = function(req, res, next)
       db.q("UPDATE settings \
         SET " + toSaveVar.join(',') + " \
         WHERE id=?",
-            toSaveVal,
-            function(err){
-              if (err) return next(err);
+        toSaveVal,
+        function (err) {
+          if (err) return next(err);
 
-              loadConfig(function(err){
-                if (err) return next(err);
+          loadConfig(function (err) {
+            if (err) return next(err);
 
-                return res.redirect('back');
-              });
-            });
+            return res.redirect('back');
+          });
+        });
     });
 };
 
 // create new settings param
-exports.addParamm = function(req, res, next)
-{
+exports.addParamm = function (req, res, next) {
   if (typeof req.body.type == 'undefined') {
     return res.redirect('/');
   }
@@ -169,10 +153,10 @@ exports.addParamm = function(req, res, next)
     SET `type`=?",
     [
       req.body.type
-    ], function(err){
+    ], function (err) {
       if (err) return next(err);
 
-      db.lastId(function(err, id){
+      db.lastId(function (err, id) {
         if (err) return next(err);
 
         return res.redirect('/adm/edit-param/' + id);
@@ -181,21 +165,15 @@ exports.addParamm = function(req, res, next)
 };
 
 // delete settings param
-exports.delParamm = function(req, res, next)
-{
-  try{
-    check(req.params.id).is(/^[0-9]+$/);
-    id=req.params.id;
-  }catch(e){
-    id=0;
-  }
+exports.delParamm = function (req, res, next) {
+  id = check.numeric(req.params.id, 0);
 
   db.getRow("SELECT * \
     FROM settings \
     WHERE id=?",
     [
       id
-    ], function(err, row){
+    ], function (err, row) {
       if (err) return next(err);
 
       if (!row) return res.redirect('/');
@@ -205,10 +183,10 @@ exports.delParamm = function(req, res, next)
         WHERE id=?",
         [
           id
-        ], function(err){
+        ], function (err) {
           if (err) return next(err);
 
-          loadConfig(function(err){
+          loadConfig(function (err) {
             if (err) return next(err);
 
             return res.redirect('/adm/settings/');

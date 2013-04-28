@@ -1,5 +1,4 @@
-module.exports = function(app, obj)
-{
+module.exports = function (app, obj) {
   // load userInfo all requests
   app.all('*', obj.loadUserInfo);
 
@@ -7,7 +6,7 @@ module.exports = function(app, obj)
   app.get('/login', obj.login_form);
 
   // logout
-  app.get('/logout', function(req, res){
+  app.get('/logout', function (req, res) {
     req.session.destroy();
     res.redirect('back');
   });

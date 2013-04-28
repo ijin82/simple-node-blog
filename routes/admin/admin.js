@@ -1,20 +1,17 @@
-
-function getAllTags(next)
-{
+function getAllTags(next) {
   db.q("SELECT t.*, count(bt.tag_id) as cnt \
     FROM  tags t \
     LEFT JOIN blog_tags bt ON t.tag_id=bt.tag_id \
     GROUP BY t.tag_id \
     ORDER BY tag_name",
-    function(err, tags) {
+    function (err, tags) {
       if (err) return next(err);
 
       next(err, tags);
     });
 }
 
-exports.access = function(req, res, next)
-{
+exports.access = function (req, res, next) {
   if (req.userInfo.role != 'admin') {
     res.redirect('/');
     return;
@@ -23,28 +20,22 @@ exports.access = function(req, res, next)
   next();
 }
 
-exports.postsList = function(req, res, next)
-{
-  try{
-    check(req.params.tag_id).is(/^[0-9]+$/);
-    tag_id = req.params.tag_id;
-  }catch(e){
-    tag_id=0;
-  }
+exports.postsList = function (req, res, next) {
+  tag_id = check.numeric(req.params.tag_id, 0);
 
   if (tag_id > 0)
-    searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id="+tag_id;
+    searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
   else
     searchByTag = "";
 
   db.q("SELECT b.*\
     FROM blog  b\
-    "+ searchByTag + " \
+    " + searchByTag + " \
     ORDER BY b.blog_id DESC",
-    function(err, qres) {
+    function (err, qres) {
       if (err) return next(err);
 
-      getAllTags(function(err, tags){
+      getAllTags(function (err, tags) {
         if (err) return next(err);
 
         res.render('admin/posts_list', {
@@ -57,9 +48,8 @@ exports.postsList = function(req, res, next)
     });
 }
 
-exports.tagsList = function(req, res, next)
-{
-  getAllTags(function(err, tags){
+exports.tagsList = function (req, res, next) {
+  getAllTags(function (err, tags) {
     if (err) return next(err);
 
     res.render('admin/tags_list', {
@@ -69,15 +59,8 @@ exports.tagsList = function(req, res, next)
   });
 }
 
-exports.editPost = function(req, res, next)
-{
-  try{
-    check(req.params.post_id).is(/^[0-9]+$/);
-    post_id = req.params.post_id;
-  }catch(e){
-    res.redirect('/adm/posts/');
-    return;
-  }
+exports.editPost = function (req, res, next) {
+  post_id = check.numeric(req.params.post_id, 0);
 
   db.getRow("SELECT b.*\
         FROM blog  b\
@@ -85,7 +68,7 @@ exports.editPost = function(req, res, next)
     [
       post_id
     ],
-    function(err, post) {
+    function (err, post) {
       if (err) return next(err);
 
       if (!post) {
@@ -102,8 +85,8 @@ exports.editPost = function(req, res, next)
         ) as t1 ON t1.tag_id=t.tag_id \
         ORDER BY t.tag_name",
         [
-            post.blog_id
-        ], function(err, tags){
+          post.blog_id
+        ], function (err, tags) {
           if (err) return next(err);
 
           res.render('admin/edit_post', {
@@ -111,39 +94,26 @@ exports.editPost = function(req, res, next)
             post: post,
             tags: tags
           });
-      });
+        });
     });
 }
 
-exports.changeTag = function(req, res, next)
-{
-  try{
-
-    check(req.params.postId).is(/^[0-9]+$/);
-    postId = req.params.postId;
-  } catch(e) {
-
-    res.json({ error: 1}); // postId is not int
-  }
+exports.changeTag = function (req, res, next) {
+  postId = check.numeric(req.params.postId, 0);
 
   db.getRow("SELECT b.*\
         FROM blog  b\
         WHERE blog_id=?",
     [
       postId
-    ], function(err, post) {
+    ], function (err, post) {
       if (err) return next(err);
 
       if (!post) {
         res.json({ error: 2}); // no post by id
       }
 
-      try {
-        check(req.params.tagId).is(/^[0-9]+$/);
-        tagId = req.params.tagId;
-      } catch (e) {
-        res.json({ error: 3}); // tagId is not int
-      }
+      tagId = check.numeric(req.params.tagId, 0);
 
       if (req.params.tagOper == 'add') {
         db.q("REPLACE blog_tags \
@@ -151,7 +121,7 @@ exports.changeTag = function(req, res, next)
           [
             tagId,
             post.blog_id
-          ], function(err, qres){
+          ], function (err, qres) {
             if (err) return next(err);
 
             res.json({ result: 1});
@@ -162,7 +132,7 @@ exports.changeTag = function(req, res, next)
           [
             tagId,
             post.blog_id
-          ], function(err, qres){
+          ], function (err, qres) {
             if (err) return next(err);
 
             res.json({ result: 2});
@@ -174,14 +144,10 @@ exports.changeTag = function(req, res, next)
     }); // post exists
 }
 
-exports.delTag = function(req, res, next)
-{
-  try{
+exports.delTag = function (req, res, next) {
+  tag_id = check.numeric(req.params.tag_id, 0);
 
-    check(req.params.tag_id).is(/^[0-9]+$/);
-    tag_id = req.params.tag_id;
-  }catch(e){
-
+  if (!tag_id) {
     res.redirect('/posts-list');
     return;
   }
@@ -193,7 +159,7 @@ exports.delTag = function(req, res, next)
     WHERE t.tag_id=?",
     [
       tag_id
-    ], function(err, qres) {
+    ], function (err, qres) {
       if (err) return next(err);
 
       res.redirect('back');
@@ -201,14 +167,10 @@ exports.delTag = function(req, res, next)
     });
 }
 
-exports.deletePost = function(req, res, next)
-{
-  try{
+exports.deletePost = function (req, res, next) {
+  post_id = check.numeric(req.params.post_id, 0);
 
-    check(req.params.post_id).is(/^[0-9]+$/);
-    post_id = req.params.post_id;
-  }catch(e){
-
+  if (!post_id) {
     res.redirect('/posts-list');
     return;
   }
@@ -220,7 +182,7 @@ exports.deletePost = function(req, res, next)
     WHERE b.blog_id=?",
     [
       post_id
-    ], function(err, qres) {
+    ], function (err, qres) {
       if (err) return next(err);
 
       res.redirect('/adm/posts/');
@@ -228,14 +190,10 @@ exports.deletePost = function(req, res, next)
     });
 }
 
-exports.savePost = function(req, res, next)
-{
-  // post_id
-  try{
-    check(req.body.post_id).is(/^[0-9]+$/);
-    postId=req.body.post_id;
-  }catch(e){
+exports.savePost = function (req, res, next) {
+  postId = check.numeric(req.body.post_id, 0);
 
+  if (!postId) {
     res.redirect('/adm/posts/');
     return;
   }
@@ -251,7 +209,7 @@ exports.savePost = function(req, res, next)
     WHERE blog_id=?",
     [
       postId
-    ],function(err, row){
+    ], function (err, row) {
       if (err) return next(err);
 
       if (row.blog_id) {
@@ -270,17 +228,13 @@ exports.savePost = function(req, res, next)
         res.redirect('/posts-list/');
         return;
       }
-  });
+    });
 }
 
-exports.visiblePost = function(req, res)
-{
-  try{
+exports.visiblePost = function (req, res) {
+  post_id = check.numeric(req.params.post_id, 0);
 
-    check(req.params.post_id).is(/^[0-9]+$/);
-    post_id = req.params.post_id;
-  }catch(e){
-
+  if (!post_id) {
     res.redirect('/adm/posts/');
     return;
   }
@@ -290,7 +244,7 @@ exports.visiblePost = function(req, res)
     WHERE blog_id=?",
     [
       post_id
-    ], function(err, post) {
+    ], function (err, post) {
       if (err) return next(err);
 
       res.redirect('back');
@@ -298,24 +252,22 @@ exports.visiblePost = function(req, res)
     });
 }
 
-exports.newPost = function(req, res, next)
-{
+exports.newPost = function (req, res, next) {
   db.q("INSERT blog \
     SET post_date = NOW()",
-    function(err, qres) {
+    function (err, qres) {
       if (err) return next(err);
 
-      db.lastId(function(err, newId){
+      db.lastId(function (err, newId) {
         if (err) return next(err);
 
-        res.redirect('/adm/edit-post/'+ newId + '/');
+        res.redirect('/adm/edit-post/' + newId + '/');
         return;
       });
     });
 }
 
-exports.addTag = function(req, res, next)
-{
+exports.addTag = function (req, res, next) {
   if (req.body.tagName != '') {
 
     db.getRow("SELECT * \
@@ -323,7 +275,7 @@ exports.addTag = function(req, res, next)
       WHERE tag_name = ?",
       [
         req.body.tagName
-      ], function(err, row){
+      ], function (err, row) {
         if (err) return next(err);
 
         if (!row) {
@@ -331,7 +283,7 @@ exports.addTag = function(req, res, next)
             SET tag_name = ?",
             [
               req.body.tagName
-            ], function(err, qres) {
+            ], function (err, qres) {
               if (err) return next(err);
 
               res.redirect('back');
@@ -339,7 +291,7 @@ exports.addTag = function(req, res, next)
             });
         } else
           res.redirect('back');
-          return;
+        return;
       });
   } else {
     res.redirect('back');
