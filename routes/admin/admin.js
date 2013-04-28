@@ -21,7 +21,7 @@ exports.access = function (req, res, next) {
 }
 
 exports.postsList = function (req, res, next) {
-  tag_id = check.numeric(req.params.tag_id, 0);
+  tag_id = check.numeric(req.params.tag_id);
 
   if (tag_id > 0)
     searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
@@ -60,7 +60,7 @@ exports.tagsList = function (req, res, next) {
 }
 
 exports.editPost = function (req, res, next) {
-  post_id = check.numeric(req.params.post_id, 0);
+  post_id = check.numeric(req.params.post_id);
 
   db.getRow("SELECT b.*\
         FROM blog  b\
@@ -99,7 +99,7 @@ exports.editPost = function (req, res, next) {
 }
 
 exports.changeTag = function (req, res, next) {
-  postId = check.numeric(req.params.postId, 0);
+  postId = check.numeric(req.params.postId);
 
   db.getRow("SELECT b.*\
         FROM blog  b\
@@ -113,7 +113,7 @@ exports.changeTag = function (req, res, next) {
         res.json({ error: 2}); // no post by id
       }
 
-      tagId = check.numeric(req.params.tagId, 0);
+      tagId = check.numeric(req.params.tagId);
 
       if (req.params.tagOper == 'add') {
         db.q("REPLACE blog_tags \
@@ -145,7 +145,7 @@ exports.changeTag = function (req, res, next) {
 }
 
 exports.delTag = function (req, res, next) {
-  tag_id = check.numeric(req.params.tag_id, 0);
+  tag_id = check.numeric(req.params.tag_id);
 
   if (!tag_id) {
     res.redirect('/posts-list');
@@ -168,7 +168,7 @@ exports.delTag = function (req, res, next) {
 }
 
 exports.deletePost = function (req, res, next) {
-  post_id = check.numeric(req.params.post_id, 0);
+  post_id = check.numeric(req.params.post_id);
 
   if (!post_id) {
     res.redirect('/posts-list');
@@ -191,7 +191,7 @@ exports.deletePost = function (req, res, next) {
 }
 
 exports.savePost = function (req, res, next) {
-  postId = check.numeric(req.body.post_id, 0);
+  postId = check.numeric(req.body.post_id);
 
   if (!postId) {
     res.redirect('/adm/posts/');
@@ -232,7 +232,7 @@ exports.savePost = function (req, res, next) {
 }
 
 exports.visiblePost = function (req, res) {
-  post_id = check.numeric(req.params.post_id, 0);
+  post_id = check.numeric(req.params.post_id);
 
   if (!post_id) {
     res.redirect('/adm/posts/');

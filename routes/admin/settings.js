@@ -12,7 +12,7 @@ exports.settingsList = function (req, res, next) {
 };
 
 exports.editParamm = function (req, res, next) {
-  param_id = check.numeric(req.params.param_id, 0);
+  param_id = check.numeric(req.params.param_id);
 
   db.getRow("SELECT * \
     FROM settings \
@@ -81,7 +81,7 @@ exports.saveParamm = function (req, res, next) {
   var toSaveVar = [],
     toSaveVal = [];
 
-  id = check.numeric(req.body.id, 0);
+  id = check.numeric(req.body.id);
 
   // key
   var key = req.body.key;
@@ -166,7 +166,7 @@ exports.addParamm = function (req, res, next) {
 
 // delete settings param
 exports.delParamm = function (req, res, next) {
-  id = check.numeric(req.params.id, 0);
+  id = check.numeric(req.params.id);
 
   db.getRow("SELECT * \
     FROM settings \

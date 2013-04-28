@@ -39,8 +39,8 @@ function updateCommentsCount(post_id) {
 
 // get page list with posts
 exports.blogList = function (req, res, next) {
-  page_id = check.numeric(req.params.page_id, 0);
-  tag_id = check.numeric(req.params.tag_id, 0);
+  page_id = check.numeric(req.params.page_id);
+  tag_id = check.numeric(req.params.tag_id);
 
   // posts on page quantity
   page_size = 5;
@@ -113,7 +113,7 @@ function getPostComments(post_id, next) {
 
 // delete one comment
 exports.delComment = function (req, res, next) {
-  comment_id = check.numeric(req.params.comment_id, 0);
+  comment_id = check.numeric(req.params.comment_id);
 
   db.getRow("SELECT * \
     FROM comments \
@@ -149,7 +149,7 @@ exports.delComment = function (req, res, next) {
 
 // one blog post
 exports.blogPost = function (req, res, next) {
-  post_id = check.numeric(req.params.post_id, 0);
+  post_id = check.numeric(req.params.post_id);
 
   db.getRow("SELECT b.* \
         FROM blog b \
@@ -210,7 +210,7 @@ exports.tagsLine = function (req, res, next) {
 
 // add comment
 exports.newComment = function (req, res) {
-  post_id = check.numeric(req.body.post_id, 0);
+  post_id = check.numeric(req.body.post_id);
 
   if (req.userInfo.auth == 1) {
 
@@ -272,7 +272,7 @@ exports.newComment = function (req, res) {
 }
 
 exports.blogPostsList = function (req, res, next) {
-  tag_id = check.numeric(req.params.tag_id, 0);
+  tag_id = check.numeric(req.params.tag_id);
 
   if (tag_id != 0)
     searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
