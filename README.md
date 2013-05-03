@@ -37,7 +37,7 @@ Install
 
 Debug
 --
-- Use <a href="https://npmjs.org/package/nodemon">nodemon</a> for debug, it is comfortable
+- <a href="https://npmjs.org/package/nodemon">nodemon</a>
 - npm -g install nodemon
 - nodemon app.js
 
@@ -54,7 +54,8 @@ But it's simple!
 
 Planned
 --
-1. Extend user profile (login, pass change, info)
-2. Roles changing
-3. Social blog mode (seemed to be in far far glorious future)
+1. wysiwyg (ckeditor may be) + image library
+2. Extend user profile (login, pass change, info)
+3. Roles changing + editor area for authors
+4. Social blog mode (seemed to be in far far glorious future)
 
