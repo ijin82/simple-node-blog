@@ -9,7 +9,7 @@ exports.getMap = function (req, res, next) {
     if (err) return next(err);
 
     for (i in posts) {
-      mapText += 'http://cocainum.info/post/' + posts[i].blog_id + '/' + "\n";
+      mapText += 'http://' + req.host + '/post/' + posts[i].blog_id + '/' + "\n";
     }
 
     res.setHeader('Content-Type', 'text/plain');
