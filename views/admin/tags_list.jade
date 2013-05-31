@@ -49,7 +49,7 @@ block content
       a(href="#", id="del-link", class="btn btn-danger") Удалить
 
 
-  script(type="text/javascript")
+  script(type="text/javascript").
     $(".del-tag").click(function(){
       $("#del-link").prop('href', $(this).prop('rel'));
     });

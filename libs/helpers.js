@@ -20,7 +20,7 @@ module.exports = function (app) {
     }
 
     // get App config value
-    res.locals.appConfig = function (key, defaultVal) {
+    res.locals.getAppConfig = function (key, defaultVal) {
 
       if (appConfig[key]) {
 
