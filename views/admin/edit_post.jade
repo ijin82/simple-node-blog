@@ -69,7 +69,7 @@ block content
       a(href="/adm/del-post/#{post.blog_id}/", id="del-link", class="btn btn-danger") Удалить
 
 
-  script(type="text/javascript")
+  script(type="text/javascript").
     $(".add-tag, .del-tag").click(function(){
       var targClass='label-info';
       if ($(this).parent().hasClass(targClass)) {
