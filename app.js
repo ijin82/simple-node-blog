@@ -3,7 +3,8 @@ var express = require('express'),
   app = express(),
   http = require('http'),
   path = require('path'),
-  flash = require('connect-flash');
+  flash = require('connect-flash'),
+  colors = require('colors');
 
 // global vars
 dbConfig = require("./config/dbConfig"),
@@ -129,5 +130,6 @@ require('./routes/sitemap-routes')(app, require('./routes/sitemap'));
 
 // start http server here
 http.createServer(app).listen(app.get('port'), function () {
-  console.log("-- simple node blog listening on port " + app.get('port') + " --");
+  var startMsg = "-- simple node blog listening on port " + app.get('port') + " --";
+  console.log(startMsg.red);
 });

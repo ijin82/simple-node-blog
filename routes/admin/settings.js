@@ -62,7 +62,7 @@ function loadConfig(next) {
       // set to global config fast switch
       appConfig = newAppConfig;
 
-      console.log('-- app config loaded --');
+      console.log('-- app config loaded --'.red);
 
       next(err);
     });
