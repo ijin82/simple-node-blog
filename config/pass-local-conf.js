@@ -20,10 +20,6 @@ module.exports = function (app) {
         ], function (err, user) {
           if (err) return next(err);
 
-          if (!user) {
-            next(null, false);
-          }
-
           return next(null, user);
         });
     }

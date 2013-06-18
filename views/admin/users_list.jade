@@ -57,8 +57,19 @@ block content
             -
           - }
         td.text-center
-          a(href="#", class="btn btn-danger")
+          a(href="#myModal", rel="/adm/delete-user/#{user.user_id}", class="btn btn-danger delUser", data-toggle="modal")
             i(class="icon-trash")
+
+  <!-- Modal -->
+  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div(class="modal-header")
+      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
+      h3(id="myModalLabel") Требуется подтверждение
+    div(class="modal-body")
+      p Вы действительно хотите удалить этого пользователя?
+    div(class="modal-footer")
+      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
+      a(href="#", id="del-link", class="btn btn-danger") Удалить
 
   script(type="text/javascript")
     $(".nrole").click(function(){
@@ -73,4 +84,9 @@ block content
           }
         }
       });
+    });
+
+    $(".delUser").click(function(){
+      var delLink = $(this).prop('rel');
+      $("#del-link").prop('href', delLink);
     });
