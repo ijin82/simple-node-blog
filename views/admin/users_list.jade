@@ -27,34 +27,50 @@ block content
         td #{user.login || '-'}
         td
           div(class="btn-group")
-            a(class="btn btn-small dropdown-toggle", data-toggle="dropdown", href="#") #{user.role}
+            a(class="btn btn-small dropdown-toggle", data-toggle="dropdown", href="#")
+              span(id="urole_#{user.user_id}") #{user.role}
               &nbsp;
               span(class="caret")
             ul(class="dropdown-menu")
               li
-                a(href="#") admin
+                a(href="#", rel="/adm/set-user-role/#{user.user_id}/admin", class="nrole") admin
               li
-                a(href="#") writer
+                a(href="#", rel="/adm/set-user-role/#{user.user_id}/writer", class="nrole") writer
               li
-                a(href="#") user
+                a(href="#", rel="/adm/set-user-role/#{user.user_id}/user", class="nrole") user
         td.text-center
           - if (user.facebook_id) {
-              i(class="icon-star")
+            i(class="icon-star")
           - } else {
             -
           - }
         td.text-center
           - if (user.twitter_id) {
-              i(class="icon-star")
+            i(class="icon-star")
           - } else {
-              -
+            -
           - }
         td.text-center
           - if (user.github_id) {
-              i(class="icon-star")
+            i(class="icon-star")
           - } else {
-              -
+            -
           - }
         td.text-center
           a(href="#", class="btn btn-danger")
             i(class="icon-trash")
+
+  script(type="text/javascript")
+    $(".nrole").click(function(){
+      $.ajax({
+        dataType: 'json',
+        type: 'GET',
+        url: $(this).prop('rel'),
+        data: null,
+        success: function (data) {
+          if (data.result === true) {
+            $("#urole_" + data.userId).text(data.role);
+          }
+        }
+      });
+    });
