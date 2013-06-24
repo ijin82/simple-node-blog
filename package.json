@@ -3,7 +3,7 @@
     "express": "3.2.x",
     "jade": "0.31.x",
     "mysql": "0.9.6",
-    "validator": "1.1.x",
+    "validator": "1.2.x",
     "dateformat": "1.0.6-1.2.3",
     "passport": "0.1.x",
     "passport-facebook": "0.1.x",
@@ -12,6 +12,7 @@
     "passport-local": "0.1.x",
     "connect-mysql-session": "0.1.x",
     "email": "0.2.x",
-    "connect-flash": "0.1.x"
+    "connect-flash": "0.1.x",
+    "colors": "0.6.0-1"
   }
 }

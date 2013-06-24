@@ -17,10 +17,10 @@ http://demo.cocainum.info/
 
 Included externals
 --
-- bootstrap v2.3.1
-- jquery v2.0.0
+- bootstrap v2.3.2
+- jquery v2.0.2
 - highlight.js 7.3
-- Font Awesome 3.0
+- Font Awesome 3.2.1
 
 
 Install
