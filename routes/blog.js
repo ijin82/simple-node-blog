@@ -39,16 +39,20 @@ function updateCommentsCount(post_id) {
 
 // get page list with posts
 exports.blogList = function (req, res, next) {
-  page_id = check.numeric(req.params.page_id);
+  page_id = check.numeric(req.params.page_id, 1);
+  if (page_id > 0) {
+    page_id -= 1;
+  }
   tag_id = check.numeric(req.params.tag_id);
 
   // posts on page quantity
   page_size = 5;
 
-  if (tag_id != 0)
+  if (tag_id != 0) {
     searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
-  else
+  } else {
     searchByTag = "";
+  }
 
   db.q("SELECT SQL_CALC_FOUND_ROWS b.*\
     FROM blog  b \
@@ -78,15 +82,21 @@ exports.blogList = function (req, res, next) {
 
             qres[pKey].tags = tags;
 
+          if (tag_id != 0) {
+            pageTitle = 'tag #' + tag_id + ' - page #' + (page_id + 1);
+          } else {
+            pageTitle = 'page #' + (page_id + 1);
+          }
             // render blog page
             if (counters.tags == 0) {
               res.render('blog_list', {
                 posts: qres,
                 pager_cnt: cnt, // total posts quant
                 pager_size: page_size, // page size, posts on page
-                pager_current: page_id, // current page
+                pager_current: (page_id + 1), // current page
                 tag_id: tag_id, // current tag
-                tags_line: req.tags_line // all tags array
+                tags_line: req.tags_line, // all tags array
+                title: pageTitle
               });
             }
           });

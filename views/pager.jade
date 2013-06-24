@@ -9,27 +9,27 @@
       -  }
 
       - maxlen = 15
-      - cur_p = 0
+      - cur_p = 1
       - if (pager_current > 7) {
       -   if (ipages - pager_current < maxlen) {
             m = ipages - maxlen
-      -     if (m < 0) {
-              m = 0;
+      -     if (m < 1) {
+              m = 1;
       -     }
       -   } else {
             m = pager_current - 7
       -   }
       - } else {
-          m = 0;
+          m = 1;
       - }
-      - for (m; m < ipages; m++, cur_p++) {
+      - for (m; m <= ipages; m++, cur_p++) {
       -   if (cur_p < maxlen) {
       -     if (m == pager_current)
               li.active
-                != '<a href="' + urlStart + m + '/" title="go to page '+(m+1)+'" class="cur">'+(m+1)+'</a>'
+                != '<a href="' + urlStart + m + '/" title="go to page ' + m + '" class="cur">' + m + '</a>'
             else
               li
-                != '<a href="' + urlStart + m + '/" title="go to page '+(m+1)+'">'+(m+1)+'</a>'
+                != '<a href="' + urlStart + m + '/" title="go to page ' + m + '">' + m + '</a>'
       -   }
       - }
 
