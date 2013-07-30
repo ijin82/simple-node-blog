@@ -21,6 +21,7 @@ block content
           ul(class="post-meta")
             li
               i(class="icon-calendar")
+              &nbsp;
               = dateformat(post.post_date,"dd.mm.yyyy hh:mm:ss")
         td
           a(href="/adm/edit-post/#{post.blog_id}/", title="Редактировать") #{post.header || '- нет -'}

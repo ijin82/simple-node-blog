@@ -8,6 +8,7 @@ block content
     ul(class="post-meta")
      li
        i(class="icon-calendar")
+       &nbsp;
        = dateformat(post.post_date,"dddd, d mmmm yyyy")
      - if (post.comments_cnt > 0) {
        li
