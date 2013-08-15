@@ -49,15 +49,25 @@ exports.blogList = function (req, res, next) {
   page_size = 5;
 
   if (tag_id != 0) {
+
     searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
+    tagExclude = "";
   } else {
-    searchByTag = "";
+
+    searchByTag = "LEFT JOIN (\
+      SELECT DISTINCT b.blog_id as exc\
+      FROM blog b\
+      INNER JOIN blog_tags bt ON b.blog_id=bt.blog_id\
+      INNER JOIN tags t ON t.tag_id=bt.tag_id AND t.exclude=1\
+    ) as t1 ON b.blog_id=t1.exc";
+    tagExclude = "AND t1.exc IS NULL";
   }
 
   db.q("SELECT SQL_CALC_FOUND_ROWS b.*\
     FROM blog  b \
     " + searchByTag + " \
-    WHERE b.visible=1 \
+    WHERE b.visible=1 " + tagExclude + "\
+    GROUP BY b.blog_id\
     ORDER BY b.blog_id DESC \
     LIMIT ?, ?",
     [

@@ -21,4 +21,6 @@ module.exports = function (app, admin) {
   app.get('/adm/change-tag/:postId/:tagOper/:tagId', admin.changeTag);
   // add tag
   app.post('/adm/add-tag', admin.addTag);
+  // toggle tag
+  app.get('/adm/toggle-tag/:tagId', admin.toggleTag);
 }

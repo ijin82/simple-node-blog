@@ -149,11 +149,8 @@ th.text-center {
 }
 
 /* social connect */
-.icon-social-active {
-    color: #08c;
-}
-
-.sign-social:hover {
-    text-decoration: none;
-    color: #666;
+#profile-keys a{
+    margin: 5px;
+    font-size: 14px;
+    font-weight: normal;
 }

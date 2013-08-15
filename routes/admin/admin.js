@@ -267,6 +267,27 @@ exports.newPost = function (req, res, next) {
     });
 }
 
+exports.toggleTag = function (req, res, next) {
+
+  tagId = check.numeric(req.params.tagId);
+
+  if (tagId >0 ) {
+    db.q("UPDATE tags\
+      SET exclude = !exclude\
+      WHERE tag_id=?", [
+        tagId
+    ], function(err){
+      if (err) return next(err);
+
+      res.redirect('back');
+      return;
+    });
+  } else {
+    res.redirect('back');
+    return;
+  }
+}
+
 exports.addTag = function (req, res, next) {
   if (req.body.tagName != '') {
 
