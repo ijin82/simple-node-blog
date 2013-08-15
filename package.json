@@ -6,7 +6,7 @@
     "validator": "1.4.x",
     "dateformat": "1.0.6-1.2.3",
     "passport": "0.1.x",
-    "passport-facebook": "0.1.x",
+    "passport-facebook": "1.0.x",
     "passport-twitter": "0.1.x",
     "passport-github": "0.1.x",
     "passport-local": "0.1.x",
