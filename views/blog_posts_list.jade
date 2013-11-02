@@ -16,8 +16,7 @@ block content
           ul(class="post-meta")
             li
               i(class="icon-calendar")
-              &nbsp;
-              = dateformat(post.post_date,"dddd, d mmmm yyyy")
+              = dateformat(post.post_date," dddd, d mmmm yyyy")
         td
           <a href="/post/#{post.blog_id}/" title="Открыть">#{post.header}</a>
         td

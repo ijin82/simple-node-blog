@@ -3,19 +3,19 @@ html
   head
     block head
       title
-        - if (fullTitle) {
+        - if (locals.fullTitle) {
             = fullTitle
         - } else {
             != getAppConfig('blog_name', 'simple node blog')
-            - if (title) {
+            - if (locals.title) {
               |  - #{title}
             - }
-        - }
+        -}
       meta(charset="utf-8")
       link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
       link(rel='stylesheet', href='/awesome/css/font-awesome.min.css')
       script(type="text/javascript", src="/js/jquery.min.js").
-      script(type="text/javascript", src="/bootstrap/js/bootstrap.js").
+      script(type="text/javascript", src="/bootstrap/js/bootstrap.min.js").
       link(rel='stylesheet', href='/css/main.css')
       script(type="text/javascript", src="/highlight.js/highlight.pack.js").
       link(rel='stylesheet', href='/highlight.js/github.css')
@@ -29,21 +29,21 @@ html
       div#header
         div.container
           div.login-toplink.pull-right
-            - if (!userInfo || !userInfo.auth)
-                a(href="/login/", class="btn btn-mini") Вход
+            - if (!locals.userInfo || !userInfo.auth)
+                a(href="/login/", class="btn btn-default btn-xs") Вход
             - else
                 !{userInfo.name} &nbsp;
                 if (userInfo.role == 'admin')
                   &nbsp;
-                  a(href="/adm/posts/", class="btn btn-mini", title="Управление")
+                  a(href="/adm/posts/", class="btn btn-default btn-xs", title="Управление")
                     i(class="icon-cog")
                   &nbsp;
-                a(href="/my/profile/", class="btn btn-mini", title="Профиль")
+                a(href="/my/profile/", class="btn btn-default btn-xs", title="Профиль")
                   i(class="icon-user")
                 &nbsp;
-                a(href="/logout/", class="btn btn-mini") Выход
+                a(href="/logout/", class="btn btn-default btn-xs") Выход
 
-          h2
+          h2#title
             a(href='/')
               != getAppConfig('blog_name', 'simple node blog')
 
@@ -57,11 +57,11 @@ html
         i(class="icon-github-alt")
         |&nbsp;
         a(href="https://github.com/ijin82/simple-node-blog", target="_blank") simple node blog
-        |&nbsp;
-        span.label.label-info.site-a-label.label-inline
-          a(href="/full-list/") Все записи
+        &nbsp; 
+        a(href="/full-list/", title="Все записи в одном списке") Все записи
 
     != getAppConfig('counter_code', '<!-- counter_code -->')
 
     script(type="text/javascript").
       $('pre.code').each(function(i, e) {hljs.highlightBlock(e)});
+

@@ -5,84 +5,97 @@ block content
   - var active_tab = {edit_param: 'active'}
   include sub_navi.jade
 
-  form(class="form-horizontal", method="post", action="/adm/save-settings-param")
+  form(role="form", method="post", action="/adm/save-settings-param")
     input(type="hidden", name="id", value=setParam.id)
-    legend Редактирование параметра настройки
     case setParam.type
       when 's_short'
-        div(class="control-group")
-          label(class="control-label", for="keyPar") Ключ
-          div(class="controls")
-            input(type="text", id="keyPar", name="key", placeholder="Строка из символов \"a-z0-9_\"",
-              class="input-xxlarge", value=setParam.key)
-        div(class="control-group")
-          label(class="control-label", for="namePar") Название
-          div(class="controls")
-            input(type="text", id="namePar", name="name", placeholder="Пояснение назначения параметра настройки",
-              class="input-xxlarge", value=setParam.name)
-        div(class="control-group")
-          label(class="control-label", for="valPar") Значение параметра
-          div(class="controls")
-            input(type="text", id="valPar", name="s_short", placeholder="Значение параметра настройки",
-              class="input-xxlarge", value=setParam.s_short)
+        div.form-group
+          label(for="keyPar") Ключ
+          input.form-control(type="text", 
+            id="keyPar", 
+            name="key", 
+            placeholder="Строка из символов \"a-z0-9_\"",
+            value=setParam.key)
+        div.form-group
+          label(for="namePar") Название
+          input.form-control(type="text", 
+            id="namePar", 
+            name="name", 
+            placeholder="Пояснение назначения параметра настройки",
+            value=setParam.name)
+        div.form-group
+          label(for="valPar") Значение параметра
+          input.form-control(type="text", 
+            id="valPar", 
+            name="s_short", 
+            placeholder="Значение параметра настройки",
+            value=setParam.s_short)
 
       when 's_long'
-        div(class="control-group")
-          label(class="control-label", for="keyPar") Ключ
-          div(class="controls")
-            input(type="text", id="keyPar", name="key", placeholder="Строка из символов \"a-z0-9_\"",
-            class="input-xxlarge", value=setParam.key)
-        div(class="control-group")
-          label(class="control-label", for="namePar") Название
-          div(class="controls")
-            input(type="text", id="namePar", name="name", placeholder="Пояснение назначения параметра настройки",
-            class="input-xxlarge", value=setParam.name)
-        div(class="control-group")
-          label(class="control-label", for="valPar") Значение параметра
-          div(class="controls")
-            textarea(class="input-xxlarge", id="valPar", name="s_long",
-              placeholder="Значение параметра настройки", rows="12")
-              = setParam.s_long
+        div.form-group
+          label(for="keyPar") Ключ
+          input.form-control(type="text", 
+            id="keyPar", 
+            name="key", 
+            placeholder="Строка из символов \"a-z0-9_\"",
+            value=setParam.key)
+        div.form-group
+          label(for="namePar") Название
+          input.form-control(type="text", 
+            id="namePar", 
+            name="name", 
+            placeholder="Пояснение назначения параметра настройки",
+            class="input-xxlarge",
+            value=setParam.name)
+        div.form-group
+          label(for="valPar") Значение параметра
+          textarea.form-control(id="valPar",
+            name="s_long",
+            placeholder="Значение параметра настройки",
+            rows="12") #{setParam.s_long}
 
       when 'flag'
-        div(class="control-group")
-          label(class="control-label", for="keyPar") Ключ
-          div(class="controls")
-            input(type="text", id="keyPar", name="key", placeholder="Строка из символов \"a-z0-9_\"",
-            class="input-xxlarge", value=setParam.key)
-        div(class="control-group")
-          label(class="control-label", for="namePar") Название
-          div(class="controls")
-            input(type="text", id="namePar", name="name", placeholder="Пояснение назначения параметра настройки",
-            class="input-xxlarge", value=setParam.name)
-        div(class="control-group")
-          label(class="control-label", for="valPar") Значение параметра
-          div(class="controls")
-            - if (setParam.flag) {
-              input(type="checkbox", id="valPar", name="flag", value="1", checked="checked")
-            - } else {
-              input(type="checkbox", id="valPar", name="flag", value="1")
-            - }
+        div.form-group
+          label(for="keyPar") Ключ
+          input.form-control(type="text", 
+            id="keyPar", 
+            name="key", 
+            placeholder="Строка из символов \"a-z0-9_\"",
+            value=setParam.key)
+        div.form-group
+          label(for="namePar") Название
+          input.form-control(type="text", 
+            id="namePar", 
+            name="name", 
+            placeholder="Пояснение назначения параметра настройки",
+            value=setParam.name)
+        div.checkbox
+          label
+          - if (setParam.flag) {
+            input(type="checkbox", id="valPar", name="flag", value="1", checked="checked")
+          - } else {
+            input(type="checkbox", id="valPar", name="flag", value="1")
+          - }
+            Включено / Выключено
 
-    div(class="control-group")
-      div(class="controls")
-        button(type="submit", class="btn btn-primary") Сохранить
+    div.form-group
+      button(type="submit", class="btn btn-primary") Сохранить
+      &nbsp;
+      a(href="#myModal", class="btn btn-danger", data-toggle="modal")
+        i(class="icon-trash icon-white")
         &nbsp;
-        a(href="#myModal", class="btn btn-danger", data-toggle="modal")
-          i(class="icon-trash icon-white")
-          &nbsp;
-          Удалить параметр
+        Удалить параметр
 
   <!-- Modal -->
-  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div(class="modal-header")
-      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
-      h3(id="myModalLabel") Требуется подтверждение
-    div(class="modal-body")
-      p Вы действительно хотите удалить этот параметр настройки?
-    div(class="modal-footer")
-      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
-      a(href="/adm/delete-settings-param/#{setParam.id}", id="del-link", class="btn btn-danger") Удалить
-
-
+  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+          h3.modal-title Требуется подтверждение
+        div.modal-body
+          p Вы действительно хотите удалить этот параметр настройки?
+        div.modal-footer
+          button.btn.btn-default(data-dismiss="modal") Отмена
+          a(href="/adm/delete-settings-param/#{setParam.id}", id="del-link", class="btn btn-danger") Удалить
 

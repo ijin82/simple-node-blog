@@ -16,29 +16,28 @@ block content
           td
             - var linkTitle = (post.visible == 1)? 'Сделать невидимым': 'Сделать видимым';
             - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
-            a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini", title=linkTitle)
+            a.btn.btn-default.btn-xs(href="/adm/post-visible/#{post.blog_id}/", title=linkTitle)
               i(class=linkIcon)
-            a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success m-l10",
-              target="_blank", title="Предпросмотр")
+            a.btn.btn-xs.btn-success.m-l10(href="/post/#{post.blog_id}/", target="_blank", title="Предпросмотр")
               i(class="icon-arrow-right")
         tr
           td Теги
           td
             - each tag in tags
               - if (tag.ex) {
-                span.label.label-info.site-a-label
+                span.label.label-primary.site-a-label
                   a(href="#", title="Удалить тег", class="del-tag", rel=tag.tag_id) #{tag.tag_name}
               - } else {
-                span.label.site-a-label
+                span.label.label-default.site-a-label
                   a(href="#", title="Добавить тег", class="add-tag", rel=tag.tag_id) #{tag.tag_name}
               - }
         tr
-          td Заголовок поста
+          td Заголовок&nbsp;поста
           td
-            input(type="text", name="header", value=post.header, class="input-xxlarge")
+            input.form-control(type="text", name="header", value=post.header)
         tr
           td(colspan="2")
-            textarea(rows="20", class="span12", name="text") #{post.text}
+            textarea.form-control(rows="20", name="text") #{post.text}
         tr
           td Дата создания
           td
@@ -51,33 +50,35 @@ block content
           td &nbsp;
           td
             button(type="submit", class="btn btn-primary") Сохранить изменения
-            a(href="#myModal", class="btn btn-danger pull-right", data-toggle="modal")
+            a.btn.btn-danger.pull-right(href="#myModal", data-toggle="modal")
               i(class="icon-trash icon-white")
-              &nbsp;
-              Удалить запись
+              &nbsp;Удалить запись
 
 
   <!-- Modal -->
-  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div(class="modal-header")
-      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
-      h3(id="myModalLabel") Требуется подтверждение
-    div(class="modal-body")
-      p Вы действительно хотите удалить эту запись?
-    div(class="modal-footer")
-      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
-      a(href="/adm/del-post/#{post.blog_id}/", id="del-link", class="btn btn-danger") Удалить
+  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+          h3.modal-title Требуется подтверждение
+        div.modal-body
+          p Вы действительно хотите удалить эту запись?
+        div.modal-footer
+          button.btn.btn-default(data-dismiss="modal") Отмена
+          a.btn.btn-danger(href="/adm/del-post/#{post.blog_id}/", id="del-link") Удалить
 
 
   script(type="text/javascript").
     $(".add-tag, .del-tag").click(function(){
-      var targClass='label-info';
-      if ($(this).parent().hasClass(targClass)) {
+      var selected = 'label-primary';
+      if ($(this).parent().hasClass(selected)) {
         oper = 'remove';
       } else {
         oper = 'add';
       }
-      $(this).parent().toggleClass(targClass);
+      $(this).parent().toggleClass(selected);
+      $(this).parent().toggleClass('label-default');
       $.get('/adm/change-tag/#{post.blog_id}/' + oper + '/' + $(this).prop('rel'), function(data) {
         $('.result').html(data);
       });

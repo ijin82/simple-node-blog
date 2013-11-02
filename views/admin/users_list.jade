@@ -26,18 +26,18 @@ block content
         td #{user.name}
         td #{user.login || '-'}
         td
-          div(class="btn-group")
-            a(class="btn btn-small dropdown-toggle", data-toggle="dropdown", href="#")
+          div(class="dropdown")
+            a.btn.btn-sm.btn-default.dropdown(data-toggle="dropdown", href="#")
               span(id="urole_#{user.user_id}") #{user.role}
               &nbsp;
-              span(class="caret")
+              span.caret
             ul(class="dropdown-menu")
               li
-                a(href="#", rel="/adm/set-user-role/#{user.user_id}/admin", class="nrole") admin
+                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/admin") admin
               li
-                a(href="#", rel="/adm/set-user-role/#{user.user_id}/writer", class="nrole") writer
+                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/writer") writer
               li
-                a(href="#", rel="/adm/set-user-role/#{user.user_id}/user", class="nrole") user
+                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/user") user
         td.text-center
           - if (user.facebook_id) {
             i(class="icon-star")
@@ -57,19 +57,21 @@ block content
             -
           - }
         td.text-center
-          a(href="#myModal", rel="/adm/delete-user/#{user.user_id}", class="btn btn-danger delUser", data-toggle="modal")
+          a.btn.btn-danger.delUser(href="#myModal", rel="/adm/delete-user/#{user.user_id}", data-toggle="modal")
             i(class="icon-trash")
 
   <!-- Modal -->
-  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div(class="modal-header")
-      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
-      h3(id="myModalLabel") Требуется подтверждение
-    div(class="modal-body")
-      p Вы действительно хотите удалить этого пользователя?
-    div(class="modal-footer")
-      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
-      a(href="#", id="del-link", class="btn btn-danger") Удалить
+  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+          h4.modal-title(id="myModalLabel") Требуется подтверждение
+        div.modal-body
+          p Вы действительно хотите удалить этого пользователя?
+        div.modal-footer
+          button.btn.btn-default(data-dismiss="modal", aria-hidden="true") Отмена
+          a(href="#", id="del-link", class="btn btn-danger") Удалить
 
   script(type="text/javascript").
     $(".nrole").click(function(){

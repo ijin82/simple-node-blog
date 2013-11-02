@@ -68,7 +68,7 @@ exports.blogList = function (req, res, next) {
     " + searchByTag + " \
     WHERE b.visible=1 " + tagExclude + "\
     GROUP BY b.blog_id\
-    ORDER BY b.blog_id DESC \
+    ORDER BY b.blog_id " + ((req.params.sort == 'back') ? 'ASC' : 'DESC') + " \
     LIMIT ?, ?",
     [
       page_id * page_size,
@@ -106,7 +106,8 @@ exports.blogList = function (req, res, next) {
                 pager_current: (page_id + 1), // current page
                 tag_id: tag_id, // current tag
                 tags_line: req.tags_line, // all tags array
-                title: pageTitle
+                title: pageTitle,
+                sort: (req.params.sort == 'back') ? 'back' : ''
               });
             }
           });

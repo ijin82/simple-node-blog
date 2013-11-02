@@ -2,75 +2,74 @@ extends layout
 
 block content
 
-  div
-    div(style="padding: 8% 15%")
-      form(method="post", class="form-horizontal", action="/my/saveProfile",)
-        div.control-group
-          div.controls
-            strong Привет, #{userInfo.name}!
-        div.control-group
-          label(class="control-label", for="inName") Ваше имя на сайте
-          div.controls
-            input(type="text", value=userInfo.name, name="name", id="inName")
-        div.control-group
-          div.controls
-            button(type="submit", class="btn btn-primary") Сохранить
+  div(style="padding: 8% 19%;")
+    form(method="post", class="form-horizontal", action="/my/saveProfile",)
+      div.form-group
+        div.col-lg-offset-4.col-lg-8
+          strong Привет, #{userInfo.name}!
+      div.form-group
+        label.control-label.col-lg-4(for="inName") Ваше имя на сайте
+        div.col-lg-4
+          input.form-control(type="text", value=userInfo.name, name="name", id="inName")
+      div.form-group
+        div.col-lg-offset-4.col-lg-8
+          button(type="submit", class="btn btn-primary") Сохранить
 
-        - each w in warn
-          - if (w == 'empty_name')
-            div.control-group
-              div.controls
-                label(class="label label-important") Имя не может быть пустым
-          - if (w == 'wrong_name')
-            div.control-group
-              div.controls
-                label(class="label label-important") Имя может состоять из символов "a-z0-9а-я _-"
+      - each w in warn
+        - if (w == 'empty_name')
+          div.form-group
+            div.col-lg-offset-4.col-lg-8
+              label(class="label label-important") Имя не может быть пустым
+        - if (w == 'wrong_name')
+          div.form-group
+            div.col-lg-offset-4.col-lg-8
+              label(class="label label-important") Имя может состоять из символов "a-z0-9а-я _-"
 
-        - each m in msg
-          - if (m == 'link_add')
-            div.control-group
-              div.controls
-                label(class="label label-success") Добавлена привязка
-          - if (m == 'link_remove')
-            div.control-group
-              div.controls
-                label(class="label label-success") Привязка удалена
-          - if (m == 'name_saved')
-            div.control-group
-              div.controls
-                label(class="label label-success") Имя пользователя сохранено
+      - each m in msg
+        - if (m == 'link_add')
+          div.form-group
+            div.col-lg-offset-4.col-lg-8
+              label(class="label label-success") Добавлена привязка
+        - if (m == 'link_remove')
+          div.form-group
+            div.col-lg-offset-4.col-lg-8
+              label(class="label label-success") Привязка удалена
+        - if (m == 'name_saved')
+          div.form-group
+            div.col-lg-offset-4.col-lg-8
+              label(class="label label-success") Имя пользователя сохранено
 
-        div#profile-keys
-          - if (userInfo.facebook_id) {
-              a(class="btn btn-small btn-success", href="/auth-off/facebook_id")
-                i(class="icon-facebook")
-                &nbsp; Facebook подключен
-          - } else {
-              a(class="btn btn-small", href="/auth/facebook")
-                i(class="icon-facebook")
-                &nbsp; Facebook не подключен
-          - }
+      div#profile-keys
+        - if (userInfo.facebook_id) {
+            a(class="btn btn-xs btn-success", href="/auth-off/facebook_id")
+              i(class="icon-facebook")
+              &nbsp; Facebook подключен
+        - } else {
+            a(class="btn btn-default btn-xs", href="/auth/facebook")
+              i(class="icon-facebook")
+              &nbsp; Facebook не подключен
+        - }
 
-          - if (userInfo.twitter_id) {
-              a(class="btn btn-small btn-success", href="/auth-off/twitter_id")
-                i(class="icon-twitter")
-                &nbsp; Twitter подключен
-          - } else {
-              a(class="btn btn-small", href="/auth/twitter")
-                i(class="icon-twitter")
-                &nbsp; Twitter не подключен
-          - }
+        - if (userInfo.twitter_id) {
+            a(class="btn btn-xs btn-success", href="/auth-off/twitter_id")
+              i(class="icon-twitter")
+              &nbsp; Twitter подключен
+        - } else {
+            a(class="btn btn-default btn-xs", href="/auth/twitter")
+              i(class="icon-twitter")
+              &nbsp; Twitter не подключен
+        - }
 
 
-          - if (userInfo.github_id) {
-              a(class="btn btn-small btn-success", href="/auth-off/github_id")
-                i(class="icon-github")
-                &nbsp; Github подключен
-          - } else {
-              a(class="btn btn-small", href="/auth/github")
-                i(class="icon-github")
-                &nbsp; Github не подключен
-          - }
+        - if (userInfo.github_id) {
+            a(class="btn btn-xs btn-success", href="/auth-off/github_id")
+              i(class="icon-github")
+              &nbsp; Github подключен
+        - } else {
+            a(class="btn btn-default btn-xs", href="/auth/github")
+              i(class="icon-github")
+              &nbsp; Github не подключен
+        - }
 
-      div.clearfix
+    div.clearfix
 

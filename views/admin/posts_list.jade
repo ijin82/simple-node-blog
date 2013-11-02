@@ -12,7 +12,7 @@ block content
       th Дата
       th(colspan="3")
         Запись
-        a(href="/adm/post-new/", class="btn btn-mini pull-right") Добавить запись
+        a.btn.btn-default.btn-xs.pull-right(href="/adm/post-new/") Добавить запись
     tbody
     - each post in posts
       - if (post.visible == 1) { trClass = ''} else {trClass = 'warning'}
@@ -21,19 +21,19 @@ block content
           ul(class="post-meta")
             li
               i(class="icon-calendar")
-              &nbsp;
-              = dateformat(post.post_date,"dd.mm.yyyy hh:mm:ss")
+              = dateformat(post.post_date," dd.mm.yyyy hh:mm:ss")
         td
           a(href="/adm/edit-post/#{post.blog_id}/", title="Редактировать") #{post.header || '- нет -'}
           &nbsp;
-          a(href="/post/#{post.blog_id}/", class="btn btn-mini btn-success pull-right", target="_blank", title="Предпросмотр")
-            i(class="icon-arrow-right")
+          a.btn.btn-success.btn-xs.pull-right(href="/post/#{post.blog_id}/", target="_blank", title="Предпросмотр")
+            i.icon-arrow-right
         td
-          - var linkTitle = (post.visible == 1)? 'Сделать невидимым': 'Сделать видимым';
-          - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
-          a(href="/adm/post-visible/#{post.blog_id}/", class="btn btn-mini", title=linkTitle)
+          - var linkTitle = (post.visible == 1) ? 'Сделать невидимым': 'Сделать видимым';
+          - var linkIcon = (post.visible == 1) ? 'icon-eye-open': 'icon-eye-close';
+          a.btn.btn-default.btn-xs.pull-left(href="/adm/post-visible/#{post.blog_id}/", title=linkTitle)
             i(class=linkIcon)
         td
           - if (post.comments_cnt > 0)
             span.label.label-success.m-l10
               + #{post.comments_cnt}
+

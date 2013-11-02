@@ -1,14 +1,16 @@
-div#tags_line
-  - if (tags_line_link) {
+div
+  - if (locals.tags_line_link) {
   -   tagLink = tags_line_link;
   - } else {
   -   tagLink = 'tag';
   - }
   - each tag in tags_line
     - if(tag_id && tag_id == tag.tag_id)
-      span.label.label-info.site-a-label
+      span.label.label-primary.site-a-label
         a.current(href="/#{tagLink}/#{tag.tag_id}/") #{tag.tag_name}
     - else
-      span.label.site-a-label
+      span.label.label-default.site-a-label
         a(href="/#{tagLink}/#{tag.tag_id}/") #{tag.tag_name}
-  div(class="clearfix")
+
+  div.clearfix
+
