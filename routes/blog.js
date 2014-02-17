@@ -1,25 +1,28 @@
 /**
  * blog module
  */
-var counters = { tags: 0 };
 
-// select all tags for selected post
-function getBlogTags(blog_id, pKey, next) {
-  counters.tags++;
-
+// get tag for posts
+function getTags(postsIds, next) {
   // post tags
-  db.q("SELECT t.* \
+  db.q("SELECT t.*, bt.blog_id \
       FROM blog_tags bt \
       INNER JOIN tags t ON t.tag_id=bt.tag_id \
-      WHERE bt.blog_id=?",
-    [
-      blog_id
-    ], function tags(err, tags) {
-      if (err) return next(err);
+      WHERE bt.blog_id IN (?)",
+      [
+        postsIds
+      ], function tags(err, tags) {
+        if (err) return next(err);
 
-      counters.tags--;
-      next(err, tags, pKey);
-    }); // close post tags query
+        var tagObj = {};
+        for (i in tags) {
+          if (typeof tagObj[tags[i].blog_id] == 'undefined')
+            tagObj[tags[i].blog_id] = [tags[i]];
+          else
+            tagObj[tags[i].blog_id].push(tags[i]);
+        }
+        next(err, tagObj);
+      });
 }
 
 // update comments count for selected post
@@ -39,80 +42,92 @@ function updateCommentsCount(post_id) {
 
 // get page list with posts
 exports.blogList = function (req, res, next) {
-  page_id = check.numeric(req.params.page_id, 1);
-  if (page_id > 0) {
-    page_id -= 1;
-  }
-  tag_id = check.numeric(req.params.tag_id);
+  dbPool.getConn(function(dbPage){
 
-  // posts on page quantity
-  page_size = 5;
+    var page_id = check.numeric(req.params.page_id, 1);
+    if (page_id > 0) {
+      page_id -= 1;
+    }
+    var tag_id = check.numeric(req.params.tag_id);
 
-  if (tag_id != 0) {
+    // posts on page quantity
+    var page_size = 5;
 
-    searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
-    tagExclude = "";
-  } else {
+    if (tag_id != 0) {
 
-    searchByTag = "LEFT JOIN (\
-      SELECT DISTINCT b.blog_id as exc\
-      FROM blog b\
-      INNER JOIN blog_tags bt ON b.blog_id=bt.blog_id\
-      INNER JOIN tags t ON t.tag_id=bt.tag_id AND t.exclude=1\
-    ) as t1 ON b.blog_id=t1.exc";
-    tagExclude = "AND t1.exc IS NULL";
-  }
+      searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
+      tagExclude = "";
+    } else {
 
-  db.q("SELECT SQL_CALC_FOUND_ROWS b.*\
-    FROM blog  b \
-    " + searchByTag + " \
-    WHERE b.visible=1 " + tagExclude + "\
-    GROUP BY b.blog_id\
-    ORDER BY b.blog_id DESC \
-    LIMIT ?, ?",
-    [
-      page_id * page_size,
-      page_size
-    ], function (err, qres) {
-      if (err) return next(err);
+      searchByTag = "LEFT JOIN (\
+        SELECT DISTINCT b.blog_id as exc\
+        FROM blog b\
+        INNER JOIN blog_tags bt ON b.blog_id=bt.blog_id\
+        INNER JOIN tags t ON t.tag_id=bt.tag_id AND t.exclude=1\
+      ) as t1 ON b.blog_id=t1.exc";
+      tagExclude = "AND t1.exc IS NULL";
+    }
 
-      // wrong page no posts
-      if (qres.length <= 0 && page_id >= 0) {
-        res.redirect('/404/');
-        return;
-      }
-
-      // rows quant count
-      db.foundRows(function (err, cnt) {
+    dbPage.q("SELECT SQL_CALC_FOUND_ROWS b.*\
+      FROM blog  b \
+      " + searchByTag + " \
+      WHERE b.visible=1 " + tagExclude + "\
+      GROUP BY b.blog_id\
+      ORDER BY b.blog_id " + ((req.params.sort == 'back') ? 'ASC' : 'DESC') + " \
+      LIMIT ?, ?",
+      [
+        page_id * page_size,
+        page_size
+      ], function (err, qres) {
         if (err) return next(err);
 
-        for (i in qres) {
-          getBlogTags(qres[i].blog_id, i, function (err, tags, pKey) {
+        // wrong page no posts
+        if (qres.length <= 0 && page_id >= 0) {
+          res.redirect('/404/');
+          return;
+        }
+
+        // rows quant count
+        dbPage.foundRows(function (err, cnt) {
+          if (err) return next(err);
+
+          var postsIds = [];
+          for (i in qres) {
+            postsIds.push(qres[i].blog_id);
+          }
+          getTags(postsIds, function(err, tags){
             if (err) return next(err);
 
-            qres[pKey].tags = tags;
-
-          if (tag_id != 0) {
-            pageTitle = 'tag #' + tag_id + ' - page #' + (page_id + 1);
-          } else {
-            pageTitle = 'page #' + (page_id + 1);
-          }
-            // render blog page
-            if (counters.tags == 0) {
-              res.render('blog_list', {
-                posts: qres,
-                pager_cnt: cnt, // total posts quant
-                pager_size: page_size, // page size, posts on page
-                pager_current: (page_id + 1), // current page
-                tag_id: tag_id, // current tag
-                tags_line: req.tags_line, // all tags array
-                title: pageTitle
-              });
+            for (i in qres) {
+              if (typeof tags[qres[i].blog_id] != 'undefined')
+                qres[i].tags = tags[qres[i].blog_id];
+              else
+                qres[i].tags = [];
             }
+
+            if (tag_id != 0) {
+              pageTitle = 'tag #' + tag_id + ' - page #' + (page_id + 1);
+            } else {
+              pageTitle = 'page #' + (page_id + 1);
+            }
+
+            // release connection
+            dbPage.release();
+
+            res.render('blog_list', {
+              posts: qres,
+              pager_cnt: cnt, // total posts quant
+              pager_size: page_size, // page size, posts on page
+              pager_current: (page_id + 1), // current page
+              tag_id: tag_id, // current tag
+              tags_line: req.tags_line, // all tags array
+              title: pageTitle,
+              sort: (req.params.sort == 'back') ? 'back' : ''
+            });
           });
-        }
-      });
+        }); // foundRows
     });
+  }); // getConn
 }
 
 // comments for post
@@ -294,15 +309,23 @@ exports.newComment = function (req, res) {
 exports.blogPostsList = function (req, res, next) {
   tag_id = check.numeric(req.params.tag_id);
 
-  if (tag_id != 0)
+  if (tag_id != 0) {
     searchByTag = "INNER JOIN blog_tags bt ON bt.blog_id=b.blog_id AND bt.tag_id=" + tag_id;
-  else
-    searchByTag = "";
+    tagExclude = "";
+  } else {
+    searchByTag = "LEFT JOIN (\
+        SELECT DISTINCT b.blog_id as exc\
+        FROM blog b\
+        INNER JOIN blog_tags bt ON b.blog_id=bt.blog_id\
+        INNER JOIN tags t ON t.tag_id=bt.tag_id AND t.exclude=1\
+      ) as t1 ON b.blog_id=t1.exc";
+      tagExclude = "AND t1.exc IS NULL";
+  }
 
   db.q("SELECT b.* \
       FROM blog  b \
       " + searchByTag + " \
-      WHERE b.visible=1 \
+      WHERE b.visible=1 " + tagExclude + "\
       ORDER BY b.blog_id DESC",
     function (err, qres) {
       if (err) return next(err);

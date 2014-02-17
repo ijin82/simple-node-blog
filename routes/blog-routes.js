@@ -1,12 +1,13 @@
-module.exports = function (app, blog) {
+module.exports = function(app, blog)
+{
   // main page
   app.get('/', blog.tagsLine, blog.blogList);
 
   // main page with paging
-  app.get('/page/:page_id', blog.tagsLine, blog.blogList);
+  app.get('/page/:page_id/:sort?', blog.tagsLine, blog.blogList);
 
   // page_id can be unset, marked with "?" after var name
-  app.get('/tag/:tag_id/:page_id?', blog.tagsLine, blog.blogList);
+  app.get('/tag/:tag_id/:page_id?/:sort?', blog.tagsLine, blog.blogList);
 
   // single post page
   app.get('/post/:post_id', blog.blogPost);

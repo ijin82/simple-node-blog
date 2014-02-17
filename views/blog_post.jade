@@ -3,40 +3,36 @@ extends layout
 block content
 
   div.post
-    h2= post.header
+    h1= post.header
 
     ul(class="post-meta")
      li
        i(class="icon-calendar")
-       &nbsp;
-       = dateformat(post.post_date,"dddd, d mmmm yyyy")
+       = dateformat(post.post_date," dddd, d mmmm yyyy")
      - if (post.comments_cnt > 0) {
        li
-         span.label.label-success
-           + #{post.comments_cnt}
+         span.label.label-success + #{post.comments_cnt}
      - }
 
     div(class="m-t10") !{post.text}
 
     div
       - if (tags.length>0)
-        - mytags = []
-        - each tag, i in tags
-          - mytags.push('<a href="/tag/' + tag.tag_id + '/">' + tag.tag_name + '</a>')
-        - mytags = mytags.join(', ')
-        Теги: !{mytags}
+        - each tag in tags
+            span.label.label-default.site-a-label
+              a(href="/tag/" + tag.tag_id + "/") #{tag.tag_name}
 
     div.social
-      div(class="fb-like", data-send="true", data-layout="button_count",
-        data-width="450", data-show-faces="true", data-font="verdana", style="float: left;")
       div(style="float: left;")
-        &nbsp;
-        a(href="https://twitter.com/share", class="twitter-share-button",
-          data-via="twitterapi", data-lang="ru") Tweet
-      div(class="clearfix")
+        a.twitter-share-button(href="https://twitter.com/share", data-lang="ru", data-count="none") Твитнуть
+        | &nbsp;
+        div.g-plusone(data-size="medium", data-annotation="none")
+        | &nbsp;
+        div.fb-like(data-layout="button", data-action="like", data-show-faces="true", data-share="false")
+      div.clearfix
 
   div.post
-    h2 Комментарии
+    h3 Комментарии
     if (comments.length == 0)
       p Пока комментариев совсем нет
     else
@@ -44,18 +40,17 @@ block content
         div.comment
           div.comment-user
             a(href="#"+comment.user_id) #{comment.name}
-            &nbsp; / &nbsp;
+            | &nbsp; / &nbsp;
             em
               = dateformat(comment.pub_date,"dddd, d mmmm yyyy, HH:MM")
-            &nbsp; / &nbsp;
-            b
-              ##{comment.comment_id}
+            | &nbsp; / &nbsp;
+            b ##{comment.comment_id}
             if (comment.user_id == userInfo.user_id || userInfo.role == 'admin')
-              &nbsp;&nbsp;
-              span.label.label-important.site-a-label
+              | &nbsp;&nbsp;
+              span.label.label-danger.site-a-label
                 a(href="#myModal",
                   rel="/delcomment/" + comment.comment_id,
-                  class="no-dec del-comment",
+                  class="del-comment",
                   title="Удалить комментарий",
                   data-toggle="modal") удалить
           div.comment-text
@@ -67,10 +62,9 @@ block content
         input(type="hidden", name="post_id", value=post.blog_id)
         textarea(name="text", rows="7", cols="80", class="input-xxlarge")
         br
-        button(type="submit", class="btn") Комментировать
+        button(type="submit", class="btn btn-default m-t10") Комментировать
     else
-      div.p-t10
-        Чтобы оставить комментарий, нужно пройти авторизацию
+      div.p-t10 Чтобы оставить комментарий, нужно пройти авторизацию
         div.m-b10
         span.h-list
           a(href="/auth/facebook", title="facebook", class="social-icon-link")
@@ -83,15 +77,17 @@ block content
   include includes/social.html
 
   <!-- Modal -->
-  div(id="myModal", class="modal hide fade", tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div(class="modal-header")
-      button(type="button", class="close", data-dismiss="modal", aria-hidden="true") ×
-      h3(id="myModalLabel") Требуется подтверждение
-    div(class="modal-body")
-      p Вы действительно хотите удалить комментарий?
-    div(class="modal-footer")
-      button(class="btn", data-dismiss="modal", aria-hidden="true") Отмена
-      a(href="#", id="del-link", class="btn btn-danger") Удалить
+  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+    div.modal-dialog
+      div.modal-content
+        div.modal-header
+          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+          h3.modal-title Требуется подтверждение
+        div.modal-body
+          p Вы действительно хотите удалить комментарий?
+        div.modal-footer
+          button.btn.btn-default(data-dismiss="modal") Отмена
+          a.btn.btn-danger(href="#", id="del-link") Удалить
 
   script(type="text/javascript").
     $(".del-comment").click(function(){

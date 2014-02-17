@@ -1,49 +1,45 @@
-doctype 5
+doctype html
 html
   head
     block head
       title
-        - if (fullTitle) {
+        - if (locals.fullTitle) {
             = fullTitle
         - } else {
             != getAppConfig('blog_name', 'simple node blog')
-            - if (title) {
+            - if (locals.title) {
               |  - #{title}
             - }
-        - }
+        -}
       meta(charset="utf-8")
       link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
       link(rel='stylesheet', href='/awesome/css/font-awesome.min.css')
       script(type="text/javascript", src="/js/jquery.min.js").
-      script(type="text/javascript", src="/bootstrap/js/bootstrap.js").
+      script(type="text/javascript", src="/bootstrap/js/bootstrap.min.js").
       link(rel='stylesheet', href='/css/main.css')
       script(type="text/javascript", src="/highlight.js/highlight.pack.js").
       link(rel='stylesheet', href='/highlight.js/github.css')
-
       meta(name="description", content=getAppConfig('global_description', 'simple node blog'))
-      meta(name="keywords", content=getAppConfig('global_keywords', 'simple node blog'))
-      meta(name="google-site-verification", content="KL39bGDRzmX1IFHdjHmeQQ24JTPQawDvMc9VZKUYPhM")
   body
-
     div#wrap
       div#header
         div.container
           div.login-toplink.pull-right
-            - if (!userInfo || !userInfo.auth)
-                a(href="/login/", class="btn btn-mini") Вход
+            - if (!locals.userInfo || !userInfo.auth)
+                a(href="/login/", class="btn btn-default btn-xs") Вход
             - else
-                !{userInfo.name} &nbsp;
+                = userInfo.name
+                | &nbsp;
                 if (userInfo.role == 'admin')
-                  &nbsp;
-                  a(href="/adm/posts/", class="btn btn-mini", title="Управление")
+                  | &nbsp;
+                  a(href="/adm/posts/", class="btn btn-default btn-xs", title="Управление")
                     i(class="icon-cog")
-                  &nbsp;
-                a(href="/my/profile/", class="btn btn-mini", title="Профиль")
+                  | &nbsp;
+                a(href="/my/profile/", class="btn btn-default btn-xs", title="Профиль")
                   i(class="icon-user")
-                &nbsp;
-                a(href="/logout/", class="btn btn-mini") Выход
-
-          h2
+                | &nbsp;
+                a(href="/logout/", class="btn btn-default btn-xs") Выход
+          h2#title
             a(href='/')
               != getAppConfig('blog_name', 'simple node blog')
 
@@ -55,13 +51,15 @@ html
     div#footer
       div.container
         i(class="icon-github-alt")
-        |&nbsp;
+        | &nbsp;
         a(href="https://github.com/ijin82/simple-node-blog", target="_blank") simple node blog
-        |&nbsp;
-        span.label.label-info.site-a-label.label-inline
-          a(href="/full-list/") Все записи
+        | &nbsp; &nbsp; &nbsp;
+        a(href="/rss/main.rss", title="rss общей ленты", target="_blank") RSS
+        | &nbsp; &nbsp; &nbsp;
+        a(href="/full-list/", title="Все записи в одном списке") Все записи
 
     != getAppConfig('counter_code', '<!-- counter_code -->')
 
     script(type="text/javascript").
       $('pre.code').each(function(i, e) {hljs.highlightBlock(e)});
+

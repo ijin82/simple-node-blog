@@ -5,24 +5,26 @@ block content
   - var active_tab = {settings: 'active'}
   include sub_navi.jade
 
-  div(class="accordion-group")
-    div(class="accordion-heading")
-      a(class="accordion-toggle", data-toggle="collapse", href="#collapseOne")
-        Как пользоваться настройками?
-    div(id="collapseOne", class="accordion-body collapse")
-      div(class="accordion-inner")
-        ol
-          li Настройки бывают трех типов: "короткий текст" (до 255 символов), "длинный текст", "флаг" (значение да/нет)
-          li Настройки позволяют отображать дополнительные данные на страницах (счетчики, баннеры и прочее)
-          li Настройки типа "флаг" позволяют добавлять условия в логику самого приложения (включить выключить
-            | рекламную акцию например) и логику отображения строковых настроек на страницах
-          li В шаблонах доступ к настройкам выглядит так:
-            strong &nbsp; != getAppConfig('settings_key', 'default value')
-          li В коде контроллеров доступ к настройкам выглядит так:
-            strong &nbsp; appConfig.settings_key
-          li Таким образом, для использования новых настроек их необходимо имплементировать в шаблоны или код
-            | в зависимости от запланированного назначения
-
+  div.panel-group#accordion
+    div.panel.panel-default
+      div.panel-heading
+        h4.panel-title
+          a.accordion-toggle(data-toggle="collapse", dataParent="#accordion", href="#collapseOne")
+            | Как пользоваться настройками?
+      div.pannel-collapse.collapse#collapseOne
+        div.panel-body
+          ol
+            li Настройки бывают трех типов: "короткий текст" (до 255 символов), "длинный текст", "флаг" (значение да/нет)
+            li Настройки позволяют отображать дополнительные данные на страницах (счетчики, баннеры и прочее)
+            li Настройки типа "флаг" позволяют добавлять условия в логику самого приложения (включить выключить
+              | рекламную акцию например) и логику отображения строковых настроек на страницах
+            li В шаблонах доступ к настройкам выглядит так:
+              strong &nbsp; != getAppConfig('settings_key', 'default value')
+            li В коде контроллеров доступ к настройкам выглядит так:
+              strong &nbsp; appConfig.settings_key
+            li Таким образом, для использования новых настроек их необходимо имплементировать в шаблоны или код
+              | в зависимости от запланированного назначения
+  br
   table.table.table-striped.table-hover
     thead
       th Ключ
@@ -40,26 +42,27 @@ block content
         td
           case item.type
             when 's_short'
-              Короткий текст
+              | Короткий текст
             when 's_long'
-              Длинный текст
+              | Длинный текст
             when 'flag'
-              Флаг
+              | Флаг
             default
               | - нет -
         td &nbsp;
 
 
-  form(class="form-horizontal", method="post", action="/adm/add-settings-param")
+  form.form-horizontal(role="form", method="post", action="/adm/add-settings-param")
     legend Добавление параметра настройки
-    div(class="control-group")
-      label(class="control-label", for="keyPar") Ключ
-      div(class="controls")
-        select(name="type")
+    div.form-group
+      label.control-label.col-lg-3 Ключ
+      div.col-lg-5
+        select.form-control(name="type")
           option(value="s_short") Короткий текст
           option(value="s_long") Длинный текст
           option(value="flag") Флаг
 
-    div(class="control-group")
-      div(class="controls")
+    div.form-group
+      div.col-lg-9.col-lg-offset-3
         button(type="submit", class="btn btn-primary") Добавить параметр
+

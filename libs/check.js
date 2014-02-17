@@ -1,12 +1,10 @@
-var check = require('validator').check;
+var check = require('validator');
 
 exports.numeric = function (value, defaultValue) {
 
-  try {
-    check(value).is(/^[0-9]+$/);
-
-    return value;
-  } catch (e) {
+    if (check.matches(value, /^[0-9]+$/)) {
+      return value;
+    }
 
     if (typeof defaultValue != 'undefined') {
 
@@ -15,5 +13,4 @@ exports.numeric = function (value, defaultValue) {
 
       return 0;
     }
-  }
 }

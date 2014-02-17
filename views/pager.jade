@@ -1,7 +1,6 @@
 - var ipages = Math.ceil(pager_cnt/pager_size);
 - if (ipages > 1)
-  div.pagination.m-b10
-    ul
+    ul.pagination.m-b10
       -  if (tag_id != 0) {
       -      urlStart = '/tag/' + tag_id + '/'
       -  } else {
@@ -12,29 +11,36 @@
       - cur_p = 1
       - if (pager_current > 7) {
       -   if (ipages - pager_current < maxlen) {
-            m = ipages - maxlen +1
+      -     m = ipages - maxlen +1
       -     if (m < 1) {
-              m = 1;
+      -       m = 1;
       -     }
       -   } else {
-            m = pager_current - 7
+      -     m = pager_current - 7
       -   }
       - } else {
-          m = 1;
+      -   m = 1;
       - }
+      - pageSort = (sort == 'back')? '/back/' : '/';
       - for (m; m <= ipages; m++, cur_p++) {
       -   if (cur_p <= maxlen) {
       -     if (m == pager_current)
               li.active
-                != '<a href="' + urlStart + m + '/" title="go to page ' + m + '" class="cur">' + m + '</a>'
+                != '<a href="' + urlStart + m + pageSort + '" title="Перейти на страницу ' + m + '" class="cur">' + m + '</a>'
       -     else
               li
-                != '<a href="' + urlStart + m + '/" title="go to page ' + m + '">' + m + '</a>'
+                != '<a href="' + urlStart + m + pageSort + '" title="Перейти на страницу ' + m + '">' + m + '</a>'
       -   } else {
       -     break;
       -   }
       - }
 
-      - if (tag_id != 0)
+      - if (sort =='back')
           li
-            != ' <a href="/">Все записи</a>'
+            a(href=urlStart + pager_current + '/', title="Сейчас сначала старые")
+              i.icon-chevron-down
+      - else
+          li
+            a(href=urlStart + pager_current + '/back/', title="Сейчас сначала новые")
+              i.icon-chevron-up
+
