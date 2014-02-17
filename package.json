@@ -3,7 +3,7 @@
     "express": "3.4.x",
     "jade": "1.1.x",
     "mysql": "2.0.x",
-    "validator": "3.1.x",
+    "validator": "3.2.x",
     "dateformat": "1.0.6-1.2.3",
     "passport": "0.2.x",
     "passport-facebook": "1.0.x",
