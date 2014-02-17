@@ -17,8 +17,8 @@ http://demo.cocainum.info/
 
 Included externals
 --
-- bootstrap v2.3.2
-- jquery v2.0.2
+- bootstrap v3.1.1
+- jquery v2.1.0
 - highlight.js 7.3
 - Font Awesome 3.2.1
 
