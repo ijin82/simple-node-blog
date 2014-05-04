@@ -25,8 +25,8 @@ module.exports = function (app) {
     app.set('FACEBOOK_APP_SECRET', '8f03fdbd94c1f0e82884ac504a09133e');
     app.set('FACEBOOK_CALLBACK_URL', 'http://snb-demo.wired-mind.info/auth/facebook/callback');
 
-    app.set('TWITTER_APP_ID', 'wKR7XhzfT29STBjnw6xA');
-    app.set('TWITTER_APP_SECRET', 'f1JdJTlbIMpug7r7fRcUiyzQM8XfmvqthWrAtHkYc');
+    app.set('TWITTER_APP_ID', 'OaZVyDuMeWedlsY9xnWnEm5ik');
+    app.set('TWITTER_APP_SECRET', 'UMJvjefNxElseD43jfyMcxTiAxMIsDZHFtbNVAOR40aHEbaCeU');
     app.set('TWITTER_CALLBACK_URL', 'http://snb-demo.wired-mind.info/auth/twitter/callback');
   }
 }
