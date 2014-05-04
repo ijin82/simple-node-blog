@@ -7,9 +7,9 @@ This is learninig example app for newbies in node, here we look at:
 - work with <a href="https://npmjs.org/package/mysql">mysql</a>
 - work with <a href="https://github.com/visionmedia/jade">jade</a>
 - closer look at <a href="https://github.com/visionmedia/express">express</a>
-- <a href="https://github.com/CarnegieLearning/connect-mysql-session">Sessions</a>
+- <a href="https://github.com/nlf/connect-mysql">Sessions</a> stored in mysql
 - <a href="https://github.com/jaredhanson/passport">passport</a>
-- <a href="http://twitter.github.io/bootstrap/">bootstrap</a> usage examples
+- <a href="http://getbootstrap.com/">Bootstrap</a> usage examples
 
 Demo version
 -- 
