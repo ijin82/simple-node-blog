@@ -31,7 +31,7 @@ dbPool.getConn(function(dbConn){
 
     
   // gzip all
-//  app.use(compress);
+  app.use(compress());
 
   // error handler
   app.use(require('errorhandler')({ dumpExceptions: true, showStack: true }));
