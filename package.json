@@ -19,7 +19,7 @@
     "errorhandler": "1.0.x",
     "static-favicon": "1.0.x",
     "morgan": "1.0.x",
-    "body-parser": "1.0.x",
+    "body-parser": "1.2.x",
     "method-override": "1.0.x",
     "cookie-parser": "1.0.x",
     "express-session": "1.0.x"
