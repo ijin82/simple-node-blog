@@ -41,7 +41,7 @@ dbPool.getConn(function(dbConn){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(favicon(__dirname + '/public/favicon.ico'))
-  app.use(morgan({ format: 'dev', immediate: true }));
+  app.use(morgan('short'));
   app.use(bodyParser());
   app.use(methodOverride());
 
@@ -56,7 +56,8 @@ dbPool.getConn(function(dbConn){
       config: {
         user: dbConfig.user,
         password: dbConfig.password,
-        database: dbConfig.database
+        database: dbConfig.database,
+        table: 'sessions'
       }
     })
   }));
