@@ -41,8 +41,11 @@ dbPool.getConn(function(dbConn){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(favicon(__dirname + '/public/favicon.ico'))
-  app.use(morgan('short'));
-  app.use(bodyParser());
+  app.use(morgan('short')); 
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }));
+  app.use(bodyParser.json());
   app.use(methodOverride());
 
   // init session
@@ -52,6 +55,8 @@ dbPool.getConn(function(dbConn){
   var MysqlStore = require('connect-mysql')({session: session});
   app.use(session({
     secret: 'adhlbq erldhbq ;erb3241434134-~~~asd',
+    resave: false,
+    saveUninitialized: false,
     store: new MysqlStore({
       config: {
         user: dbConfig.user,

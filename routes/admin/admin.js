@@ -263,7 +263,7 @@ exports.visiblePost = function (req, res) {
 
 exports.newPost = function (req, res, next) {
   db.q("INSERT blog \
-    SET post_date = NOW()",
+    SET post_date = NOW(), visible=0, header='', text=''",
     function (err, qres) {
       if (err) return next(err);
 
