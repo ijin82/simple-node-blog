@@ -16,6 +16,10 @@ exports.getConn = function(next){
           calleeSend = callee;
         }
 
+        if (err) {
+          throw err;
+        }
+
         conn.query(sql, calleeSend, function(err, qres){
           if (err){
             if (typeof(callee) == 'function') {

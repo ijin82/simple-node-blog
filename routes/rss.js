@@ -20,11 +20,11 @@ exports.getMain = function(req, res, next){
       if (err) return next(err);
      
       var feed = new rss({
-          title: req.host,
+          title: req.hostname,
           description: 'блог одного программиста',
-          feed_url: 'http://' + req.host + '/rss/main.rss',
-          site_url: 'http://' + req.host,
-          image_url: 'http://' + req.host + '/img/cocainum.jpg',
+          feed_url: 'http://' + req.hostname + '/rss/main.rss',
+          site_url: 'http://' + req.hostname,
+          image_url: 'http://' + req.hostname + '/img/cocainum.jpg',
           author: 'Ilya Rogojin',
           pubDate: dateformat(new Date(), "fullDate"),
           ttl: '600'
@@ -33,8 +33,8 @@ exports.getMain = function(req, res, next){
       for (i in qres) {
         feed.item({
           title:  qres[i].header,
-          description: qres[i].text.replace(/(\<img\ [^>]*src=\")(\/images)/g,'$1http://' + req.host + '$2'),
-          url: 'http://' + req.host + '/post/' + qres[i].blog_id + '/',
+          description: qres[i].text.replace(/(\<img\ [^>]*src=\")(\/images)/g,'$1http://' + req.hostname + '$2'),
+          url: 'http://' + req.hostname + '/post/' + qres[i].blog_id + '/',
           date: qres[i].post_date
         });
       }
