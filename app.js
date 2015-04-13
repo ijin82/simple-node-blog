@@ -20,7 +20,7 @@ var express = require('express')
   , dateformat = require('dateformat')
   , app_env = process.env.NODE_ENV || 'development';
 
-dbPool.getConn(function(dbConn){
+dbPool.getConn(function(dbConn) {
   app.set('port', 3737);
 
   // main global db connect
