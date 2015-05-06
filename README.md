@@ -13,7 +13,7 @@ This is learninig example app for newbies in node, here we look at:
 
 Demo version
 -- 
-http://snb-demo.wired-mind.info/
+http://snb-demo.wired-mind.info/ - temporary unavailable :(
 
 Included externals
 --
