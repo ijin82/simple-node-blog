@@ -8,7 +8,7 @@ html
                 else
                     = getAppConfig('blog_name', 'simple node blog')
                 if (locals.title)
-                    |- #{title}
+                    |  - #{title} 123
 
             meta(charset="utf-8")
             link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
@@ -25,19 +25,22 @@ html
                 div.container
                     div.login-toplink.pull-right
                         if (!locals.userInfo || !userInfo.auth)
-                            a(href="/login/", class="btn btn-default btn-xs") Вход
+                            a(href="/login/", class="btn btn-default btn-xs") Login
                         else
                             = userInfo.name
                             | &nbsp;
-                        if (userInfo.role == 'admin')
+
+                        if (locals.userInfo.role == 'admin')
                             | &nbsp;
-                            a(href="/adm/posts/", class="btn btn-default btn-xs", title="Управление")
+                            a(href="/adm/posts/", class="btn btn-default btn-xs", title="Adm panel")
                                 i(class="icon-cog")
+
+                        if (locals.userInfo && userInfo.auth)
                             | &nbsp;
-                        a(href="/my/profile/", class="btn btn-default btn-xs", title="Профиль")
-                            i(class="icon-user")
-                        | &nbsp;
-                        a(href="/logout/", class="btn btn-default btn-xs") Выход
+                            a(href="/my/profile/", class="btn btn-default btn-xs", title="Profile")
+                                i(class="icon-user")
+                            | &nbsp;
+                            a(href="/logout/", class="btn btn-default btn-xs") Logout
                     h2#title
                         a(href='/')
                             != getAppConfig('blog_name', 'simple node blog')

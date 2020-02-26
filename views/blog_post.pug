@@ -8,32 +8,23 @@ block content
         ul(class="post-meta")
             li
                 i(class="icon-calendar")
-                = dateformat(post.post_date, " dddd, d mmmm yyyy")
+                = moment(post.post_date).format(" DD MMMM YYYY, dddd")
             if (post.comments_cnt > 0)
-            li
-                span.label.label-success + #{post.comments_cnt}
+                li
+                    span.label.label-success + #{post.comments_cnt}
 
         div(class="m-t10") !{post.text}
 
         div
-            if (tags.length>0)
+            if (tags.length > 0)
                 each tag in tags
                     span.label.label-default.site-a-label
                         a(href="/tag/" + tag.tag_id + "/") #{tag.tag_name}
 
-        div.social
-            div(style="float: left;")
-                a.twitter-share-button(href="https://twitter.com/share", data-lang="ru", data-count="none") Твитнуть
-                | &nbsp;
-                div.g-plusone(data-size="medium", data-annotation="none")
-                | &nbsp;
-                div.fb-like(data-layout="button", data-action="like", data-show-faces="true", data-share="false")
-            div.clearfix
-
     div.post
-        h3 Комментарии
+        h3 Comments
         if (comments.length == 0)
-            p Пока комментариев совсем нет
+            p No comments for now
         else
             for comment in comments
                 div.comment
@@ -41,7 +32,7 @@ block content
                         a(href="#" + comment.user_id) #{comment.name}
                         | &nbsp; / &nbsp;
                         em
-                            = dateformat(comment.pub_date, "dddd, d mmmm yyyy, HH:MM")
+                            = moment(post.post_date).format(" DD MMMM YYYY, dddd")
                         | &nbsp; / &nbsp;
                         b ##{comment.comment_id}
                         if (comment.user_id == userInfo.user_id || userInfo.role == 'admin')
@@ -50,20 +41,20 @@ block content
                                 a(href="#myModal",
                                     rel="/delcomment/" + comment.comment_id,
                                     class="del-comment",
-                                    title="Удалить комментарий",
-                                    data-toggle="modal") удалить
+                                    title="Remove comment",
+                                    data-toggle="modal") remove
                     div.comment-text
                         != filterComment(comment.text)
 
-        h4 Написать комментарий
+        h4 Add comment
         if (userInfo.auth == 1)
             form(method="post", action="/comment")
                 input(type="hidden", name="post_id", value=post.blog_id)
                 textarea(name="text", rows="7", cols="80", class="input-xxlarge")
                 br
-                button(type="submit", class="btn btn-default m-t10") Комментировать
+                button(type="submit", class="btn btn-default m-t10") Comment
         else
-            div.p-t10 Чтобы оставить комментарий, нужно пройти авторизацию
+            div.p-t10 You have to login to add new comment
                 div.m-b10
                 span.h-list
                     a(href="/auth/facebook", title="facebook", class="social-icon-link")
@@ -73,20 +64,18 @@ block content
                     a(href="/auth/github", title="github", class="social-icon-link")
                         i(class="icon-github icon-2x")
 
-    include includes/social.html
-
     <!-- Modal -->
     div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
         div.modal-dialog
             div.modal-content
                 div.modal-header
                     button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
-                    h3.modal-title Требуется подтверждение
+                    h3.modal-title Confirmation
                 div.modal-body
-                    p Вы действительно хотите удалить комментарий?
+                    p Remove this comment?
                 div.modal-footer
-                    button.btn.btn-default(data-dismiss="modal") Отмена
-                    a.btn.btn-danger(href="#", id="del-link") Удалить
+                    button.btn.btn-default(data-dismiss="modal") Cancel
+                    a.btn.btn-danger(href="#", id="del-link") Remove
 
     script(type="text/javascript").
         $(".del-comment").click(function () {
