@@ -3,7 +3,7 @@ extends ../layout
 block content
 
   - var active_tab = {edit_param: 'active'}
-  include sub_navi.jade
+  include sub_navi
 
   form(role="form", method="post", action="/adm/save-settings-param")
     input(type="hidden", name="id", value=setParam.id)

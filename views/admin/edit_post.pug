@@ -3,7 +3,7 @@ extends ../layout
 block content
 
   - var active_tab = {edit_post: 'active'}
-  include sub_navi.jade
+  include sub_navi
 
   form(action="/adm/save-post/", method="post")
     input(type="hidden", name="post_id", value=post.blog_id)

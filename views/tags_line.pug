@@ -1,0 +1,15 @@
+div
+    if (locals.tags_line_link)
+        - tagLink = locals.tags_line_link;
+    else
+        - tagLink = 'tag'
+
+    each tag in tags_line
+        if (tag_id && tag_id == tag.tag_id)
+            span.label.label-primary.site-a-label
+                <a class="current" href="/#{tagLink}/#{tag.tag_id}">#{tag.tag_name}</a>
+        else
+            span.label.label-default.site-a-label
+                <a href="/#{tagLink}/#{tag.tag_id}">#{tag.tag_name}</a>
+div.clearfix
+

@@ -1,34 +1,32 @@
-// local vars
-var express = require('express')
+// read .env
+require('dotenv').config()
+
+let express = require('express')
     , app = express()
     , path = require('path')
     , flash = require('connect-flash')
     , colors = require('colors')
     , compress = require('compression')
     , favicon = require('serve-favicon')
-    , morgan = require('morgan') // ex logger
+    , morgan = require('morgan')
     , bodyParser = require('body-parser')
     , methodOverride = require('method-override')
     , cookieParser = require('cookie-parser')
     , session = require('express-session')
     ;
 
-// global vars
-    dbConfig = require("./config/dbConfig")
-  , dbPool = require('./libs/db')
+    dbPool = require('./libs/db')
   , check = require('./libs/check')
-  , dateformat = require('dateformat')
-  , app_env = process.env.NODE_ENV || 'development';
+  , app_env = process.env.APP_ENV || 'development';
 
 dbPool.getConn(function(dbConn) {
-  app.set('port', 3737);
+  app.set('port', process.env.APP_PORT);
 
   // main global db connect
   db = dbConn;
 
-  // helpers
+  // pug custom functions
   require('./libs/helpers')(app);
-
     
   // gzip all
   app.use(compress());
@@ -37,10 +35,10 @@ dbPool.getConn(function(dbConn) {
   app.use(require('errorhandler')({ dumpExceptions: true, showStack: true }));
 
   // etc settings
-  app.set('port', process.env.SIMPLE_NODE_BLOG_PORT || 3737);
+  app.set('port', process.env.APP_PORT || 3737);
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(favicon(__dirname + '/public/favicon.ico'))
+  app.set('view engine', 'pug');
+  app.use(favicon(__dirname + '/public/favicon.ico'));
   app.use(morgan('short')); 
   app.use(bodyParser.urlencoded({
     extended: true
@@ -49,25 +47,26 @@ dbPool.getConn(function(dbConn) {
   app.use(methodOverride());
 
   // init session
-  app.use(cookieParser('lalaleqwe123111keqwe123123ndfldsaknflsdfsdf'));
+  app.use(cookieParser(process.env.COOKIE_SECRET));
 
   // sessions mysql store
   var MysqlStore = require('connect-mysql')({session: session});
   app.use(session({
-    secret: 'adhlbq erldhbq ;erb3241434134-~~~asd',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new MysqlStore({
       config: {
-        user: dbConfig.user,
-        password: dbConfig.password,
-        database: dbConfig.database,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
+        host: process.env.DB_HOST,
         table: 'sessions'
       }
     })
   }));
 
-  //flash messages
+  // flash messages
   app.use(flash());
 
   // static

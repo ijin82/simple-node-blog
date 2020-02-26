@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+    include tags_line
+
+    table.table.table-striped.table-hover
+        thead
+            th Date
+            th Post title
+            th &nbsp;
+        tbody
+        each post in posts
+          tr
+              td
+                  ul(class="post-meta")
+                      li
+                          i(class="icon-calendar")
+                          = moment(post.post_date).format(" DD MMMM YYYY, dddd")
+              td
+                  <a href="/post/#{post.blog_id}/" title="Открыть">#{post.header}</a>
+              td
+              if (post.comments_cnt > 0)
+                  span.label.label-success.m-l10 + #{post.comments_cnt}

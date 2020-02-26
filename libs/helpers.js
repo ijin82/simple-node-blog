@@ -1,4 +1,5 @@
-var sanitize = require('validator');
+var validator = require('validator');
+var moment = require('moment');
 
 module.exports = function (app) {
 
@@ -8,8 +9,8 @@ module.exports = function (app) {
     res.locals.filterComment = function (str) {
 
       // encode all html
-      str = sanitize.trim(str);
-      str = sanitize.escape(str);
+      str = validator.trim(str);
+      str = validator.escape(str);
 
       // nl2br
       str = str.replace(/\r/g, '');
@@ -34,18 +35,7 @@ module.exports = function (app) {
       }
     }
 
-    res.locals.dateformat = dateformat;
-    // rus lang for dateformat
-    res.locals.dateformat.i18n = {
-      dayNames: [
-        "Вск", "Пон", "Вт", "Ср", "Чт", "Пт", "Сб",
-        "Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"
-      ],
-      monthNames: [
-        "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек",
-        "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"
-      ]
-    };
+    res.locals.moment = moment;
 
     next();
   });

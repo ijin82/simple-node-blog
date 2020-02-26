@@ -37,11 +37,6 @@ body {
 }
 
 @font-face {
-    font-family: 'comfortaabold';
-    src: url('/css/fonts/comfortaa-bold.eot');
-    src: url('/css/fonts/comfortaa-bold.eot?#iefix') format('embedded-opentype'),
-    url('/css/fonts/comfortaa-bold.woff') format('woff'),
-    url('/css/fonts/comfortaa-bold.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
 
@@ -57,7 +52,6 @@ pre {
 
 h1, h2, h3, h4 {
     margin-top: 0px;
-    font-family: 'comfortaabold';
 }
 
 h1 {
@@ -165,7 +159,6 @@ a i.black-icon {
     list-style: none;
     margin: 0px;
     color: #999999;
-    font-family: 'comfortaabold';
     white-space: nowrap;
 }
 

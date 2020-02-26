@@ -1,15 +1,20 @@
 /**
  * decorator for mysql
  */
-var mysql = require('mysql')
-  , pool = mysql.createPool(dbConfig)
+let mysql = require('mysql'),
+    pool = mysql.createPool({
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        host: process.env.DB_HOST,
+        database: process.env.DB_DATABASE
+    });
 
 // for bunch queris like select + found_rows
-exports.getConn = function(next){
+exports.getConn = function(next) {
   pool.getConnection(function(err, conn){
     var dbObj = {
       // standard query
-      q: function(sql, callee, next){
+      q: function(sql, callee, next) {
         if (typeof(callee) != 'object' || !(callee instanceof Array)) {
           calleeSend = [];
         } else {
