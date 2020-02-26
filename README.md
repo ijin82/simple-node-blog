@@ -35,12 +35,12 @@ Install
 Debug
 --
 - <a href="https://npmjs.org/package/nodemon">nodemon</a>
-- npm -g install nodemon
-- nodemon app.js
+- ```npm -g install nodemon```
+- ```nodemon app.js```
 
 Access params
 --
-admin:admin
+***admin:admin***
 
 Pasword is in users.pass field, a simple md5 hash so you can easily change it.
 

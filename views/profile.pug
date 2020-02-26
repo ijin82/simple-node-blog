@@ -2,74 +2,70 @@ extends layout
 
 block content
 
-  div(style="padding: 8% 19%;")
-    form(method="post", class="form-horizontal", action="/my/saveProfile",)
-      div.form-group
-        div.col-lg-offset-4.col-lg-8
-          strong Привет, #{userInfo.name}!
-      div.form-group
-        label.control-label.col-lg-4(for="inName") Ваше имя на сайте
-        div.col-lg-4
-          input.form-control(type="text", value=userInfo.name, name="name", id="inName")
-      div.form-group
-        div.col-lg-offset-4.col-lg-8
-          button(type="submit", class="btn btn-primary") Сохранить
+    div(style="padding: 8% 19%;")
+        form(method="post", class="form-horizontal", action="/my/saveProfile",)
+            div.form-group
+                div.col-lg-offset-4.col-lg-8
+                    strong Hello, #{userInfo.name}!
+            div.form-group
+                label.control-label.col-lg-4(for="inName") Your name
+                div.col-lg-4
+                    input.form-control(type="text", value=userInfo.name, name="name", id="inName")
+            div.form-group
+                div.col-lg-offset-4.col-lg-8
+                    button(type="submit", class="btn btn-primary") Save
 
-      - each w in warn
-        - if (w == 'empty_name')
-          div.form-group
-            div.col-lg-offset-4.col-lg-8
-              label(class="label label-important") Имя не может быть пустым
-        - if (w == 'wrong_name')
-          div.form-group
-            div.col-lg-offset-4.col-lg-8
-              label(class="label label-important") Имя может состоять из символов "a-z0-9а-я _-"
+            each w in warn
+              if (w == 'empty_name')
+                div.form-group
+                    div.col-lg-offset-4.col-lg-8
+                        label(class="label label-danger") User name can't be empty
+              if (w == 'wrong_name')
+                div.form-group
+                    div.col-lg-offset-4.col-lg-8
+                        label(class="label label-danger") User name have to consists of symbols a-z0-9 _-
 
-      - each m in msg
-        - if (m == 'link_add')
-          div.form-group
-            div.col-lg-offset-4.col-lg-8
-              label(class="label label-success") Добавлена привязка
-        - if (m == 'link_remove')
-          div.form-group
-            div.col-lg-offset-4.col-lg-8
-              label(class="label label-success") Привязка удалена
-        - if (m == 'name_saved')
-          div.form-group
-            div.col-lg-offset-4.col-lg-8
-              label(class="label label-success") Имя пользователя сохранено
+            each m in msg
+                if (m == 'link_add')
+                  div.form-group
+                      div.col-lg-offset-4.col-lg-8
+                          label(class="label label-success") Connection added
+                if (m == 'link_remove')
+                    div.form-group
+                        div.col-lg-offset-4.col-lg-8
+                            label(class="label label-success") Connection removed
+                if (m == 'name_saved')
+                    div.form-group
+                        div.col-lg-offset-4.col-lg-8
+                            label(class="label label-success") User name saved
 
-      div#profile-keys
-        - if (userInfo.facebook_id) {
-            a(class="btn btn-xs btn-success", href="/auth-off/facebook_id")
-              i(class="icon-facebook")
-              | &nbsp; Facebook подключен
-        - } else {
-            a(class="btn btn-default btn-xs", href="/auth/facebook")
-              i(class="icon-facebook")
-              | &nbsp; Facebook не подключен
-        - }
+            div#profile-keys
+                if (userInfo.facebook_id)
+                    a(class="btn btn-xs btn-success", href="/auth-off/facebook_id")
+                        i(class="icon-facebook")
+                        | &nbsp; Facebook connected
+                else
+                    a(class="btn btn-default btn-xs", href="/auth/facebook")
+                        i(class="icon-facebook")
+                        | &nbsp; Facebook not connected
 
-        - if (userInfo.twitter_id) {
-            a(class="btn btn-xs btn-success", href="/auth-off/twitter_id")
-              i(class="icon-twitter")
-              | &nbsp; Twitter подключен
-        - } else {
-            a(class="btn btn-default btn-xs", href="/auth/twitter")
-              i(class="icon-twitter")
-              | &nbsp; Twitter не подключен
-        - }
+                if (userInfo.twitter_id)
+                    a(class="btn btn-xs btn-success", href="/auth-off/twitter_id")
+                        i(class="icon-twitter")
+                        | &nbsp; Twitter connected
+                else
+                    a(class="btn btn-default btn-xs", href="/auth/twitter")
+                        i(class="icon-twitter")
+                        | &nbsp; Twitter not connected
 
+                if (userInfo.github_id)
+                    a(class="btn btn-xs btn-success", href="/auth-off/github_id")
+                        i(class="icon-github")
+                        | &nbsp; Github connected
+                else
+                    a(class="btn btn-default btn-xs", href="/auth/github")
+                        i(class="icon-github")
+                        | &nbsp; Github not connected
 
-        - if (userInfo.github_id) {
-            a(class="btn btn-xs btn-success", href="/auth-off/github_id")
-              i(class="icon-github")
-              | &nbsp; Github подключен
-        - } else {
-            a(class="btn btn-default btn-xs", href="/auth/github")
-              i(class="icon-github")
-              | &nbsp; Github не подключен
-        - }
-
-    div.clearfix
+        div.clearfix
 
