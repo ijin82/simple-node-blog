@@ -1,17 +1,17 @@
 div#tags_line
-  - if (!tag_id) {
-    span.label.label-primary.site-a-label
-      a.current(href="/adm/posts/") Все записи
-  - } else {
-    span.label.label-default.site-a-label
-      a.current(href="/adm/posts/") Все записи
-  - }
-
-  - each tag in tags_line
-    - if(tag_id && tag_id == tag.tag_id)
+    if (!tag_id)
         span.label.label-primary.site-a-label
-          a.current(href="/adm/posts/#{tag.tag_id}/") #{tag.tag_name}
-    - else
+            a.current(href="/adm/posts/") Все записи
+    else
         span.label.label-default.site-a-label
-          a(href="/adm/posts/#{tag.tag_id}/") #{tag.tag_name}
-  div(class="clearfix")
+            a.current(href="/adm/posts/") Все записи
+
+    each tag in tags_line
+        if(tag_id && tag_id == tag.tag_id)
+            span.label.label-primary.site-a-label
+                <a class="current" href="/adm/posts/#{tag.tag_id}/">#{tag.tag_name}</a>
+        else
+            span.label.label-default.site-a-label
+                <a href="/adm/posts/#{tag.tag_id}/">#{tag.tag_name}</a>
+
+    div(class="clearfix")

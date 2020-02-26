@@ -1,35 +1,33 @@
 ul(class="nav nav-tabs")
-  li(class=active_tab.post_list)
-    a(href="/adm/posts/")
-      i(class="icon-list-alt black-icon")
-      | &nbsp;Все записи
+    li(class=active_tab.post_list)
+        a(href="/adm/posts/")
+            i(class="icon-list-alt black-icon")
+            | &nbsp;All posts
 
-  li(class=active_tab.tags_list)
-    a(href="/adm/tags/")
-      i(class="icon-tags black-icon")
-      | &nbsp;Теги
+    li(class=active_tab.tags_list)
+        a(href="/adm/tags/")
+            i(class="icon-tags black-icon")
+            | &nbsp;Tags
 
-  li(class=active_tab.users)
-    a(href="/adm/users/")
-      i(class="icon-user black-icon")
-      | &nbsp;Пользователи
+    li(class=active_tab.users)
+        a(href="/adm/users/")
+            i(class="icon-user black-icon")
+            | &nbsp;Users
 
-  li(class=active_tab.settings)
-    a(href="/adm/settings/")
-      i(class="icon-cog black-icon")
-      | &nbsp;Настройки
+    li(class=active_tab.settings)
+        a(href="/adm/settings/")
+            i(class="icon-cog black-icon")
+            | &nbsp;Settings
 
-  - if (active_tab.edit_post == 'active') {
-  li(class="active")
-    a(href="#")
-      i(class="icon-edit black-icon")
-      | &nbsp;Редактирование записи
-  - }
+    if (active_tab.edit_post == 'active')
+        li(class="active")
+            a(href="#")
+                i(class="icon-edit black-icon")
+                | &nbsp;Edit post
 
-  - if (active_tab.edit_param == 'active') {
-  li(class="active")
-    a(href="#")
-      i(class="icon-edit black-icon")
-      | &nbsp;Редактирование параметра настройки
-  - }
+    if (active_tab.edit_param == 'active')
+        li(class="active")
+            a(href="#")
+                i(class="icon-edit black-icon")
+                | &nbsp;Edit settings param
 br
