@@ -22,16 +22,15 @@ Included externals (old version currently)
 
 Install
 --
-1. mkdir folder_name
-1. cd folder_name
-1. git clone https://github.com/ijin82/simple-node-blog.git .
-1. mysql -u root -p -- Create database db_name
-1. mysql -u root -p db_name < sql/simple_node_blog.sql
-1. cp .env.example .env
-1. vim .env - here you have to fix all config settings
-1. npm install
-1. node app.js 
-1. for passport auth usage change access params at config/ folder
+1. ```mkdir folder_name```
+1. ```cd folder_name```
+1. ```git clone https://github.com/ijin82/simple-node-blog.git .```
+1. Create database db_name ```mysql -u root -p```
+1. ```mysql -u root -p db_name < sql/simple_node_blog.sql```
+1. ```cp .env.example .env```
+1. Fix all config settings here ```vim .env``` 
+1. ```npm install```
+1. ```node app.js``` 
 
 Debug
 --
