@@ -6,17 +6,13 @@ Simple blog based on node.js + express.js + pug (ex. jade) + mysql
 
 This is learninig example app for newbies in node, here we look at:
 - work with <a href="https://npmjs.org/package/mysql">mysql</a>
-- work with <a href="https://github.com/visionmedia/jade">jade</a>
-- closer look at <a href="https://github.com/visionmedia/express">express</a>
+- work with <a href="https://pugjs.org/">pug (ex. jade)</a>
+- closer look at <a href="https://github.com/expressjs/express">express</a>
 - <a href="https://github.com/nlf/connect-mysql">Sessions</a> stored in mysql
 - <a href="https://github.com/jaredhanson/passport">passport</a>
 - <a href="http://getbootstrap.com/">Bootstrap</a> usage examples
 
-Demo version
--- 
-http://snb-demo.wired-mind.info/ - temporary unavailable :(
-
-Included externals
+Included externals (old version currently)
 --
 - bootstrap v3.1.1
 - jquery v2.1.0
@@ -27,14 +23,15 @@ Included externals
 Install
 --
 1. mkdir folder_name
-2. cd folder_name
-3. git clone https://github.com/ijin82/simple-node-blog.git .
-4. mysql -u root -p -- Create database db_name
-5. mysql -u root -p db_name < sql/simple_node_blog.sql
-6. vim config/dbConfig.js -- to correct your db access
-7. npm install
-8. node app.js 
-9. for passport auth usage change access params at config/ folder
+1. cd folder_name
+1. git clone https://github.com/ijin82/simple-node-blog.git .
+1. mysql -u root -p -- Create database db_name
+1. mysql -u root -p db_name < sql/simple_node_blog.sql
+1. cp .env.example .env
+1. vim .env - here you have to fix all config settings
+1. npm install
+1. node app.js 
+1. for passport auth usage change access params at config/ folder
 
 Debug
 --
@@ -50,8 +47,8 @@ Pasword is in users.pass field, a simple md5 hash so you can easily change it.
 
 Language of interface
 --
-Only RU now..
-But it's simple!
+Only EN now..
+Looking for multiple languages solution.
 
 Planned
 --
