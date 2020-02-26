@@ -1,7 +1,8 @@
-[![Dependency Status](https://gemnasium.com/ijin82/simple-node-blog.png)](https://gemnasium.com/ijin82/simple-node-blog)
 simple-node-blog
 --
-Simple blog based on node.js + express.js + jade + mysql
+**REM:** Large upgrade in progress. Partly broken.
+
+Simple blog based on node.js + express.js + pug (ex. jade) + mysql
 
 This is learninig example app for newbies in node, here we look at:
 - work with <a href="https://npmjs.org/package/mysql">mysql</a>
