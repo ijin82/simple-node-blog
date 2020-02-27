@@ -2,92 +2,87 @@ extends ../layout
 
 block content
 
-  - var active_tab = {users: 'active'}
-  include sub_navi
+    - var active_tab = {users: 'active'}
+    include sub_navi
 
-  table.table.table-striped.table-hover
-    thead
-      th ID
-      th Имя на сайте
-      th Логин
-      th Роль
-      th.span1.text-center
-        i(class="icon-facebook-sign icon-2x")
-      th.span1.text-center
-        i(class="icon-twitter-sign icon-2x")
-      th.span1.text-center
-        i(class="icon-github icon-2x")
-      th.span1.text-center &nbsp;
-    tbody
-    - each user in users
-      tr
-        td #{user.user_id}
-        td #{user.name}
-        td #{user.login || '-'}
-        td
-          div(class="dropdown")
-            a.btn.btn-sm.btn-default.dropdown(data-toggle="dropdown", href="#")
-              span(id="urole_#{user.user_id}") #{user.role}
-              | &nbsp;
-              span.caret
-            ul(class="dropdown-menu")
-              li
-                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/admin") admin
-              li
-                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/writer") writer
-              li
-                a.nrole(href="#", rel="/adm/set-user-role/#{user.user_id}/user") user
-        td.text-center
-          - if (user.facebook_id) {
-            i(class="icon-star")
-          - } else {
-            | -
-          - }
-        td.text-center
-          - if (user.twitter_id) {
-            i(class="icon-star")
-          - } else {
-            | -
-          - }
-        td.text-center
-          - if (user.github_id) {
-            i(class="icon-star")
-          - } else {
-            | -
-          - }
-        td.text-center
-          a.btn.btn-danger.delUser(href="#myModal", rel="/adm/delete-user/#{user.user_id}", data-toggle="modal")
-            i(class="icon-trash")
+    table.table.table-striped.table-hover
+        thead
+            th ID
+            th Имя на сайте
+            th Логин
+            th Роль
+            th.span1.text-center
+                i(class="icon-facebook-sign icon-2x")
+            th.span1.text-center
+                i(class="icon-twitter-sign icon-2x")
+            th.span1.text-center
+                i(class="icon-github icon-2x")
+            th.span1.text-center &nbsp;
+        tbody
+        each user in users
+            tr
+                td #{user.user_id}
+                td #{user.name}
+                td #{user.login || '-'}
+                td
+                    div(class="dropdown")
+                        a.btn.btn-sm.btn-default.dropdown(data-toggle="dropdown", href="#")
+                            span(id='urole_' + user.user_id) #{user.role}
+                            | &nbsp;
+                            span.caret
+                        ul(class="dropdown-menu")
+                            li
+                                <a class="nrole" href="#" rel="/adm/set-user-role/#{user.user_id}/admin">admin</a>
+                            li
+                                <a class="nrole" href="#" rel="/adm/set-user-role/#{user.user_id}/user">user</a>
+                td.text-center
+                    if (user.facebook_id)
+                        i(class="icon-star")
+                    else
+                        | -
+                td.text-center
+                    if (user.twitter_id)
+                        i(class="icon-star")
+                    else
+                        | -
+                td.text-center
+                    if (user.github_id)
+                        i(class="icon-star")
+                    else
+                        | -
+                td.text-center
+                    a.btn.btn-danger.delUser(href="#myModal", rel='/adm/delete-user/' + user.user_id, data-toggle="modal")
+                        i(class="icon-trash")
 
-  <!-- Modal -->
-  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div.modal-dialog
-      div.modal-content
-        div.modal-header
-          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-          h4.modal-title(id="myModalLabel") Требуется подтверждение
-        div.modal-body
-          p Вы действительно хотите удалить этого пользователя?
-        div.modal-footer
-          button.btn.btn-default(data-dismiss="modal", aria-hidden="true") Отмена
-          a(href="#", id="del-link", class="btn btn-danger") Удалить
+    <!-- Modal -->
+    div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+                    h4.modal-title(id="myModalLabel") Confirmation
+                div.modal-body
+                    p Remove this user?
+                div.modal-footer
+                    button.btn.btn-default(data-dismiss="modal", aria-hidden="true") Cancel
+                    a(href="#", id="del-link", class="btn btn-danger") Remove
 
-  script(type="text/javascript").
-    $(".nrole").click(function(){
-      $.ajax({
-        dataType: 'json',
-        type: 'GET',
-        url: $(this).prop('rel'),
-        data: null,
-        success: function (data) {
-          if (data.result === true) {
-            $("#urole_" + data.userId).text(data.role);
-          }
-        }
-      });
-    });
+    script(type="text/javascript").
+        $(".nrole").click(function () {
+            $.ajax({
+                dataType: 'json',
+                type: 'GET',
+                url: $(this).prop('rel'),
+                data: null,
+                success: function (data) {
+                    if (data.result === true) {
+                        $("#urole_" + data.userId).text(data.role);
+                    }
+                }
+            });
+        });
 
-    $(".delUser").click(function(){
-      var delLink = $(this).prop('rel');
-      $("#del-link").prop('href', delLink);
-    });
+        $(".delUser").click(function () {
+            var delLink = $(this).prop('rel');
+            $("#del-link").prop('href', delLink);
+        });
