@@ -2,64 +2,69 @@ extends ../layout
 
 block content
 
-  - var active_tab = {tags_list: 'active'}
-  include sub_navi
+    - var active_tab = {tags_list: 'active'}
+    include sub_navi
 
-  table.table.table-striped.table-hover
-    thead
-      th ID
-      th Тег
-      th Исключить
-      th &nbsp;
-    tbody
-    - each tag in tags
-      - if (tag.exclude == 0) { trClass = ''} else {trClass = 'warning'}
-        tr(class=trClass)
-          td #{tag.tag_id}
-          td
-            - if (tag.cnt > 0) {
-              span(class="label label-success m-r10") + #{tag.cnt}
-            - } else {
-              span(class="label label-default m-r10") + #{tag.cnt}
-            - }
-            a(href="/adm/posts/#{tag.tag_id}/") #{tag.tag_name}
-          td
-            - if (tag.exclude == 1) {
-              a.btn.btn-default.btn-sm(href="/adm/toggle-tag/" + tag.tag_id, title="Включить посты с этим тегом в общую ленту")
-                i(class="icon-eye-close")
-            - } else {
-              a.btn.btn-default.btn-sm(href="/adm/toggle-tag/" + tag.tag_id, title="Исключить посты с этим тегом из общей ленты")
-                i(class="icon-eye-open")
-            -}
-          td
-            a.btn.btn-danger.del-tag(href="#myModal", rel="/adm/del-tag/#{tag.tag_id}/", data-toggle="modal")
-              i(class="icon-trash icon-white")
-              | &nbsp; Удалить тег
+    table.table.table-striped.table-hover
+        thead
+            th ID
+            th Tag
+            th Exclude
+            th &nbsp;
+        tbody
 
-  form(class="form-horizontal", method="post", action="/adm/add-tag/")
-    legend Добавление нового тега
-    div.form-group
-      label.control-label.col-lg-2(for="inputTagName") Название тега
-      div.col-lg-10
-        input(type="text", class="input-medium", id="inputTagName", name="tagName")
-    div.form-group
-      div.col-lg-offset-2.col-lg-10
-        button(type="submit", class="btn btn-primary") Добавить
+        each tag in tags
+            if (tag.exclude == 0)
+                - trClass = ''
+            else
+                - trClass = 'warning'
 
-  <!-- Modal -->
-  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div.modal-dialog
-      div.modal-content
-        div.modal-header
-          button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
-          h4.modal-title(id="myModalLabel") Требуется подтверждение
-        div.modal-body
-          p Вы действительно хотите удалить этот тег?
-        div.modal-footer
-          button.btn.btn-default(data-dismiss="modal", aria-hidden="true") Отмена
-          a(href="#", id="del-link", class="btn btn-danger") Удалить
+            tr(class=trClass)
+                td #{tag.tag_id}
+                td
+                    if (tag.cnt > 0)
+                        span(class="label label-success m-r10") + #{tag.cnt}
+                    else
+                        span(class="label label-default m-r10") + #{tag.cnt}
 
-  script(type="text/javascript").
-    $(".del-tag").click(function(){
-      $("#del-link").prop('href', $(this).prop('rel'));
-    });
+                    <a href="/adm/posts/#{tag.tag_id}/">#{tag.tag_name}</a>
+                td
+                    if (tag.exclude == 1)
+                        a.btn.btn-default.btn-sm(href="/adm/toggle-tag/" + tag.tag_id, title="Include to main stream")
+                            i(class="icon-eye-close")
+                    else
+                        a.btn.btn-default.btn-sm(href="/adm/toggle-tag/" + tag.tag_id, title="Exclude from main stream")
+                            i(class="icon-eye-open")
+                td
+                    <a class="btn btn-danger del-tag" href="#myModal"
+                    | rel="/adm/del-tag/#{tag.tag_id}/" data-toggle="modal">
+                    |<i class="icon-trash icon-white"></i> &nbsp; Remove tag
+                    | </a>
+
+    form(class="form-horizontal", method="post", action="/adm/add-tag/")
+        legend Add new tag
+        div.form-group
+            label.control-label.col-lg-2(for="inputTagName") Tag name
+            div.col-lg-10
+                input(type="text", class="input-medium", id="inputTagName", name="tagName")
+        div.form-group
+            div.col-lg-offset-2.col-lg-10
+                button(type="submit", class="btn btn-primary") Add tag
+
+    <!-- Modal -->
+    div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button.close(type="button", data-dismiss="modal", aria-hidden="true") &times;
+                    h4.modal-title(id="myModalLabel") Confirmation
+                div.modal-body
+                    p Remove this tag?
+                div.modal-footer
+                    button.btn.btn-default(data-dismiss="modal", aria-hidden="true") Cancel
+                    a(href="#", id="del-link", class="btn btn-danger") Remove
+
+    script(type="text/javascript").
+        $(".del-tag").click(function () {
+            $("#del-link").prop('href', $(this).prop('rel'));
+        });

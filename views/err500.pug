@@ -1,14 +1,13 @@
 extends layout
 
 block content
-  div.post
-    h2 500
-    div.p-header-sub Ой! Что-то сломалось.
-    br
-    div.p-body
-      - if (err) {
-        pre #{err.stack}
-      - } else {
-        pre(style="text-align: center;")
-          i(class="icon-ambulance", style="font-size:300px;")
-      - }
+    div.post
+        h2 500
+        div.p-header-sub Ouch! Something is wrong
+        br
+        div.p-body
+            if (err)
+                pre #{err.stack}
+            else
+                pre(style="text-align: center;")
+                    i(class="icon-ambulance", style="font-size:300px;")
