@@ -2,66 +2,66 @@ extends ../layout
 
 block content
 
-  - var active_tab = {edit_param: 'active'}
-  include sub_navi
+    - var active_tab = {edit_param: 'active'}
+    include sub_navi
 
-  form(role="form", method="post", action="/adm/save-settings-param")
-    input(type="hidden", name="id", value=setParam.id)
-    case setParam.type
-      when 's_short'
-        div.form-group
-          label(for="keyPar") Ключ
-          input.form-control#keyPar(type="text", name="key", placeholder="Строка из символов \"a-z0-9_\"", value=setParam.key)
-        div.form-group
-          label(for="namePar") Название
-          input.form-control#namePar(type="text", name="name", placeholder="Пояснение назначения параметра настройки", value=setParam.name)
-        div.form-group
-          label(for="valPar") Значение параметра
-          input.form-control#valPar(type="text", name="s_short", placeholder="Значение параметра настройки", value=setParam.s_short)
+    form(role="form", method="post", action="/adm/save-settings-param")
+        input(type="hidden", name="id", value=setParam.id)
+        case setParam.type
+            when 's_short'
+                div.form-group
+                    label(for="keyPar") Key
+                    input.form-control#keyPar(type="text", name="key", placeholder="String of symblos \"a-z0-9_\"", value=setParam.key)
+                div.form-group
+                    label(for="namePar") Description
+                    input.form-control#namePar(type="text", name="name", placeholder="Parameter description", value=setParam.name)
+                div.form-group
+                    label(for="valPar") Parameter value
+                    input.form-control#valPar(type="text", name="s_short", placeholder="Parameter value", value=setParam.s_short)
 
-      when 's_long'
-        div.form-group
-          label(for="keyPar") Ключ
-          input.form-control#keyPar(type="text", name="key", placeholder="Строка из символов \"a-z0-9_\"", value=setParam.key)
-        div.form-group
-          label(for="namePar") Название
-          input.form-control.input-xxlarge#namePar(type="text", name="name", placeholder="Пояснение назначения параметра настройки",value=setParam.name)
-        div.form-group
-          label(for="valPar") Значение параметра
-          textarea.form-control#valPar(name="s_long", placeholder="Значение параметра настройки", rows="12") #{setParam.s_long}
+            when 's_long'
+                div.form-group
+                    label(for="keyPar") Key
+                    input.form-control#keyPar(type="text", name="key", placeholder="String of symblos \"a-z0-9_\"", value=setParam.key)
+                div.form-group
+                    label(for="namePar") Description
+                    input.form-control#namePar(type="text", name="name", placeholder="Parameter description", value=setParam.name)
+                div.form-group
+                    label(for="valPar") Parameter value
+                    textarea.form-control#valPar(name="s_long", placeholder="Parameter value", rows="12") #{setParam.s_long}
 
-      when 'flag'
-        div.form-group
-          label(for="keyPar") Ключ
-          input.form-control#keyPar(type="text", name="key", placeholder="Строка из символов \"a-z0-9_\"", value=setParam.key)
-        div.form-group
-          label(for="namePar") Название
-          input.form-control#namePar(type="text", name="name", placeholder="Пояснение назначения параметра настройки", value=setParam.name)
-        div.checkbox
-          label
-          - if (setParam.flag) {
-            input#valPar(type="checkbox", name="flag", value="1", checked="checked")
-          - } else {
-            input#valPar(type="checkbox", name="flag", value="1")
-          - }
-            | Включено / Выключено
+            when 'flag'
+                div.form-group
+                    label(for="keyPar") Key
+                    input.form-control#keyPar(type="text", name="key", placeholder="String of symblos \"a-z0-9_\"", value=setParam.key)
+                div.form-group
+                    label(for="namePar") Description
+                    input.form-control#namePar(type="text", name="name", placeholder="Parameter description", value=setParam.name)
+                div.checkbox
+                    label
+                        if (setParam.flag)
+                            input#valPar(type="checkbox", name="flag", value="1", checked="checked")
+                        else
+                            input#valPar(type="checkbox", name="flag", value="1")
 
-    div.form-group
-      button(type="submit", class="btn btn-primary") Сохранить
-      | &nbsp;
-      a(href="#myModal", class="btn btn-danger", data-toggle="modal")
-        i(class="icon-trash icon-white")
-        | &nbsp; Удалить параметр
+                        | On / Off
 
-  <!-- Modal -->
-  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div.modal-dialog
-      div.modal-content
-        div.modal-header
-          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
-          h3.modal-title Требуется подтверждение
-        div.modal-body
-          p Вы действительно хотите удалить этот параметр настройки?
-        div.modal-footer
-          button.btn.btn-default(data-dismiss="modal") Отмена
-          a(href="/adm/delete-settings-param/#{setParam.id}", id="del-link", class="btn btn-danger") Удалить
+        div.form-group
+            button(type="submit", class="btn btn-primary") Save
+            | &nbsp;
+            a(href="#myModal", class="btn btn-danger", data-toggle="modal")
+                i(class="icon-trash icon-white")
+                | &nbsp; Remove parameter
+
+    <!-- Modal -->
+    div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+                    h3.modal-title Confirmation
+                div.modal-body
+                    p Remove this parameter?
+                div.modal-footer
+                    button.btn.btn-default(data-dismiss="modal") Cancel
+                    a(href="/adm/delete-settings-param/#{setParam.id}", id="del-link", class="btn btn-danger") Remove

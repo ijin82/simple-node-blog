@@ -2,67 +2,65 @@ extends ../layout
 
 block content
 
-  - var active_tab = {settings: 'active'}
-  include sub_navi
+    - var active_tab = {settings: 'active'}
+    include sub_navi
 
-  div.panel-group#accordion
-    div.panel.panel-default
-      div.panel-heading
-        h4.panel-title
-          a.accordion-toggle(data-toggle="collapse", dataParent="#accordion", href="#collapseOne")
-            | Как пользоваться настройками?
-      div.pannel-collapse.collapse#collapseOne
-        div.panel-body
-          ol
-            li Настройки бывают трех типов: "короткий текст" (до 255 символов), "длинный текст", "флаг" (значение да/нет)
-            li Настройки позволяют отображать дополнительные данные на страницах (счетчики, баннеры и прочее)
-            li Настройки типа "флаг" позволяют добавлять условия в логику самого приложения (включить выключить
-              | рекламную акцию например) и логику отображения строковых настроек на страницах
-            li В шаблонах доступ к настройкам выглядит так:
-              strong &nbsp; != getAppConfig('settings_key', 'default value')
-            li В коде контроллеров доступ к настройкам выглядит так:
-              strong &nbsp; appConfig.settings_key
-            li Таким образом, для использования новых настроек их необходимо имплементировать в шаблоны или код
-              | в зависимости от запланированного назначения
-  br
-  table.table.table-striped.table-hover
-    thead
-      th Ключ
-      th Описание
-      th Тип
-      th &nbsp;
+    div.panel-group#accordion
+        div.panel.panel-default
+            div.panel-heading
+                h4.panel-title
+                    a.accordion-toggle(data-toggle="collapse", dataParent="#accordion", href="#collapseOne")
+                        | How to use settings?
+            div.pannel-collapse.collapse#collapseOne
+                div.panel-body
+                    ol
+                        li Types of parameters: "Short text" (up to 255 symbols), "Long text", "Flag/Bool" (true/false value)
+                        li Parameters allow to set up editable custom data on pages (banners, counters etc.)
+                        li Parameters like "Flag/Bool" allow to add expressions to templates logic
+                            | (adverts on/off for example)
+                        li Parameters in templates usage:
+                            strong &nbsp; != getAppConfig('settings_key', 'default value')
+                        li Parameters in controllers usage:
+                            strong &nbsp; appConfig.settings_key
+    br
+    table.table.table-striped.table-hover
+        thead
+            th Key
+            th Description
+            th Type
+            th &nbsp;
 
-    tbody
-    - each item in settings
-      tr
-        td #{item.key || '- нет -'}
-        td
-          a(href="/adm/edit-param/#{item.id}/", title="Редактировать свойство")
-            = (item.name || '- нет -')
-        td
-          case item.type
-            when 's_short'
-              | Короткий текст
-            when 's_long'
-              | Длинный текст
-            when 'flag'
-              | Флаг
-            default
-              | - нет -
-        td &nbsp;
+        tbody
+        each item in settings
+            tr
+                td #{item.key || '- нет -'}
+                td
+                    <a href="/adm/edit-param/#{item.id}/"
+                        | title="Edit parameter">
+                        | #{item.name || '- noname -'}</a>
+                td
+                    case item.type
+                        when 's_short'
+                            | Short text
+                        when 's_long'
+                            | Long text
+                        when 'flag'
+                            | Flag/Bool
+                        default
+                            | - type -
+                td &nbsp;
 
+    form.form-horizontal(role="form", method="post", action="/adm/add-settings-param")
+        legend Add new parameter
+        div.form-group
+            label.control-label.col-lg-3 Ключ
+            div.col-lg-5
+                select.form-control(name="type")
+                    option(value="s_short") Short text
+                    option(value="s_long") Long text
+                    option(value="flag") Flag/Bool
 
-  form.form-horizontal(role="form", method="post", action="/adm/add-settings-param")
-    legend Добавление параметра настройки
-    div.form-group
-      label.control-label.col-lg-3 Ключ
-      div.col-lg-5
-        select.form-control(name="type")
-          option(value="s_short") Короткий текст
-          option(value="s_long") Длинный текст
-          option(value="flag") Флаг
-
-    div.form-group
-      div.col-lg-9.col-lg-offset-3
-        button(type="submit", class="btn btn-primary") Добавить параметр
+        div.form-group
+            div.col-lg-9.col-lg-offset-3
+                button(type="submit", class="btn btn-primary") Add parameter
 
