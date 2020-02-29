@@ -36,7 +36,8 @@ Debug
 --
 - <a href="https://npmjs.org/package/nodemon">nodemon</a>
 - ```npm -g install nodemon```
-- ```nodemon app.js```
+- ```nodemon app.js```  
+**REM** sometimes on virtualbox shared fs for example, you need ```nodemon -L app.js```
 
 Access params
 --
