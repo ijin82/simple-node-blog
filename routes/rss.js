@@ -1,4 +1,5 @@
 var rss = require('rss');
+var moment = require('moment');
 
 // get main rss feed
 exports.getMain = function(req, res, next){
@@ -21,12 +22,12 @@ exports.getMain = function(req, res, next){
      
       var feed = new rss({
           title: req.hostname,
-          description: 'блог одного программиста',
+          description: appConfig.blog_name,
           feed_url: 'http://' + req.hostname + '/rss/main.rss',
           site_url: 'http://' + req.hostname,
           image_url: 'http://' + req.hostname + '/img/cocainum.jpg',
           author: 'Ilya Rogojin',
-          pubDate: dateformat(new Date(), "fullDate"),
+          pubDate: moment().format("dddd, MMMM D, YYYY"),
           ttl: '600'
       });
 
