@@ -2,84 +2,83 @@ extends ../layout
 
 block content
 
-  - var active_tab = {edit_post: 'active'}
-  include sub_navi
+    - var active_tab = {edit_post: 'active'}
+    include sub_navi
 
-  form(action="/adm/save-post/", method="post")
-    input(type="hidden", name="post_id", value=post.blog_id)
-    table.table.table-striped.table-hover
-      tbody
-        - var rowClass = (post.visible == 1)? '': 'warning';
-        tr(class=rowClass)
-          td Видимость
-          td
-            - var linkTitle = (post.visible == 1)? 'Сделать невидимым': 'Сделать видимым';
-            - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
-            a.btn.btn-default.btn-xs(href="/adm/post-visible/#{post.blog_id}/", title=linkTitle)
-              i(class=linkIcon)
-            a.btn.btn-xs.btn-success.m-l10(href="/post/#{post.blog_id}/", target="_blank", title="Предпросмотр")
-              i(class="icon-arrow-right")
-        tr
-          td Теги
-          td
-            - each tag in tags
-              - if (tag.ex) {
-                span.label.label-primary.site-a-label
-                  a(href="#", title="Удалить тег", class="del-tag", rel=tag.tag_id) #{tag.tag_name}
-              - } else {
-                span.label.label-default.site-a-label
-                  a(href="#", title="Добавить тег", class="add-tag", rel=tag.tag_id) #{tag.tag_name}
-              - }
-        tr
-          td Заголовок&nbsp;поста
-          td
-            input.form-control(type="text", name="header", value=post.header)
-        tr
-          td(colspan="2")
-            textarea.form-control(rows="20", name="text") #{post.text}
-        tr
-          td Дата создания
-          td
-            = dateformat(post.post_date,"yyyy.mm.dd HH:MM:ss")
-        tr
-          td Обновить дату
-          td
-            input(type="checkbox", name="up_date", value="1")
-        tr
-          td &nbsp;
-          td
-            button(type="submit", class="btn btn-primary") Сохранить изменения
-            a.btn.btn-danger.pull-right(href="#myModal", data-toggle="modal")
-              i(class="icon-trash icon-white")
-              | &nbsp;Удалить запись
-
-
-  <!-- Modal -->
-  div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-    div.modal-dialog
-      div.modal-content
-        div.modal-header
-          button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
-          h3.modal-title Требуется подтверждение
-        div.modal-body
-          p Вы действительно хотите удалить эту запись?
-        div.modal-footer
-          button.btn.btn-default(data-dismiss="modal") Отмена
-          a.btn.btn-danger(href="/adm/del-post/#{post.blog_id}/", id="del-link") Удалить
+    form(action="/adm/save-post/", method="post")
+        input(type="hidden", name="post_id", value=post.blog_id)
+        table.table.table-striped.table-hover
+            tbody
+                - var rowClass = (post.visible == 1)? '': 'warning';
+                tr(class=rowClass)
+                    td Visibility
+                    td
+                        - var linkTitle = (post.visible == 1)? 'Make invisible': 'Make visible';
+                        - var linkIcon = (post.visible == 1)? 'icon-eye-open': 'icon-eye-close';
+                        a.btn.btn-default.btn-xs(href='/adm/post-visible/' + post.blog_id + '/', title=linkTitle)
+                            i(class=linkIcon)
+                        a.btn.btn-xs.btn-success.m-l10(href='/post/' + post.blog_id + '/', target="_blank", title="Preview")
+                            i(class="icon-arrow-right")
+                tr
+                    td Теги
+                    td
+                        each tag in tags
+                            if (tag.ex)
+                                span.label.label-primary.site-a-label
+                                    a(href="#", title="Remove tag", class="del-tag", rel=tag.tag_id) #{tag.tag_name}
+                            else
+                                span.label.label-default.site-a-label
+                                    a(href="#", title="Add tag", class="add-tag", rel=tag.tag_id) #{tag.tag_name}
+                tr
+                    td Title
+                    td
+                        input.form-control(type="text", name="header", value=post.header)
+                tr
+                    td(colspan="2")
+                        textarea.form-control(rows="20", name="text") #{post.text}
+                tr
+                    td Date of creation
+                    td
+                        = moment(post.post_date).format(" DD MMMM YYYY, dddd")
+                tr
+                    td Update creation date
+                    td
+                        input(type="checkbox", name="up_date", value="1")
+                tr
+                    td &nbsp;
+                    td
+                        button(type="submit", class="btn btn-primary") Save
+                        a.btn.btn-danger.pull-right(href="#myModal", data-toggle="modal")
+                            i(class="icon-trash icon-white")
+                            | &nbsp;Remove
 
 
-  script(type="text/javascript").
-    $(".add-tag, .del-tag").click(function(){
-      var selected = 'label-primary';
-      if ($(this).parent().hasClass(selected)) {
-        oper = 'remove';
-      } else {
-        oper = 'add';
-      }
-      $(this).parent().toggleClass(selected);
-      $(this).parent().toggleClass('label-default');
-      $.get('/adm/change-tag/#{post.blog_id}/' + oper + '/' + $(this).prop('rel'), function(data) {
-        $('.result').html(data);
-      });
-      return false;
-    });
+    <!-- Modal -->
+    div.modal#myModal(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+                    h3.modal-title Confirmation
+                div.modal-body
+                    p Remove this post?
+                div.modal-footer
+                    button.btn.btn-default(data-dismiss="modal") Cancel
+                    a.btn.btn-danger(href="/adm/del-post/#{post.blog_id}/", id="del-link") Remove
+
+
+    script(type="text/javascript").
+        $(".add-tag, .del-tag").click(function () {
+            var selected = 'label-primary';
+            if ($(this).parent().hasClass(selected)) {
+                oper = 'remove';
+            } else {
+                oper = 'add';
+            }
+            $(this).parent().toggleClass(selected);
+            $(this).parent().toggleClass('label-default');
+            $.get('/adm/change-tag/#{post.blog_id}/' + oper + '/' + $(this).prop('rel'), function (data) {
+                $('.result').html(data);
+            });
+            return false;
+        });
