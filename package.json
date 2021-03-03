@@ -27,7 +27,7 @@
     "passport-github": "1.1.x",
     "passport-local": "1.0.x",
     "passport-twitter": "1.0.x",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "rss": "1.2.x",
     "serve-favicon": "2.x.x",
     "validator": "12.2.0"
