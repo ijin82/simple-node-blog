@@ -30,6 +30,6 @@
     "pug": "^3.0.1",
     "rss": "1.2.x",
     "serve-favicon": "2.x.x",
-    "validator": "12.2.0"
+    "validator": "13.7.0"
   }
 }
