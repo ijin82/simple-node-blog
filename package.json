@@ -19,7 +19,7 @@
     "express": "4.17.x",
     "express-session": "1.17.x",
     "method-override": "3.0.x",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "morgan": "1.9.x",
     "mysql": "2.18.x",
     "passport": "0.4.x",
